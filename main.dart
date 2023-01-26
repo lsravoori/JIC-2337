@@ -61,7 +61,9 @@ class _FirstRoute extends State<FirstRoute> {
         .get()
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
-        if (doc["Category"] == selectedValue || selectedValue == "Filters") {
+        if (doc["Category"] == selectedValue ||
+            selectedValue == "Filters" ||
+            doc["Zipcode"] == selectedValue) {
           list.add(TextButton(
               child: Container(
                 color: Colors.pinkAccent,
@@ -91,6 +93,7 @@ class _FirstRoute extends State<FirstRoute> {
           )); //Divider
         }
         category[doc["Category"]] = doc["Category"];
+        category[doc["Zipcode"]] = doc["Zipcode"];
       });
     });
     list.add(
