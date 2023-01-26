@@ -52,6 +52,18 @@ class _FirstRoute extends State<FirstRoute> {
   List<Widget> list = [];
 
   Future<QuerySnapshot> getData() async {
+    list.add(
+      DropdownButton(
+          value: selectedValue,
+          items: dropdownItems,
+          onChanged: (String? newValue) {
+            setState(() {
+              selectedValue = newValue!;
+            });
+          }),
+    ); //This creates the dropdown button. Right now it is at the top of the screen
+    //It has a selected value and selecting something else changes the value of the button
+    //I haven't gotten to adding it filtering yet as I can't get the menu items to work
     await FirebaseFirestore.instance
         .collection('Businesses')
         .get()
@@ -85,8 +97,43 @@ class _FirstRoute extends State<FirstRoute> {
         )); //Divider
       });
     });
+
     return await FirebaseFirestore.instance.collection('Businesses').get();
   }
+
+  //This is a hash map that will store all of the categories that are found in the businesses
+  //I could hard code this but am trying not to do that
+  Map<String, String> category = new Map();
+
+  //This creates the list of dropdown items by going through all of the values in the hash map
+  List<DropdownMenuItem<String>> get dropdownItems {
+    List<DropdownMenuItem<String>> menuItems = [
+      DropdownMenuItem(child: Text("Filters"), value: "Filters"),
+    ];
+    category.forEach((key, value) {
+      menuItems.add(DropdownMenuItem(child: Text(key), value: value));
+    });
+
+    return menuItems;
+  }
+
+  //Here I am attempting to get all of the categories and store them in the hashmap
+  //I keep having an error where it cannot resolve line 124 for some reason no matter where I put
+  //the line calling the function
+  Future<QuerySnapshot> getCategories() async {
+    await FirebaseFirestore.instance
+        .collection('Businesses')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        category.addEntries({doc["Category"], doc["Category"]});
+      });
+    });
+    return await FirebaseFirestore.instance.collection('Businesses').get();
+  }
+
+  //This is the value that defaults on the dropdown menu
+  String selectedValue = "Filters";
 
   Scaffold makeFirstScaffold() {
     return Scaffold(
@@ -107,8 +154,11 @@ class _FirstRoute extends State<FirstRoute> {
     );
   }
 
+  //The only thing I added here is calling getCategories to try and get the categories
+  //the first time it is run.
   @override
   Widget build(BuildContext context) {
+    getCategories();
     return FutureBuilder(
       future: getData(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
