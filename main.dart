@@ -53,18 +53,9 @@ class _FirstRoute extends State<FirstRoute> {
 
   Future<QuerySnapshot> getData() async {
     list.clear();
-    list.add(
-      DropdownButton(
-          value: selectedValue,
-          items: dropdownItems,
-          onChanged: (String? newValue) {
-            setState(() {
-              selectedValue = newValue!;
-            });
-          }),
-    ); //This creates the dropdown button. Right now it is at the top of the screen
-    //It has a selected value and selecting something else changes the value of the button
-    //I haven't gotten to adding it filtering yet as I can't get the menu items to work
+    list.add(const Padding(
+      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+    ));
     await FirebaseFirestore.instance
         .collection('Businesses')
         .get()
@@ -99,20 +90,42 @@ class _FirstRoute extends State<FirstRoute> {
             color: Colors.black,
           )); //Divider
         }
+        category[doc["Category"]] = doc["Category"];
       });
     });
+    list.add(
+      DropdownButton(
+          value: selectedValue,
+          items: dropdownItems,
+          onChanged: (String? newValue) {
+            setState(() {
+              selectedValue = newValue!;
+            });
+          }),
+    ); //This creates the dropdown button. Right now it is at the top of the screen
+    //It has a selected value and selecting something else changes the value of the button
+    //I haven't gotten to adding it filtering yet as I can't get the menu items to work
     return await FirebaseFirestore.instance.collection('Businesses').get();
   }
 
   //This is a hash map that will store all of the categories that are found in the businesses
   //I could hard code this but am trying not to do that
-  Map<String, String> category = new Map();
+  Map<String, String> category = {
+    //'POC': 'POC',
+    //'Women': 'Women',
+    //'LGBTQ+': 'LGBTQ+'
+  };
 
   //This creates the list of dropdown items by going through all of the values in the hash map
   List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [
       DropdownMenuItem(child: Text("Add/Remove Filters"), value: "Filters"),
     ];
+    category.forEach((key, value) {
+      menuItems.add(
+        DropdownMenuItem(child: Text(key), value: value),
+      );
+    });
     return menuItems;
   }
 
