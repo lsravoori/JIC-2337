@@ -11,13 +11,17 @@ The code consists mainly of Flutter for Android/IOS as the front end. And fireba
 considered as the code base continues to grow.
 
 # Release Notes
-## v0.10
+## v0.1.0
 ### Features
 -Filter business by type or location
+
 -See details of business
+
 -Login as Guest
 ### Bug Fixes
 -Removed faulty back button
+
 ### Known Issues
 -Positoning of drop-down filters
+
 -UI (general app theme)
