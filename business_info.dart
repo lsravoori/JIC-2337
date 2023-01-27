@@ -98,6 +98,17 @@ class _BusinessInfoState extends State<BusinessInfo> {
               endIndent: 0,
               color: Colors.black,
             ),
+            Text("Category: ${businessInfo!['Category']}",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 25)),
+            const Divider(
+              height: 20,
+              thickness: 3,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black,
+            ),
             Text("Phone Number: ${businessInfo!['Phone Number']}",
                 textAlign: TextAlign.left,
                 style: TextStyle(
@@ -121,6 +132,17 @@ class _BusinessInfoState extends State<BusinessInfo> {
               color: Colors.black,
             ),
             Text("Address: ${businessInfo!['Address']}",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 25)),
+            const Divider(
+              height: 20,
+              thickness: 3,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black,
+            ),
+            Text("Zipcode: ${businessInfo!['Zipcode']}",
                 textAlign: TextAlign.left,
                 style: TextStyle(
                     color: Color.fromARGB(255, 0, 0, 0), fontSize: 25)),
