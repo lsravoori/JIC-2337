@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:artifact/login.dart';
 //firebase core plugin
 import 'package:firebase_core/firebase_core.dart';
 //firebase configuration file
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const FirstRoute(title: 'Business List'),
+      home: LoginScreen(),
     );
   }
 }
