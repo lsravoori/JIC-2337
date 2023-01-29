@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginScreen(),
+      home: const FirstRoute(title: 'Business List'),
     );
   }
 }
@@ -49,22 +49,27 @@ class FirstRoute extends StatefulWidget {
 
 class _FirstRoute extends State<FirstRoute> {
   //const FirstRoute({super.key});
-  List<Widget> list = [];
+  List<Widget> list =
+      []; //this is a list of children for the scaffold that shows up on screen
 
   Future<QuerySnapshot> getData() async {
+    //getData brings in all of the business from the database based on filters
     list.clear();
     list.add(const Padding(
       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
     ));
-    await FirebaseFirestore.instance
+    await FirebaseFirestore
+        .instance //this whole section pulls business names in with a for each loop
         .collection('Businesses')
         .get()
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
-        if (doc["Category"] == selectedValue ||
+        if (doc["Category"] ==
+                selectedValue || //introduces filters into the businesses pulled with the for loop
             selectedValue == "Filters" ||
             doc["Zipcode"] == selectedValue) {
           list.add(TextButton(
+              //creates a button that contains a name of a business in it
               child: Container(
                 color: Colors.pinkAccent,
                 padding:
@@ -75,6 +80,7 @@ class _FirstRoute extends State<FirstRoute> {
                 ),
               ),
               onPressed: () {
+                //button moves to the business_info page that displays all the details (that code is in business_info.dart)
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -92,7 +98,8 @@ class _FirstRoute extends State<FirstRoute> {
             color: Colors.black,
           )); //Divider
         }
-        category[doc["Category"]] = doc["Category"];
+        category[doc["Category"]] = doc[
+            "Category"]; //populates the filter hashmap with pulled category/zipcode data from the for loop
         category[doc["Zipcode"]] = doc["Zipcode"];
       });
     });
@@ -105,19 +112,13 @@ class _FirstRoute extends State<FirstRoute> {
               selectedValue = newValue!;
             });
           }),
-    ); //This creates the dropdown button. Right now it is at the top of the screen
+    ); //This creates the dropdown button. Right now it is at the bottom of the screen
     //It has a selected value and selecting something else changes the value of the button
-    //I haven't gotten to adding it filtering yet as I can't get the menu items to work
     return await FirebaseFirestore.instance.collection('Businesses').get();
   }
 
-  //This is a hash map that will store all of the categories that are found in the businesses
-  //I could hard code this but am trying not to do that
-  Map<String, String> category = {
-    //'POC': 'POC',
-    //'Women': 'Women',
-    //'LGBTQ+': 'LGBTQ+'
-  };
+  //This is a hash map that will store all of the categories that are found in the businesses (maybe hardcode for future)
+  Map<String, String> category = {};
 
   //This creates the list of dropdown items by going through all of the values in the hash map
   List<DropdownMenuItem<String>> get dropdownItems {
@@ -136,6 +137,7 @@ class _FirstRoute extends State<FirstRoute> {
   String selectedValue = "Filters";
 
   Scaffold makeFirstScaffold() {
+    //this creates the scaffold using the children list mentioned above (separate method to make build() smaller)
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 234, 209, 217),
       appBar: AppBar(
@@ -154,11 +156,9 @@ class _FirstRoute extends State<FirstRoute> {
     );
   }
 
-  //The only thing I added here is calling getCategories to try and get the categories
-  //the first time it is run.
   @override
   Widget build(BuildContext context) {
-    //getCategories();
+    //builds the UI screen for the button page
     return FutureBuilder(
       future: getData(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
