@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:artifact/login.dart';
+import '../../../login.dart';
 //firebase core plugin
 import 'package:firebase_core/firebase_core.dart';
 //firebase configuration file
@@ -92,6 +92,23 @@ class _FirstRoute extends State<FirstRoute> {
           }),
     ); //This creates the dropdown button. Right now it is at the bottom of the screen
     //It has a selected value and selecting something else changes the value of the button
+    list.add(TextButton(
+        //creates a button that contains a name of a business in it
+        child: Container(
+          color: Color.fromARGB(255, 90, 63, 51),
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          child: const Text(
+            "Logout",
+            style: TextStyle(color: Colors.white, fontSize: 15.0),
+          ),
+        ),
+        onPressed: () {
+          //button moves to the business_info page that displays all the details (that code is in business_info.dart)
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => LoginScreen()),
+          );
+        }));
     return await FirebaseFirestore.instance.collection('Businesses').get();
   }
 
