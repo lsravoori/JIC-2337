@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:artifact/login.dart';
+//import 'package:google_fonts/google_fonts.dart';
+import '../../../login.dart';
 //firebase core plugin
-import 'package:firebase_core/firebase_core.dart';
+//import 'package:firebase_core/firebase_core.dart';
 //firebase configuration file
-import '../../../firebase_options.dart';
+//import '../../../firebase_options.dart';
 import '../../../business_info.dart';
 
 class FirstRoute extends StatefulWidget {
@@ -32,6 +33,7 @@ class _FirstRoute extends State<FirstRoute> {
 
   Future<QuerySnapshot> getData() async {
     //getData brings in all of the business from the database based on filters
+    int i = 0;
     list.clear();
     list.add(const Padding(
       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -46,15 +48,20 @@ class _FirstRoute extends State<FirstRoute> {
                 selectedValue || //introduces filters into the businesses pulled with the for loop
             selectedValue == "Filters" ||
             doc["Zipcode"] == selectedValue) {
+          i++;
+          String name = i.toString() + ". " + doc["Name"];
           list.add(TextButton(
               //creates a button that contains a name of a business in it
               child: Container(
-                color: Colors.pinkAccent,
+                //color: Colors.deepPurple,
                 padding:
                     const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                 child: Text(
-                  doc["Name"],
-                  style: TextStyle(color: Colors.white, fontSize: 25.0),
+                  name,
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 25.0,
+                      decoration: TextDecoration.underline),
                 ),
               ),
               onPressed: () {
@@ -65,6 +72,14 @@ class _FirstRoute extends State<FirstRoute> {
                       builder: (context) => BusinessInfo(title: doc["Name"])),
                 );
               }));
+          String hours = "Hours: " + doc["Hours"];
+          list.add(Padding(
+              padding: const EdgeInsets.fromLTRB(15, 0, 2, 2),
+              child: Text(doc["Details"])));
+          list.add(Padding(
+              padding: const EdgeInsets.fromLTRB(15, 2, 2, 2),
+              child: Text(hours)));
+
           list.add(const Padding(
             padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
           ));
@@ -92,6 +107,26 @@ class _FirstRoute extends State<FirstRoute> {
           }),
     ); //This creates the dropdown button. Right now it is at the bottom of the screen
     //It has a selected value and selecting something else changes the value of the button
+    list.add(const Padding(
+      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+    ));
+    list.add(TextButton(
+        //creates a button that contains a name of a business in it
+        child: Container(
+          color: Colors.blueGrey,
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          child: const Text(
+            "Logout",
+            style: TextStyle(color: Colors.white, fontSize: 15.0),
+          ),
+        ),
+        onPressed: () {
+          //button moves to the business_info page that displays all the details (that code is in business_info.dart)
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => LoginScreen()),
+          );
+        }));
     return await FirebaseFirestore.instance.collection('Businesses').get();
   }
 
@@ -101,7 +136,8 @@ class _FirstRoute extends State<FirstRoute> {
   //This creates the list of dropdown items by going through all of the values in the hash map
   List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [
-      DropdownMenuItem(child: Text("Add/Remove Filters"), value: "Filters"),
+      const DropdownMenuItem(
+          child: Text("Add/Remove Filters"), value: "Filters"),
     ];
     category.forEach((key, value) {
       menuItems.add(
@@ -117,13 +153,13 @@ class _FirstRoute extends State<FirstRoute> {
   Scaffold makeFirstScaffold() {
     //this creates the scaffold using the children list mentioned above (separate method to make build() smaller)
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 234, 209, 217),
+      backgroundColor: Colors.white24,
       appBar: AppBar(
         title: const Text(
-          'For The People: All Businesses',
-          style: TextStyle(color: Colors.white, fontSize: 40.0),
+          'For The People: Businesses',
+          style: TextStyle(color: Colors.white, fontSize: 20.0),
         ),
-        backgroundColor: Color.fromARGB(255, 90, 63, 51),
+        backgroundColor: Colors.blueGrey,
       ),
       body: Center(
         child: Column(
@@ -143,7 +179,7 @@ class _FirstRoute extends State<FirstRoute> {
         if (snapshot.connectionState == ConnectionState.done) {
           return makeFirstScaffold();
         } else {
-          return Scaffold();
+          return const Scaffold();
         }
       },
     );
