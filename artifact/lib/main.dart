@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:artifact/login.dart';
 //firebase core plugin
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutterfire_ui/auth.dart';
 //firebase configuration file
 import '../../../firebase_options.dart';
 import '../../../business_info.dart';
@@ -12,6 +14,20 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  FlutterFireUIAuth.configureProviders([
+    const EmailProviderConfiguration(),
+    //const PhoneProviderConfiguration(),
+    //const GoogleProviderConfiguration(clientId: GOOGLE_CLIENT_ID),
+    //const AppleProviderConfiguration(),
+    //const FacebookProviderConfiguration(clientId: FACEBOOK_CLIENT_ID),
+    //const TwitterProviderConfiguration(
+      //apiKey: TWITTER_API_KEY,
+      //apiSecretKey: TWITTER_API_SECRET_KEY,
+      //redirectUri: TWITTER_REDIRECT_URI,
+    //),
+  ]);
+
   runApp(const MyApp());
 }
 
@@ -21,12 +37,33 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    final auth = FirebaseAuth.instance;
+
+    return CupertinoApp(
       title: 'We The People',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: LoginScreen(),
+      initialRoute: auth.currentUser == null ? '/' : '/profile',
+      routes: {
+        '/': (context) {
+          return SignInScreen(
+            // no providerConfigs property - global configuration will be used instead
+            actions: [
+              AuthStateChangeAction<SignedIn>((context, state) {
+                Navigator.pushReplacementNamed(context, '/profile');
+              }),
+            ],
+          );
+        },
+        '/profile': (context) {
+          return ProfileScreen(
+            // no providerConfigs property here as well
+            actions: [
+              SignedOutAction((context) {
+                Navigator.pushReplacementNamed(context, '/');
+              }),
+            ],
+          );
+        },
+      },
     );
   }
 }
