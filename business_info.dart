@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
-import '../../../firebase_options.dart';
+//import '../../../firebase_options.dart';
 import '../../../login.dart';
-import 'package:firebase_core/firebase_core.dart';
+//import 'package:firebase_core/firebase_core.dart';
 
 class BusinessInfo extends StatefulWidget {
   const BusinessInfo({
@@ -56,7 +57,7 @@ class _BusinessInfoState extends State<BusinessInfo> {
   List<Widget> createInfoWidgets(businessInfo) {
     //unused method, possibly delete
     var widgets = <Widget>[];
-    var widgetKeys = businessInfo.keys;
+    //var widgetKeys = businessInfo.keys;
     businessInfo.forEach((key, value) {
       widgets.add(Text("$key" ": " "$value"));
     });
@@ -66,10 +67,10 @@ class _BusinessInfoState extends State<BusinessInfo> {
   Scaffold makeSecondScaffold() {
     //makes the scaffold for the business_info page
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 234, 209, 217),
+      backgroundColor: Colors.white24,
       appBar: AppBar(
         title: Text(widget.title),
-        backgroundColor: Color.fromARGB(255, 90, 63, 51),
+        backgroundColor: Colors.blueGrey,
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -94,8 +95,8 @@ class _BusinessInfoState extends State<BusinessInfo> {
           children: <Widget>[
             Text("Logo: ${businessInfo!['Logo']}",
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 25)),
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
             const Divider(
               height: 20,
               thickness: 3,
@@ -105,8 +106,8 @@ class _BusinessInfoState extends State<BusinessInfo> {
             ),
             Text("Category: ${businessInfo!['Category']}",
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 25)),
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
             const Divider(
               height: 20,
               thickness: 3,
@@ -116,8 +117,8 @@ class _BusinessInfoState extends State<BusinessInfo> {
             ),
             Text("Phone Number: ${businessInfo!['Phone Number']}",
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 25)),
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
             const Divider(
               height: 20,
               thickness: 3,
@@ -127,8 +128,8 @@ class _BusinessInfoState extends State<BusinessInfo> {
             ),
             Text("Hours: ${businessInfo!['Hours']}",
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 25)),
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
             const Divider(
               height: 20,
               thickness: 3,
@@ -138,8 +139,8 @@ class _BusinessInfoState extends State<BusinessInfo> {
             ),
             Text("Address: ${businessInfo!['Address']}",
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 25)),
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
             const Divider(
               height: 20,
               thickness: 3,
@@ -149,8 +150,8 @@ class _BusinessInfoState extends State<BusinessInfo> {
             ),
             Text("Zipcode: ${businessInfo!['Zipcode']}",
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 25)),
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
             const Divider(
               height: 20,
               thickness: 3,
@@ -160,8 +161,8 @@ class _BusinessInfoState extends State<BusinessInfo> {
             ),
             Text("Details: ${businessInfo!['Details']}",
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 25)),
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
             const Divider(
               height: 20,
               thickness: 3,
@@ -171,8 +172,8 @@ class _BusinessInfoState extends State<BusinessInfo> {
             ),
             Text("Website: ${businessInfo!['Website']}",
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 25)),
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
             const Divider(
               height: 20,
               thickness: 3,
@@ -183,7 +184,7 @@ class _BusinessInfoState extends State<BusinessInfo> {
             TextButton(
                 //creates a button that contains a name of a business in it
                 child: Container(
-                  color: Color.fromARGB(255, 90, 63, 51),
+                  color: Colors.blueGrey,
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                   child: const Text(
@@ -213,7 +214,7 @@ class _BusinessInfoState extends State<BusinessInfo> {
         if (snapshot.connectionState == ConnectionState.done) {
           return makeSecondScaffold();
         } else {
-          return Scaffold();
+          return const Scaffold();
         }
       },
     );

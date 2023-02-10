@@ -1,11 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:artifact/login.dart';
+//import 'package:google_fonts/google_fonts.dart';
+import '../../../login.dart';
 //firebase core plugin
 import 'package:firebase_core/firebase_core.dart';
 //firebase configuration file
 import '../../../firebase_options.dart';
-import '../../../business_info.dart';
+//import '../../../business_info.dart';
 
 void main() async {
   //main file that simply starts the application on the login screen
@@ -23,9 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'We The People',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blueGrey),
       home: LoginScreen(),
     );
   }
