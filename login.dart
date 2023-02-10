@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:artifact/main.dart';
-import 'package:artifact/business_search.dart';
+//import 'package:google_fonts/google_fonts.dart';
+//import '../../../main.dart';
+import '../../../business_search.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -14,6 +15,14 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'For The People: Login',
+          style: TextStyle(color: Colors.white, fontSize: 20.0),
+        ),
+        backgroundColor: Colors.blueGrey,
+      ),
+      backgroundColor: Colors.white24,
       body: Form(
         key: _formKey,
         child: Column(
@@ -26,13 +35,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 return null;
               },
               onSaved: (input) => _email = input!,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(labelText: 'Email'),
             ), //textfield for an email input
             TextFormField(
               onSaved: (input) => _password = input!,
-              decoration: InputDecoration(labelText: 'Password'),
+              decoration: const InputDecoration(labelText: 'Password'),
               obscureText: true,
             ), //textfield for a password input
+            const Padding(padding: EdgeInsets.fromLTRB(10, 10, 10, 10)),
             ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
@@ -40,19 +50,26 @@ class _LoginScreenState extends State<LoginScreen> {
                   // Perform login here, WIP
                 }
               },
-              child: Text('Sign in'),
+              child: const Text(
+                'Sign in',
+                style: TextStyle(fontSize: 15),
+              ),
             ),
             TextButton(
               onPressed: () {
                 // Navigate to forgot password screen, WIP
               },
-              child: Text('Forgot Password'),
+              child: const Text(
+                'Forgot Password',
+                style: TextStyle(color: Colors.black),
+              ),
             ),
             TextButton(
               onPressed: () {
                 // Navigate to register screen, WIP
               },
-              child: Text('Register'),
+              child: const Text('Create Account',
+                  style: TextStyle(color: Colors.black)),
             ),
             TextButton(
               onPressed: () {
@@ -63,7 +80,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           const FirstRoute(title: 'Business List')),
                 );
               },
-              child: Text('Continue as guest'),
+              child: const Text('Continue as guest',
+                  style: TextStyle(color: Colors.black)),
             ) //button continues to business_search.dart page (searches are done as a guest)
           ],
         ),
