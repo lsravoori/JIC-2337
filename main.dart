@@ -1,7 +1,9 @@
 //import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:forthepeopleartifact/home.dart';
 //import 'package:google_fonts/google_fonts.dart';
 import '../../../login.dart';
+import '../../../home.dart';
 //firebase core plugin
 import 'package:firebase_core/firebase_core.dart';
 //firebase configuration file
@@ -25,7 +27,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'We The People',
       theme: ThemeData(primarySwatch: Colors.blueGrey),
-      home: LoginScreen(),
+      home: LoginScreen(
+          //title: "Home",
+          ),
     );
   }
 }
