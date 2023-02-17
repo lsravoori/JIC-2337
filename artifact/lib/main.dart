@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = FirebaseAuth.instance;
 
-    return CupertinoApp(
+    return MaterialApp(
       title: 'We The People',
       initialRoute: auth.currentUser == null ? 'landing' : '/profile',
       routes: {
