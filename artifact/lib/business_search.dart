@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:forthepeopleartifact/home.dart';
 //import 'package:google_fonts/google_fonts.dart';
 import '../../../login.dart';
 //firebase core plugin
@@ -110,23 +111,6 @@ class _FirstRoute extends State<FirstRoute> {
     list.add(const Padding(
       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
     ));
-    list.add(TextButton(
-        //creates a button that contains a name of a business in it
-        child: Container(
-          color: Colors.blueGrey,
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          child: const Text(
-            "Logout",
-            style: TextStyle(color: Colors.white, fontSize: 15.0),
-          ),
-        ),
-        onPressed: () {
-          //button moves to the business_info page that displays all the details (that code is in business_info.dart)
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => LoginScreen()),
-          );
-        }));
     return await FirebaseFirestore.instance.collection('Businesses').get();
   }
 
@@ -150,6 +134,29 @@ class _FirstRoute extends State<FirstRoute> {
   //This is the value that defaults on the dropdown menu
   String selectedValue = "Filters";
 
+  int _selectedIndex = 3;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    if (index == 0) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => LoginScreen(),
+        ),
+      );
+    } else if (index == 1) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(
+            title: 'Home',
+          ),
+        ),
+      );
+    }
+  }
+
   Scaffold makeFirstScaffold() {
     //this creates the scaffold using the children list mentioned above (separate method to make build() smaller)
     return Scaffold(
@@ -166,6 +173,29 @@ class _FirstRoute extends State<FirstRoute> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: list),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.logout_outlined),
+            label: 'Logout',
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.filter_list), label: "Filters"),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_rounded),
+            label: 'Account',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search All',
+          ),
+        ],
+        selectedItemColor: Colors.blueGrey,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        showUnselectedLabels: true,
+        unselectedItemColor: Colors.black,
       ),
     );
   }
