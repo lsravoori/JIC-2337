@@ -162,8 +162,8 @@ class _FirstRoute extends State<FirstRoute> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => HomeScreen(),
-          ),
-        );
+        ),
+      );
     }
   }
 
@@ -177,7 +177,7 @@ class _FirstRoute extends State<FirstRoute> {
           style: TextStyle(color: Colors.white, fontSize: 20.0),
         ),
         backgroundColor: Colors.blueGrey,
-        //automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Column(

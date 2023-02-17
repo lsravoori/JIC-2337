@@ -129,6 +129,10 @@ class _HomeScreen extends State<HomeScreen> {
         ),
         onPressed: () {
           //button moves to the business_info page that displays all the details (that code is in business_info.dart)
+          for (int i = 0; i < checked.length; i++) {
+            checked[i] = false;
+          }
+          i = 0;
           Navigator.push(
             context,
             MaterialPageRoute(
