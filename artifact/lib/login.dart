@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 //import 'package:google_fonts/google_fonts.dart';
 //import '../../../main.dart';
 import '../../../business_search.dart';
-
+import '../../../RegistrationPage.dart';
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -66,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             TextButton(
               onPressed: () {
-                // Navigate to register screen, WIP
+                _navigateToNextScreen(context);
               },
               child: const Text('Create Account',
                   style: TextStyle(color: Colors.black)),
@@ -87,5 +87,8 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+  void _navigateToNextScreen(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => RegistrationPage()));
   }
 }
