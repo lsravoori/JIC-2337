@@ -1,4 +1,4 @@
-import 'package:artifact/business_search.dart';
+import '../../../business_search.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +11,7 @@ import '../../../firebase_options.dart';
 import '../../../business_info.dart';
 import '../../../business_search.dart';
 import '../../../login.dart';
+import '../../../RegistrationPage.dart';
 
 void main() async {
   //main file that simply starts the application on the login screen
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
       title: 'We The People',
       initialRoute: auth.currentUser == null ? 'landing' : '/profile',
       routes: {
-        'landing': (context) { 
+        'landing': (context) {
           return LoginScreen();
         },
         '/': (context) {
@@ -54,7 +55,7 @@ class MyApp extends StatelessWidget {
             // no providerConfigs property - global configuration will be used instead
             actions: [
               AuthStateChangeAction<SignedIn>((context, state) {
-                Navigator.pushReplacementNamed(context, 'search');
+                Navigator.pushReplacementNamed(context, 'registration');
               }),
             ],
           );
@@ -69,10 +70,9 @@ class MyApp extends StatelessWidget {
             ],
           );
         },
-        'search' : (context) {
-          return SearchRoute();
+        'registration': (context){
+          return RegistrationPage();
+          }
         }
-      },
-    );
-  }
+    );}
 }

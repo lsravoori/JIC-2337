@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:forthepeopleartifact/business_search.dart';
+import '../../../business_search.dart';
 //import 'package:google_fonts/google_fonts.dart';
 import '../../../login.dart';
 //firebase core plugin

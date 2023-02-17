@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:forthepeopleartifact/home.dart';
+import '../../../home.dart';
 //import '../../../firebase_options.dart';
 import '../../../login.dart';
 import '../../../business_search.dart';

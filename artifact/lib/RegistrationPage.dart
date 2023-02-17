@@ -25,27 +25,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Email'),
-                validator: (input) =>
-                    !input!.contains('@') ? 'Invalid email' : null,
-                onSaved: (input) => _email = input!,
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Username'),
-                validator: (input) => input!.length < 6
-                    ? 'Username must be at least 6 characters'
-                    : null,
-                onSaved: (input) => _username = input!,
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                validator: (input) => input!.length < 8
-                    ? 'Password must be at least 8 characters'
-                    : null,
-                onSaved: (input) => _password = input!,
-              ),
               DropdownButtonFormField(
                 decoration: InputDecoration(labelText: 'Gender'),
                 value: _gender,
@@ -85,12 +64,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
               ),
               MaterialButton(
                 onPressed: () {
-                  Navigator.push(
+                  /*Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
                             const FirstRoute(title: 'Business List')),
-                  );
+                  );*/
                   //_submit uncomment when submit implemented
                 },
                 child: Text('Register'),
