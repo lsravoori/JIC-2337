@@ -73,6 +73,7 @@ class _BusinessInfoState extends State<BusinessInfo> {
       appBar: AppBar(
         title: Text(widget.title),
         backgroundColor: Colors.blueGrey,
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it

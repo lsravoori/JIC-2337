@@ -34,6 +34,7 @@ class _HomeScreen extends State<HomeScreen> {
 
   Future<QuerySnapshot> getData() async {
     //getData brings in all of the business from the database based on filters
+    int i = 0;
     list.clear();
     list.add(const Padding(
       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -44,32 +45,100 @@ class _HomeScreen extends State<HomeScreen> {
         .get()
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
-        bool isChecked = false;
-        list.add(CheckboxListTile(
-            value: isChecked,
-            checkColor: Colors.white,
-            title: const Text("Women"),
-            onChanged: (bool? value) {
-              setState(() {
-                isChecked = value!;
-              });
-            }));
-        list.add(CheckboxListTile(
-            value: isChecked,
-            checkColor: Colors.white,
-            title: const Text("POC"),
-            onChanged: (bool? value) {
-              setState(() {
-                isChecked = value!;
-              });
-            }));
+        category[doc["Category"]] =
+            i; //populates the filter hashmap with pulled category/zipcode data from the for loop
+        i++;
+        zipcode[doc["Zipcode"]] = i;
+        i++;
+        checked.add(false);
+        checked.add(false);
+        // list.add(CheckboxListTile(
+        //     value: checked[0],
+        //     checkColor: Colors.white,
+        //     title: Text(doc["Category"]),
+        //     onChanged: (bool? value) {
+        //       setState(() {
+        //         checked[0] = value!;
+        //       });
+        //     }));
+        // String zipcode = "Zipcode: " + doc["Zipcode"];
+        // checked.add(false);
+        // list.add(CheckboxListTile(
+        //     value: checked[1],
+        //     checkColor: Colors.white,
+        //     title: Text(zipcode),
+        //     onChanged: (bool? value) {
+        //       setState(() {
+        //         checked[1] = value!;
+        //       });
+        //     }));
       });
     });
+    category.forEach((key, value) {
+      list.add(
+        CheckboxListTile(
+            value: checked[value],
+            checkColor: Colors.white,
+            title: Text(key),
+            onChanged: (bool? values) {
+              setState(() {
+                checked[value] = values!;
+              });
+            }),
+      );
+    });
+    zipcode.forEach((key, value) {
+      list.add(
+        CheckboxListTile(
+            value: checked[value],
+            checkColor: Colors.white,
+            title: Text("Zipcode: " + key),
+            onChanged: (bool? values) {
+              setState(() {
+                checked[value] = values!;
+              });
+            }),
+      );
+    });
+    // list.add(CheckboxListTile(
+    //         value: checked[1],
+    //         checkColor: Colors.white,
+    //         title: Text(category.),
+    //         onChanged: (bool? value) {
+    //           setState(() {
+    //             checked[1] = value!;
+    //           });
+    //         }));
     list.add(const Padding(
       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
     ));
+    list.add(TextButton(
+        //creates a button that contains a name of a business in it
+        child: Container(
+          color: Colors.blueGrey,
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          child: const Text(
+            "Submit",
+            style: TextStyle(color: Colors.white, fontSize: 15.0),
+          ),
+        ),
+        onPressed: () {
+          //button moves to the business_info page that displays all the details (that code is in business_info.dart)
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const FirstRoute(
+                      title: 'IDK',
+                    )),
+          );
+        }));
     return await FirebaseFirestore.instance.collection('Businesses').get();
   }
+
+  List<bool> checked = <bool>[];
+  Map<String, int> category = {};
+  Map<String, int> zipcode = {};
+  String info = "";
 
   Scaffold makeFirstScaffold() {
     //this creates the scaffold using the children list mentioned above (separate method to make build() smaller)
@@ -81,6 +150,7 @@ class _HomeScreen extends State<HomeScreen> {
           style: TextStyle(color: Colors.white, fontSize: 20.0),
         ),
         backgroundColor: Colors.blueGrey,
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Column(

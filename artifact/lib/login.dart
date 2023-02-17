@@ -22,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
           style: TextStyle(color: Colors.white, fontSize: 20.0),
         ),
         backgroundColor: Colors.blueGrey,
+        automaticallyImplyLeading: false,
       ),
       backgroundColor: Colors.white24,
       body: Form(
