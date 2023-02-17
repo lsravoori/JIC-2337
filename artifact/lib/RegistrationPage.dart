@@ -8,6 +8,8 @@ class RegistrationPage extends StatefulWidget {
   _RegistrationPageState createState() => _RegistrationPageState();
 }
 
+Map<String, int> defaultMap = {};
+
 class _RegistrationPageState extends State<RegistrationPage> {
   final _formKey = GlobalKey<FormState>();
   String? _email, _username, _password, _gender, _ethnicity;
@@ -88,8 +90,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            const FirstRoute(title: 'Business List')),
+                        builder: (context) => FirstRoute(
+                              title: 'Business List',
+                              receivedMap: defaultMap,
+                            )),
                   );
                   //_submit uncomment when submit implemented
                 },
