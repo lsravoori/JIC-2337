@@ -95,10 +95,12 @@ class _BusinessInfoState extends State<BusinessInfo> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("Logo: ${businessInfo!['Logo']}",
-                textAlign: TextAlign.left,
-                style: const TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(20, 10, 2, 2),
+                child: Text("Logo: ${businessInfo!['Logo']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
             const Divider(
               height: 20,
               thickness: 3,
@@ -106,10 +108,12 @@ class _BusinessInfoState extends State<BusinessInfo> {
               endIndent: 0,
               color: Colors.black,
             ),
-            Text("Category: ${businessInfo!['Category']}",
-                textAlign: TextAlign.left,
-                style: const TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
+                child: Text("Category: ${businessInfo!['Category']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
             const Divider(
               height: 20,
               thickness: 3,
@@ -117,10 +121,12 @@ class _BusinessInfoState extends State<BusinessInfo> {
               endIndent: 0,
               color: Colors.black,
             ),
-            Text("Phone Number: ${businessInfo!['Phone Number']}",
-                textAlign: TextAlign.left,
-                style: const TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
+                child: Text("Phone Number: ${businessInfo!['Phone Number']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
             const Divider(
               height: 20,
               thickness: 3,
@@ -128,10 +134,12 @@ class _BusinessInfoState extends State<BusinessInfo> {
               endIndent: 0,
               color: Colors.black,
             ),
-            Text("Hours: ${businessInfo!['Hours']}",
-                textAlign: TextAlign.left,
-                style: const TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
+                child: Text("Hours: ${businessInfo!['Hours']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
             const Divider(
               height: 20,
               thickness: 3,
@@ -139,10 +147,12 @@ class _BusinessInfoState extends State<BusinessInfo> {
               endIndent: 0,
               color: Colors.black,
             ),
-            Text("Address: ${businessInfo!['Address']}",
-                textAlign: TextAlign.left,
-                style: const TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
+                child: Text("Address: ${businessInfo!['Address']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
             const Divider(
               height: 20,
               thickness: 3,
@@ -150,10 +160,12 @@ class _BusinessInfoState extends State<BusinessInfo> {
               endIndent: 0,
               color: Colors.black,
             ),
-            Text("Zipcode: ${businessInfo!['Zipcode']}",
-                textAlign: TextAlign.left,
-                style: const TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
+                child: Text("Zipcode: ${businessInfo!['Zipcode']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
             const Divider(
               height: 20,
               thickness: 3,
@@ -161,10 +173,12 @@ class _BusinessInfoState extends State<BusinessInfo> {
               endIndent: 0,
               color: Colors.black,
             ),
-            Text("Details: ${businessInfo!['Details']}",
-                textAlign: TextAlign.left,
-                style: const TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
+                child: Text("Details: ${businessInfo!['Details']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
             const Divider(
               height: 20,
               thickness: 3,
@@ -172,10 +186,12 @@ class _BusinessInfoState extends State<BusinessInfo> {
               endIndent: 0,
               color: Colors.black,
             ),
-            Text("Website: ${businessInfo!['Website']}",
-                textAlign: TextAlign.left,
-                style: const TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
+                child: Text("Website: ${businessInfo!['Website']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
             const Divider(
               height: 20,
               thickness: 3,
