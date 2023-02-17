@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:forthepeopleartifact/home.dart';
+//import 'package:forthepeopleartifact/home.dart';
 //import 'package:google_fonts/google_fonts.dart';
 import '../../../login.dart';
 //firebase core plugin
 //import 'package:firebase_core/firebase_core.dart';
 //firebase configuration file
 //import '../../../firebase_options.dart';
+import '../../../home.dart';
 import '../../../business_info.dart';
 
 class FirstRoute extends StatefulWidget {
@@ -160,11 +161,9 @@ class _FirstRoute extends State<FirstRoute> {
     } else if (index == 1) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => const HomeScreen(
-            title: 'Home',
+          builder: (context) => HomeScreen(),
           ),
-        ),
-      );
+        );
     }
   }
 

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:forthepeopleartifact/business_search.dart';
+//import 'package:forthepeopleartifact/business_search.dart';
 //import 'package:google_fonts/google_fonts.dart';
 import '../../../login.dart';
 //firebase core plugin
@@ -8,9 +8,10 @@ import '../../../login.dart';
 //firebase configuration file
 //import '../../../firebase_options.dart';
 import '../../../business_info.dart';
+import '../../../business_search.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.title});
+  //const HomeScreen({super.key, required this.title});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -20,8 +21,6 @@ class HomeScreen extends StatefulWidget {
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
-
-  final String title;
 
   @override
   State<HomeScreen> createState() => _HomeScreen();

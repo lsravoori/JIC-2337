@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:forthepeopleartifact/home.dart';
+//import 'package:forthepeopleartifact/home.dart';
 //import '../../../firebase_options.dart';
 import '../../../login.dart';
 import '../../../business_search.dart';
+import '../../../home.dart';
 //import 'package:firebase_core/firebase_core.dart';
 
 class BusinessInfo extends StatefulWidget {
@@ -253,9 +254,7 @@ class _BusinessInfoState extends State<BusinessInfo> {
     } else if (index == 1) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => const HomeScreen(
-            title: 'Home',
-          ),
+          builder: (context) => HomeScreen(),
         ),
       );
     }

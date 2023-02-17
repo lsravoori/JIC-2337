@@ -11,6 +11,7 @@ import '../../../firebase_options.dart';
 import '../../../business_info.dart';
 import '../../../business_search.dart';
 import '../../../login.dart';
+import '../../../home.dart';
 
 void main() async {
   //main file that simply starts the application on the login screen
@@ -70,7 +71,7 @@ class MyApp extends StatelessWidget {
           );
         },
         'search' : (context) {
-          return SearchRoute();
+          return HomeScreen();
         }
       },
     );
