@@ -1,3 +1,4 @@
+import 'package:artifact/BusinessRegistrationPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 //import 'package:google_fonts/google_fonts.dart';
@@ -127,6 +128,17 @@ class _FirstRoute extends State<FirstRoute> {
             MaterialPageRoute(builder: (context) => LoginScreen()),
           );
         }));
+    list.add(
+      TextButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => BusinessRegistrationPage()),
+          );
+        },
+        child: Text('Register Business'),
+      ),
+    );
     return await FirebaseFirestore.instance.collection('Businesses').get();
   }
 
