@@ -73,7 +73,6 @@ class _BusinessInfoState extends State<BusinessInfo> {
       appBar: AppBar(
         title: Text(widget.title),
         backgroundColor: Colors.blueGrey,
-        automaticallyImplyLeading: false,
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -230,6 +229,7 @@ class _BusinessInfoState extends State<BusinessInfo> {
   }
 
   int _selectedIndex = 3;
+  Map<String, int> random = {};
 
   void _onItemTapped(int index) {
     setState(() {
@@ -244,8 +244,9 @@ class _BusinessInfoState extends State<BusinessInfo> {
     } else if (index == 3) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => const FirstRoute(
+          builder: (context) => FirstRoute(
             title: 'Search',
+            receivedMap: random,
           ),
         ),
       );
