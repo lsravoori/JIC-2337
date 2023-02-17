@@ -1,3 +1,4 @@
+import 'package:artifact/business_search.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,8 @@ import 'package:flutterfire_ui/auth.dart';
 //firebase configuration file
 import '../../../firebase_options.dart';
 import '../../../business_info.dart';
+import '../../../business_search.dart';
+import '../../../login.dart';
 
 void main() async {
   //main file that simply starts the application on the login screen
@@ -41,14 +44,17 @@ class MyApp extends StatelessWidget {
 
     return CupertinoApp(
       title: 'We The People',
-      initialRoute: auth.currentUser == null ? '/' : '/profile',
+      initialRoute: auth.currentUser == null ? 'landing' : '/profile',
       routes: {
+        'landing': (context) { 
+          return LoginScreen();
+        },
         '/': (context) {
           return SignInScreen(
             // no providerConfigs property - global configuration will be used instead
             actions: [
               AuthStateChangeAction<SignedIn>((context, state) {
-                Navigator.pushReplacementNamed(context, '/profile');
+                Navigator.pushReplacementNamed(context, 'search');
               }),
             ],
           );
@@ -63,6 +69,9 @@ class MyApp extends StatelessWidget {
             ],
           );
         },
+        'search' : (context) {
+          return SearchRoute();
+        }
       },
     );
   }
