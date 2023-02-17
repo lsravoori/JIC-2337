@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:forthepeopleartifact/home.dart';
 //import '../../../firebase_options.dart';
 import '../../../login.dart';
-import '../../../business_search.dart';
 //import 'package:firebase_core/firebase_core.dart';
 
 class BusinessInfo extends StatefulWidget {
@@ -95,12 +93,10 @@ class _BusinessInfoState extends State<BusinessInfo> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 2, 2),
-                child: Text("Logo: ${businessInfo!['Logo']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            Text("Logo: ${businessInfo!['Logo']}",
+                textAlign: TextAlign.left,
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
             const Divider(
               height: 20,
               thickness: 3,
@@ -108,12 +104,10 @@ class _BusinessInfoState extends State<BusinessInfo> {
               endIndent: 0,
               color: Colors.black,
             ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Category: ${businessInfo!['Category']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            Text("Category: ${businessInfo!['Category']}",
+                textAlign: TextAlign.left,
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
             const Divider(
               height: 20,
               thickness: 3,
@@ -121,12 +115,10 @@ class _BusinessInfoState extends State<BusinessInfo> {
               endIndent: 0,
               color: Colors.black,
             ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Phone Number: ${businessInfo!['Phone Number']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            Text("Phone Number: ${businessInfo!['Phone Number']}",
+                textAlign: TextAlign.left,
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
             const Divider(
               height: 20,
               thickness: 3,
@@ -134,12 +126,10 @@ class _BusinessInfoState extends State<BusinessInfo> {
               endIndent: 0,
               color: Colors.black,
             ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Hours: ${businessInfo!['Hours']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            Text("Hours: ${businessInfo!['Hours']}",
+                textAlign: TextAlign.left,
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
             const Divider(
               height: 20,
               thickness: 3,
@@ -147,12 +137,10 @@ class _BusinessInfoState extends State<BusinessInfo> {
               endIndent: 0,
               color: Colors.black,
             ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Address: ${businessInfo!['Address']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            Text("Address: ${businessInfo!['Address']}",
+                textAlign: TextAlign.left,
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
             const Divider(
               height: 20,
               thickness: 3,
@@ -160,12 +148,10 @@ class _BusinessInfoState extends State<BusinessInfo> {
               endIndent: 0,
               color: Colors.black,
             ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Zipcode: ${businessInfo!['Zipcode']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            Text("Zipcode: ${businessInfo!['Zipcode']}",
+                textAlign: TextAlign.left,
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
             const Divider(
               height: 20,
               thickness: 3,
@@ -173,12 +159,10 @@ class _BusinessInfoState extends State<BusinessInfo> {
               endIndent: 0,
               color: Colors.black,
             ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Details: ${businessInfo!['Details']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            Text("Details: ${businessInfo!['Details']}",
+                textAlign: TextAlign.left,
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
             const Divider(
               height: 20,
               thickness: 3,
@@ -186,12 +170,10 @@ class _BusinessInfoState extends State<BusinessInfo> {
               endIndent: 0,
               color: Colors.black,
             ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Website: ${businessInfo!['Website']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            Text("Website: ${businessInfo!['Website']}",
+                textAlign: TextAlign.left,
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)),
             const Divider(
               height: 20,
               thickness: 3,
@@ -199,66 +181,28 @@ class _BusinessInfoState extends State<BusinessInfo> {
               endIndent: 0,
               color: Colors.black,
             ),
+            TextButton(
+                //creates a button that contains a name of a business in it
+                child: Container(
+                  color: Colors.blueGrey,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  child: const Text(
+                    "Logout",
+                    style: TextStyle(color: Colors.white, fontSize: 15.0),
+                  ),
+                ),
+                onPressed: () {
+                  //button moves to the business_info page that displays all the details (that code is in business_info.dart)
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                  );
+                }),
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.logout_outlined),
-            label: 'Logout',
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.filter_list), label: "Filters"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_rounded),
-            label: 'Account',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search All',
-          ),
-        ],
-        selectedItemColor: Colors.blueGrey,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        showUnselectedLabels: true,
-        unselectedItemColor: Colors.black,
-      ),
     );
-  }
-
-  int _selectedIndex = 3;
-  Map<String, int> random = {};
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    if (index == 0) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => LoginScreen(),
-        ),
-      );
-    } else if (index == 3) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => FirstRoute(
-            title: 'Search',
-            receivedMap: random,
-          ),
-        ),
-      );
-    } else if (index == 1) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const HomeScreen(
-            title: 'Home',
-          ),
-        ),
-      );
-    }
   }
 
   @override
