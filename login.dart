@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:forthepeopleartifact/home.dart';
 //import 'package:google_fonts/google_fonts.dart';
 //import '../../../main.dart';
 import '../../../business_search.dart';
@@ -77,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          const FirstRoute(title: 'Business List')),
+                          const HomeScreen(title: 'Business List')),
                 );
               },
               child: const Text('Continue as guest',
