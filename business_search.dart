@@ -10,7 +10,10 @@ import '../../../login.dart';
 import '../../../business_info.dart';
 
 class FirstRoute extends StatefulWidget {
-  const FirstRoute({super.key, required this.title});
+  FirstRoute({super.key, required this.title, required this.receivedMap});
+  final Map<String, int> receivedMap;
+
+  //FirstRoute({this.receivedMap});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -24,13 +27,17 @@ class FirstRoute extends StatefulWidget {
   final String title;
 
   @override
-  State<FirstRoute> createState() => _FirstRoute();
+  State<FirstRoute> createState() => _FirstRoute(receivedMap);
 }
 
 class _FirstRoute extends State<FirstRoute> {
   //const FirstRoute({super.key});
-  List<Widget> list =
-      []; //this is a list of children for the scaffold that shows up on screen
+
+  List<Widget> list = [];
+
+  _FirstRoute(
+      Map<String, int>
+          recievedMap); //this is a list of children for the scaffold that shows up on screen
 
   Future<QuerySnapshot> getData() async {
     //getData brings in all of the business from the database based on filters
@@ -45,10 +52,14 @@ class _FirstRoute extends State<FirstRoute> {
         .get()
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
-        if (doc["Category"] ==
-                selectedValue || //introduces filters into the businesses pulled with the for loop
-            selectedValue == "Filters" ||
-            doc["Zipcode"] == selectedValue) {
+        // if (doc["Category"] ==
+        //         selectedValue || //introduces filters into the businesses pulled with the for loop
+        //     selectedValue == "Filters" ||
+        //     doc["Zipcode"] == selectedValue ||
+        //     widget.receivedMap.isEmpty) {
+        if (widget.receivedMap.isEmpty ||
+            widget.receivedMap.containsKey(doc["Category"]) ||
+            widget.receivedMap.containsKey(doc["Zipcode"])) {
           i++;
           String name = i.toString() + ". " + doc["Name"];
           list.add(TextButton(
@@ -92,21 +103,21 @@ class _FirstRoute extends State<FirstRoute> {
             color: Colors.black,
           )); //Divider
         }
-        category[doc["Category"]] = doc[
-            "Category"]; //populates the filter hashmap with pulled category/zipcode data from the for loop
-        category[doc["Zipcode"]] = doc["Zipcode"];
+        // category[doc["Category"]] = doc[
+        //     "Category"]; //populates the filter hashmap with pulled category/zipcode data from the for loop
+        // category[doc["Zipcode"]] = doc["Zipcode"];
       });
     });
-    list.add(
-      DropdownButton(
-          value: selectedValue,
-          items: dropdownItems,
-          onChanged: (String? newValue) {
-            setState(() {
-              selectedValue = newValue!;
-            });
-          }),
-    ); //This creates the dropdown button. Right now it is at the bottom of the screen
+    // list.add(
+    //   DropdownButton(
+    //       value: selectedValue,
+    //       items: dropdownItems,
+    //       onChanged: (String? newValue) {
+    //         setState(() {
+    //           selectedValue = newValue!;
+    //         });
+    //       }),
+    // ); //This creates the dropdown button. Right now it is at the bottom of the screen
     //It has a selected value and selecting something else changes the value of the button
     list.add(const Padding(
       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -118,21 +129,21 @@ class _FirstRoute extends State<FirstRoute> {
   Map<String, String> category = {};
 
   //This creates the list of dropdown items by going through all of the values in the hash map
-  List<DropdownMenuItem<String>> get dropdownItems {
-    List<DropdownMenuItem<String>> menuItems = [
-      const DropdownMenuItem(
-          child: Text("Add/Remove Filters"), value: "Filters"),
-    ];
-    category.forEach((key, value) {
-      menuItems.add(
-        DropdownMenuItem(child: Text(key), value: value),
-      );
-    });
-    return menuItems;
-  }
+  // List<DropdownMenuItem<String>> get dropdownItems {
+  //   List<DropdownMenuItem<String>> menuItems = [
+  //     const DropdownMenuItem(
+  //         child: Text("Add/Remove Filters"), value: "Filters"),
+  //   ];
+  //   category.forEach((key, value) {
+  //     menuItems.add(
+  //       DropdownMenuItem(child: Text(key), value: value),
+  //     );
+  //   });
+  //   return menuItems;
+  // }
 
   //This is the value that defaults on the dropdown menu
-  String selectedValue = "Filters";
+  //String selectedValue = "Filters";
 
   int _selectedIndex = 3;
 
@@ -167,7 +178,7 @@ class _FirstRoute extends State<FirstRoute> {
           style: TextStyle(color: Colors.white, fontSize: 20.0),
         ),
         backgroundColor: Colors.blueGrey,
-        automaticallyImplyLeading: false,
+        //automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Column(

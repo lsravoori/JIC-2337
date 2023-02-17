@@ -75,6 +75,9 @@ class _HomeScreen extends State<HomeScreen> {
       });
     });
     category.forEach((key, value) {
+      if (checked[value]) {
+        returnMap[key] = value;
+      }
       list.add(
         CheckboxListTile(
             value: checked[value],
@@ -88,6 +91,9 @@ class _HomeScreen extends State<HomeScreen> {
       );
     });
     zipcode.forEach((key, value) {
+      if (checked[value]) {
+        returnMap[key] = value;
+      }
       list.add(
         CheckboxListTile(
             value: checked[value],
@@ -127,8 +133,9 @@ class _HomeScreen extends State<HomeScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => const FirstRoute(
+                builder: (context) => FirstRoute(
                       title: 'IDK',
+                      receivedMap: returnMap,
                     )),
           );
         }));
@@ -138,6 +145,8 @@ class _HomeScreen extends State<HomeScreen> {
   List<bool> checked = <bool>[];
   Map<String, int> category = {};
   Map<String, int> zipcode = {};
+  Map<String, int> returnMap = {};
+  Map<String, int> defaultMap = {};
   String info = "";
 
   Scaffold makeFirstScaffold() {
@@ -199,8 +208,9 @@ class _HomeScreen extends State<HomeScreen> {
     } else if (index == 3) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => const FirstRoute(
+          builder: (context) => FirstRoute(
             title: 'Search',
+            receivedMap: defaultMap,
           ),
         ),
       );
