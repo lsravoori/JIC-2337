@@ -16,6 +16,7 @@ class _LoginScreenState extends State<LoginScreen> {
           style: TextStyle(color: Colors.white, fontSize: 20.0),
         ),
         backgroundColor: Colors.blueGrey,
+        automaticallyImplyLeading: false,
       ),
       backgroundColor: Colors.white24,
       body: Form(
@@ -24,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
             const Padding(padding: EdgeInsets.fromLTRB(10, 10, 10, 10)),
             ElevatedButton(
               onPressed: () {
-                 Navigator.pushReplacementNamed(context, '/');
+                Navigator.pushReplacementNamed(context, '/');
               },
               child: const Text(
                 'Enter Here',
