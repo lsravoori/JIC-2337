@@ -111,23 +111,6 @@ class _FirstRoute extends State<FirstRoute> {
     list.add(const Padding(
       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
     ));
-    list.add(TextButton(
-        //creates a button that contains a name of a business in it
-        child: Container(
-          color: Colors.blueGrey,
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          child: const Text(
-            "Logout",
-            style: TextStyle(color: Colors.white, fontSize: 15.0),
-          ),
-        ),
-        onPressed: () {
-          //button moves to the business_info page that displays all the details (that code is in business_info.dart)
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => LoginScreen()),
-          );
-        }));
     return await FirebaseFirestore.instance.collection('Businesses').get();
   }
 
