@@ -58,9 +58,16 @@ class _FirstRoute extends State<FirstRoute> {
         //     selectedValue == "Filters" ||
         //     doc["Zipcode"] == selectedValue ||
         //     widget.receivedMap.isEmpty) {
-        if (widget.receivedMap.isEmpty ||
-            widget.receivedMap.containsKey(doc["Category"]) ||
-            widget.receivedMap.containsKey(doc["Zipcode"])) {
+        int j = 0;
+        widget.receivedMap.forEach((key, value) {
+          if (key == doc["Category"] || key == doc["Zipcode"]) {
+            j++;
+          }
+        });
+        if (j == widget.receivedMap.length) {
+          // if (widget.receivedMap.isEmpty ||
+          //     widget.receivedMap.containsKey(doc["Category"]) ||
+          //     widget.receivedMap.containsKey(doc["Zipcode"])) {
           i++;
           String name = i.toString() + ". " + doc["Name"];
           list.add(TextButton(
