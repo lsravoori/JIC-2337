@@ -21,15 +21,23 @@ considered as the code base continues to grow.
 -Login and Logout with User-Authentication
 
 -Account pages for users
+
+-General Search Page
+
+-Business and User Registration Page
+
+-Checking for user-authentication before access
 ### Bug Fixes
--Updated filters
+-Updated filters with filter page
 
--Navigation bar included
+-Navigation bar included (More usable UI)
 
--More usable UI
+-Updated database formating
 
 ### Known Issues
+-Want guest and google login pages
 
+-Filters are formatted poorly
 
 
 ## v0.1.0
