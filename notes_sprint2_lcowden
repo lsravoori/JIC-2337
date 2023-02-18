@@ -1,0 +1,4 @@
+Made it so the logout button deauthenticates the user. Note: The line of code associated with this usually is preceded by the keyword 'await', however
+this is only allowed in async methods, so I had to remove this keyword. This may or may not cause issues.
+
+Added a user account details page, Ivan will implement the back-end logic for some of the associated features.
