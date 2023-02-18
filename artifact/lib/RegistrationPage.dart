@@ -1,3 +1,6 @@
+import 'package:artifact/home.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../../login.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -8,12 +11,11 @@ class RegistrationPage extends StatefulWidget {
   _RegistrationPageState createState() => _RegistrationPageState();
 }
 
-Map<String, int> defaultMap = {};
-
 class _RegistrationPageState extends State<RegistrationPage> {
   final _formKey = GlobalKey<FormState>();
-  String? _email, _username, _password, _gender, _ethnicity;
-
+  String? _name, _gender, _ethnicity;
+  int? _age;
+  bool? _isLGBTQ = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,30 +30,34 @@ class _RegistrationPageState extends State<RegistrationPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               TextFormField(
-                decoration: InputDecoration(labelText: 'Email'),
-                validator: (input) =>
-                    !input!.contains('@') ? 'Invalid email' : null,
-                onSaved: (input) => _email = input!,
+                decoration: InputDecoration(labelText: 'Name'),
+                validator: (input) => input == null ? 'Invalid Name' : null,
+                onChanged: (input) => setState(() => _name = input!),
+                onSaved: (input) => _name = input,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Username'),
-                validator: (input) => input!.length < 6
-                    ? 'Username must be at least 6 characters'
-                    : null,
-                onSaved: (input) => _username = input!,
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                validator: (input) => input!.length < 8
-                    ? 'Password must be at least 8 characters'
-                    : null,
-                onSaved: (input) => _password = input!,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  hintText: 'Enter your age',
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter your age';
+                  }
+                  if (int.tryParse(value) == null) {
+                    return 'Please enter a valid number';
+                  }
+                  return null;
+                },
+                onChanged: (value) => _age = int.parse(value!),
+                onSaved: (value) {
+                  _age = int.parse(value!);
+                },
               ),
               DropdownButtonFormField(
                 decoration: InputDecoration(labelText: 'Gender'),
                 value: _gender,
-                items: ['Woman', 'Man', 'Non-binary', 'Transgender']
+                items: ['Woman', 'Man', 'Non-binary', 'Other']
                     .map((gender) => DropdownMenuItem(
                           child: Text(gender),
                           value: gender,
@@ -85,15 +91,36 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 onChanged: (input) => setState(() => _ethnicity = input!),
                 onSaved: (input) => _ethnicity = input!,
               ),
+              CheckboxListTile(
+                title: Text("LGBTQ+?"),
+                value: _isLGBTQ,
+                onChanged: (newValue) {
+                  setState(() {
+                    _isLGBTQ = newValue!;
+                  });
+                },
+                controlAffinity:
+                    ListTileControlAffinity.leading, //  <-- leading Checkbox
+              ),
               MaterialButton(
                 onPressed: () {
+                  Map<String, Object>? testData = Map<String, Object>();
+                  testData.addAll({
+                    "Name": _name!,
+                    "Age": _age!,
+                    "Gender": _gender!,
+                    "LQBTQ+": _isLGBTQ!,
+                    "Race": _ethnicity!
+                  });
+                  CollectionReference usersRef =
+                      FirebaseFirestore.instance.collection('Accounts');
+                  final auth = FirebaseAuth.instance;
+                  final User? user = auth.currentUser;
+                  final uid = user?.uid;
+                  usersRef.doc(uid).set(testData);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => FirstRoute(
-                              title: 'Business List',
-                              receivedMap: defaultMap,
-                            )),
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
                   );
                   //_submit uncomment when submit implemented
                 },

@@ -1,3 +1,4 @@
+import 'package:artifact/RegistrationPage.dart';
 import 'package:artifact/business_search.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,9 +27,9 @@ void main() async {
     //const AppleProviderConfiguration(),
     //const FacebookProviderConfiguration(clientId: FACEBOOK_CLIENT_ID),
     //const TwitterProviderConfiguration(
-      //apiKey: TWITTER_API_KEY,
-      //apiSecretKey: TWITTER_API_SECRET_KEY,
-      //redirectUri: TWITTER_REDIRECT_URI,
+    //apiKey: TWITTER_API_KEY,
+    //apiSecretKey: TWITTER_API_SECRET_KEY,
+    //redirectUri: TWITTER_REDIRECT_URI,
     //),
   ]);
 
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
       title: 'We The People',
       initialRoute: auth.currentUser == null ? 'landing' : '/profile',
       routes: {
-        'landing': (context) { 
+        'landing': (context) {
           return LoginScreen();
         },
         '/': (context) {
@@ -70,8 +71,26 @@ class MyApp extends StatelessWidget {
             ],
           );
         },
-        'search' : (context) {
-          return HomeScreen();
+        'search': (context) {
+          final User? user = auth.currentUser;
+          final uid = user?.uid;
+          bool exists = false;
+          FirebaseFirestore.instance
+              .collection('Accounts')
+              .doc(uid)
+              .get()
+              .then((DocumentSnapshot documentSnapshot) {
+            if (documentSnapshot.exists) {
+              exists = true;
+            } else {
+              exists = false;
+            }
+          });
+          if (exists) {
+            return HomeScreen();
+          } else {
+            return RegistrationPage();
+          }
         }
       },
     );
