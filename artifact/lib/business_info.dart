@@ -3,9 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 //import 'package:forthepeopleartifact/home.dart';
 //import '../../../firebase_options.dart';
+//import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
+//import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../login.dart';
 import '../../../business_search.dart';
 import '../../../home.dart';
+import '../../../account_page.dart';
 //import 'package:firebase_core/firebase_core.dart';
 
 class BusinessInfo extends StatefulWidget {
@@ -237,9 +241,24 @@ class _BusinessInfoState extends State<BusinessInfo> {
       _selectedIndex = index;
     });
     if (index == 0) {
+      // The line below usually is preceded with the keyword 'await' but this
+      // threw errors due to the method not being an async method.
+      FirebaseAuth.instance.signOut();
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => LoginScreen(),
+        ),
+      );
+    } else if (index == 1) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(),
+        ),
+      );
+    } else if (index == 2) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => AccountPage(),
         ),
       );
     } else if (index == 3) {
@@ -249,12 +268,6 @@ class _BusinessInfoState extends State<BusinessInfo> {
             title: 'Search',
             receivedMap: random,
           ),
-        ),
-      );
-    } else if (index == 1) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(),
         ),
       );
     }

@@ -9,6 +9,8 @@ import '../../../login.dart';
 //import '../../../firebase_options.dart';
 import '../../../business_info.dart';
 import '../../../business_search.dart';
+import '../../../account_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomeScreen extends StatefulWidget {
   //const HomeScreen({super.key, required this.title});
@@ -203,9 +205,18 @@ class _HomeScreen extends State<HomeScreen> {
       _selectedIndex = index;
     });
     if (index == 0) {
+      // The line below usually is preceded with the keyword 'await' but this
+      // threw errors due to the method not being an async method.
+      FirebaseAuth.instance.signOut();
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => LoginScreen(),
+        ),
+      );
+    } else if (index == 0) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => AccountPage(),
         ),
       );
     } else if (index == 3) {

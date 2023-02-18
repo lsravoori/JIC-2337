@@ -9,6 +9,8 @@ import '../../../login.dart';
 //import '../../../firebase_options.dart';
 import '../../../home.dart';
 import '../../../business_info.dart';
+import '../../../account_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class FirstRoute extends StatefulWidget {
   FirstRoute({super.key, required this.title, required this.receivedMap});
@@ -160,6 +162,9 @@ class _FirstRoute extends State<FirstRoute> {
       _selectedIndex = index;
     });
     if (index == 0) {
+      // The line below usually is preceded with the keyword 'await' but this
+      // threw errors due to the method not being an async method.
+      FirebaseAuth.instance.signOut();
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => LoginScreen(),
@@ -169,6 +174,12 @@ class _FirstRoute extends State<FirstRoute> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => HomeScreen(),
+        ),
+      );
+    } else if (index == 2) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => AccountPage(),
         ),
       );
     }
