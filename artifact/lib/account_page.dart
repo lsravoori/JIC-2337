@@ -1,3 +1,4 @@
+import 'package:artifact/BusinessRegistrationPage.dart';
 import 'package:artifact/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -130,7 +131,8 @@ class _AccountPageState extends State<AccountPage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => BusinessRegistrationPage()),
                   );
                   //_submit uncomment when submit implemented
                 },

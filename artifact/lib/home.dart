@@ -213,7 +213,7 @@ class _HomeScreen extends State<HomeScreen> {
           builder: (context) => LoginScreen(),
         ),
       );
-    } else if (index == 0) {
+    } else if (index == 2) {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => AccountPage(),
