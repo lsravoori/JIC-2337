@@ -37,8 +37,9 @@ considered as the code base continues to grow.
 ### Known Issues
 -Want guest and google login pages
 
--Filters are formatted poorly
+-When new businesses are added, filters stop working
 
+-LGBTQ+ filter refreshes every time instead of holding state.
 
 ## v0.1.0
 ### Features
@@ -52,8 +53,6 @@ considered as the code base continues to grow.
 
 ### Known Issues
 -Positoning of drop-down filters
-
--When new businesses are added, filters stop working
 
 -UI (general app theme)
 
