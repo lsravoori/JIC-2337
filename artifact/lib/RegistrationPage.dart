@@ -117,7 +117,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   final auth = FirebaseAuth.instance;
                   final User? user = auth.currentUser;
                   final uid = user?.uid;
-                  usersRef.doc(uid).update(testData);
+                  usersRef.doc(uid).set(testData);
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => HomeScreen()),
