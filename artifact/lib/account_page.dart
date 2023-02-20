@@ -30,6 +30,7 @@ class _AccountPageState extends State<AccountPage> {
           return Scaffold(
             appBar: AppBar(
               title: Text('Account Page'),
+              backgroundColor: Colors.blueGrey,
             ),
             body: Form(
               key: _formKey,
