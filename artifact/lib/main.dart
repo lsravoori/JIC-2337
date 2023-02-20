@@ -33,11 +33,12 @@ void main() async {
     //),
   ]);
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+  bool exists = false;
 
   // This widget is the root of your application.
   @override
@@ -74,25 +75,39 @@ class MyApp extends StatelessWidget {
         'search': (context) {
           final User? user = auth.currentUser;
           final uid = user?.uid;
-          bool exists = false;
-          FirebaseFirestore.instance
-              .collection('Accounts')
-              .doc(uid)
-              .get()
-              .then((DocumentSnapshot documentSnapshot) {
-            if (documentSnapshot.exists) {
-              exists = true;
-            } else {
-              exists = false;
-            }
-          });
-          if (exists) {
-            return HomeScreen();
-          } else {
-            return RegistrationPage();
-          }
+          //bool exists = false;
+          return FutureBuilder(
+            future: testUID(uid),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (exists) {
+                  return HomeScreen();
+                } else {
+                  return RegistrationPage();
+                }
+              } else {
+                return const Scaffold();
+              }
+            },
+          );
         }
       },
     );
+  }
+
+  Future<QuerySnapshot> testUID(uid) async {
+    await FirebaseFirestore.instance
+        .collection('Accounts')
+        .doc(uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        exists = true;
+      } else {
+        exists = false;
+      }
+    });
+    return await FirebaseFirestore.instance.collection('Accounts').get();
+    ;
   }
 }
