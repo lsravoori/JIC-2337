@@ -30,6 +30,8 @@ class _AccountPageState extends State<AccountPage> {
           return Scaffold(
             appBar: AppBar(
               title: Text('Account Page'),
+              backgroundColor: Colors.blueGrey,
+              automaticallyImplyLeading: false,
             ),
             body: Form(
               key: _formKey,
@@ -115,7 +117,38 @@ class _AccountPageState extends State<AccountPage> {
                       controlAffinity: ListTileControlAffinity
                           .leading, //  <-- leading Checkbox
                     ),
-                    MaterialButton(
+                    // MaterialButton(
+                    //   onPressed: () {
+                    //     Map<String, Object>? testData = Map<String, Object>();
+                    //     testData.addAll({
+                    //       "Name": _name!,
+                    //       "Age": _age!,
+                    //       "Gender": _gender!,
+                    //       "LQBTQ+": _isLGBTQ!,
+                    //       "Race": _ethnicity!
+                    //     });
+                    //     CollectionReference usersRef =
+                    //         FirebaseFirestore.instance.collection('Accounts');
+                    //     usersRef.doc(uid).update(testData);
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(builder: (context) => HomeScreen()),
+                    //     );
+                    //     //_submit uncomment when submit implemented
+                    //   },
+                    //   child: Text('Save'),
+                    // ),
+                    TextButton(
+                      //creates a button that contains a name of a business in it
+                      child: Container(
+                        color: Colors.blueGrey,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        child: const Text(
+                          "Save",
+                          style: TextStyle(color: Colors.white, fontSize: 15.0),
+                        ),
+                      ),
                       onPressed: () {
                         Map<String, Object>? testData = Map<String, Object>();
                         testData.addAll({
@@ -134,22 +167,67 @@ class _AccountPageState extends State<AccountPage> {
                         );
                         //_submit uncomment when submit implemented
                       },
-                      child: Text('Save'),
                     ),
-                    MaterialButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => BusinessRegistrationPage()),
-                        );
-                        //_submit uncomment when submit implemented
-                      },
-                      child: Text('Add a Business'),
+                    // MaterialButton(
+                    //   onPressed: () {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //           builder: (context) => BusinessRegistrationPage()),
+                    //     );
+                    //     //_submit uncomment when submit implemented
+                    //   },
+                    //   child: Text('Add a Business'),
+                    // ),
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                     ),
+                    TextButton(
+                        //creates a button that contains a name of a business in it
+                        child: Container(
+                          color: Colors.blueGrey,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 10),
+                          child: const Text(
+                            "Add a Business",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 15.0),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    BusinessRegistrationPage()),
+                          );
+                        })
                   ],
                 ),
               ),
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.logout_outlined),
+                  label: 'Logout',
+                ),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.filter_list), label: "Filters"),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person_rounded),
+                  label: 'Account',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.search),
+                  label: 'Search All',
+                ),
+              ],
+              selectedItemColor: Colors.blueGrey,
+              currentIndex: _selectedIndex,
+              onTap: _onItemTapped,
+              showUnselectedLabels: true,
+              unselectedItemColor: Colors.black,
             ),
           );
         } else {
@@ -157,6 +235,40 @@ class _AccountPageState extends State<AccountPage> {
         }
       },
     );
+  }
+
+  int _selectedIndex = 2;
+  Map<String, int> defaultMap = {};
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    if (index == 0) {
+      // The line below usually is preceded with the keyword 'await' but this
+      // threw errors due to the method not being an async method.
+      FirebaseAuth.instance.signOut();
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => LoginScreen(),
+        ),
+      );
+    } else if (index == 1) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(),
+        ),
+      );
+    } else if (index == 3) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => FirstRoute(
+            title: 'Search',
+            receivedMap: defaultMap,
+          ),
+        ),
+      );
+    }
   }
 
   void initializeInfo() {
