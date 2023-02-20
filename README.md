@@ -41,6 +41,8 @@ considered as the code base continues to grow.
 
 -LGBTQ+ filter refreshes every time instead of holding state.
 
+-Business details page doesn't link to correct document's data for businesses with auto-generated IDs.
+
 ## v0.1.0
 ### Features
 -Filter business by type or location
