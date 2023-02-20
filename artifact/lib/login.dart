@@ -23,15 +23,29 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           children: <Widget>[
             const Padding(padding: EdgeInsets.fromLTRB(10, 10, 10, 10)),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, '/');
-              },
-              child: const Text(
-                'Enter Here',
-                style: TextStyle(fontSize: 15),
-              ),
-            ),
+            // TextButton(
+            //   onPressed: () {
+            //     Navigator.pushReplacementNamed(context, '/');
+            //   },
+            //   child: const Text(
+            //     'Enter Here',
+            //     style: TextStyle(fontSize: 15),
+            //   ),
+            // ),
+            TextButton(
+                //creates a button that contains a name of a business in it
+                child: Container(
+                  color: Colors.blueGrey,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  child: const Text(
+                    "Enter Here",
+                    style: TextStyle(color: Colors.white, fontSize: 15.0),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/');
+                })
           ],
         ),
       ),
