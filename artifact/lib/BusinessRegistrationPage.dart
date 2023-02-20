@@ -37,11 +37,12 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Business Registration'),
+        backgroundColor: Colors.blueGrey,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          //crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             TextFormField(
                 decoration: InputDecoration(labelText: 'Business Name'),
@@ -121,7 +122,15 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
             ),
             SizedBox(height: 16.0),
             ElevatedButton(
-              child: Text('Submit'),
+              child: Container(
+                color: Colors.blueGrey,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                child: const Text(
+                  "Submit",
+                  style: TextStyle(color: Colors.white, fontSize: 15.0),
+                ),
+              ),
               onPressed: () {
                 // TODO: Save the user input to a database or file
                 showDialog(
@@ -132,7 +141,16 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
                       content: Text('Thank you for registering your business.'),
                       actions: <Widget>[
                         TextButton(
-                          child: Text('OK'),
+                          child: Container(
+                            color: Colors.blueGrey,
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 10),
+                            child: const Text(
+                              "OK",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 15.0),
+                            ),
+                          ),
                           onPressed: () async {
                             Map<String, Object>? testData =
                                 Map<String, Object>();
