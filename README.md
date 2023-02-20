@@ -53,6 +53,8 @@ considered as the code base continues to grow.
 ### Known Issues
 -Positoning of drop-down filters
 
+-When new businesses are added, filters stop working
+
 -UI (general app theme)
 
 -Back Button vs Return Button on business information page overlap
