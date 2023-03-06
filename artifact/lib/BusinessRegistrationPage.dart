@@ -157,7 +157,7 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
                             Map<String, int>? reasonsMap = Map<String, int>();
                             reasonsMap.addAll(
                                 {"Reason1": 0, "Reason2": 0, "Reason3": 0});
-                            List<int> _rating = [];
+                            Map<String, int>? _rating = Map<String, int>();
                             testData.addAll({
                               "Business Name": _businessName!,
                               "Street Name": _streetAddress!,
