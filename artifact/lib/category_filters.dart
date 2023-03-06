@@ -1,21 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-//import 'package:forthepeopleartifact/business_search.dart';
-//import 'package:google_fonts/google_fonts.dart';
 import '../../../login.dart';
-//firebase core plugin
-//import 'package:firebase_core/firebase_core.dart';
-//firebase configuration file
-//import '../../../firebase_options.dart';
-import '../../../business_info.dart';
 import '../../../business_search.dart';
-import '../../../home.dart';
 import '../../../account_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class CategoryScreen extends StatefulWidget {
-  CategoryScreen({super.key, required this.receivedMap});
+  const CategoryScreen({super.key, required this.receivedMap});
   final Map<String, int> receivedMap;
+  //the recievedMap is the entries from the previous filter page
+
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -33,9 +26,9 @@ class _CategoryScreen extends State<CategoryScreen> {
   _CategoryScreen(Map<String, int> recievedMap);
 
   List<Widget> list =
-      []; //this is a list of children for the scaffold that shows up on screen
-  List<Widget> list2 = [];
-  List<bool> checked = <bool>[];
+      []; //this is a list of children for the scaffold that shows up on screen (right column)
+  List<Widget> list2 = []; //list of children (left column)
+  List<bool> checked = <bool>[]; //used for checkbox logic
   List<String> cats = [
     "Women",
     "Non-Binary",
@@ -46,9 +39,10 @@ class _CategoryScreen extends State<CategoryScreen> {
     "Pacifc Islander",
     "Native American",
     "Middle Eastern"
-  ];
+  ]; //list of "categories"
 
   createCheckBox() {
+    //creates checkboxes with two seperate columns
     list.clear();
     list2.clear();
     for (int i = 0; i < cats.length; i++) {
@@ -60,7 +54,6 @@ class _CategoryScreen extends State<CategoryScreen> {
                 value: checked[i],
                 checkColor: Colors.white,
                 title: Text(cats[i]),
-                //contentPadding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                 onChanged: (bool? values) {
                   setState(() {
                     checked[i] = values!;
@@ -76,7 +69,6 @@ class _CategoryScreen extends State<CategoryScreen> {
                 value: checked[i],
                 checkColor: Colors.white,
                 title: Text(cats[i]),
-                //contentPadding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                 onChanged: (bool? values) {
                   setState(() {
                     checked[i] = values!;
@@ -87,6 +79,7 @@ class _CategoryScreen extends State<CategoryScreen> {
                 })));
       }
     }
+    //the button below navigates to the business search page
     list2.add(SizedBox(
         width: 150,
         child: TextButton(
@@ -95,11 +88,14 @@ class _CategoryScreen extends State<CategoryScreen> {
               color: Colors.blueGrey,
               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
               child: const Text(
-                "Next",
+                "Submit",
                 style: TextStyle(color: Colors.white, fontSize: 15.0),
               ),
             ),
             onPressed: () {
+              if (widget.receivedMap.isEmpty) {
+                widget.receivedMap["empty"] = 2;
+              }
               //button moves to the business_info page that displays all the details (that code is in business_info.dart)
               Navigator.push(
                 context,
@@ -112,12 +108,13 @@ class _CategoryScreen extends State<CategoryScreen> {
             })));
   }
 
-  Map<String, int> defaultMap = {};
-  Map<String, int> returnMap = {};
+  Map<String, int> defaultMap = {}; //used if viewing all (from nav. bar)
+  Map<String, int> returnMap = {}; //used if want to pass on filter info
 
-  int _selectedIndex = 1;
+  int _selectedIndex = 1; //current page we are on
 
   void _onItemTapped(int index) {
+    //navigation bar logic and which page to go to
     setState(() {
       _selectedIndex = index;
     });
@@ -159,9 +156,9 @@ class _CategoryScreen extends State<CategoryScreen> {
           style: TextStyle(color: Colors.white, fontSize: 20.0),
         ),
         backgroundColor: Colors.blueGrey,
-        //automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
+          //allows scrolling
           child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -176,6 +173,7 @@ class _CategoryScreen extends State<CategoryScreen> {
         ],
       )),
       bottomNavigationBar: BottomNavigationBar(
+        //navigation bar
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.logout_outlined),

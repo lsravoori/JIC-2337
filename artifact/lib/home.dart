@@ -1,21 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-//import 'package:forthepeopleartifact/business_search.dart';
-//import 'package:google_fonts/google_fonts.dart';
 import '../../../login.dart';
-//firebase core plugin
-//import 'package:firebase_core/firebase_core.dart';
-//firebase configuration file
-//import '../../../firebase_options.dart';
-import '../../../business_info.dart';
 import '../../../category_filters.dart';
 import '../../../business_search.dart';
 import '../../../account_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class HomeScreen extends StatefulWidget {
-  //const HomeScreen({super.key, required this.title});
-
+  const HomeScreen({super.key});
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -30,11 +21,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreen extends State<HomeScreen> {
-  //const FirstRoute({super.key});
   List<Widget> list =
       []; //this is a list of children for the scaffold that shows up on screen
-  List<Widget> list2 = [];
-  List<bool> checked = <bool>[];
+  List<Widget> list2 = []; //this is the list for the second column
+  List<bool> checked = <bool>[]; //this is the checkbox values
   List<String> zips = [
     "30341",
     "30340",
@@ -75,21 +65,21 @@ class _HomeScreen extends State<HomeScreen> {
     "30079",
     "30033",
     "30084"
-  ];
+  ]; //this is a list of Atlanta zipcodes
 
   createCheckBox() {
+    //this methods creates the checkboxes and adds them to two seperate lists (one for each column)
     list.clear();
     list2.clear();
     for (int i = 0; i < zips.length; i++) {
       checked.add(false);
-      if (i < zips.length / 2) {
+      if (i <= zips.length / 2) {
         list.add(SizedBox(
             width: 150,
             child: CheckboxListTile(
                 value: checked[i],
                 checkColor: Colors.white,
                 title: Text(zips[i]),
-                //contentPadding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                 onChanged: (bool? values) {
                   setState(() {
                     checked[i] = values!;
@@ -105,7 +95,6 @@ class _HomeScreen extends State<HomeScreen> {
                 value: checked[i],
                 checkColor: Colors.white,
                 title: Text(zips[i]),
-                //contentPadding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                 onChanged: (bool? values) {
                   setState(() {
                     checked[i] = values!;
@@ -116,10 +105,11 @@ class _HomeScreen extends State<HomeScreen> {
                 })));
       }
     }
+    //the button below is used to navigate to the next page
     list.add(SizedBox(
         width: 150,
         child: TextButton(
-            //creates a button that contains a name of a business in it
+            //creates a button that goes to the next filter page
             child: Container(
               color: Colors.blueGrey,
               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -129,7 +119,7 @@ class _HomeScreen extends State<HomeScreen> {
               ),
             ),
             onPressed: () {
-              //button moves to the business_info page that displays all the details (that code is in business_info.dart)
+              //button moves to the category filter page
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -139,18 +129,19 @@ class _HomeScreen extends State<HomeScreen> {
             })));
   }
 
-  Map<String, int> defaultMap = {};
-  Map<String, int> returnMap = {};
+  Map<String, int> defaultMap =
+      {}; //this is used if we want to go to business search without any entries
+  Map<String, int> returnMap =
+      {}; //this is used if we want to go to business search with filters
 
-  int _selectedIndex = 1;
+  int _selectedIndex = 1; //this is the page we are on
 
   void _onItemTapped(int index) {
+    //this is the logic for the bottom navigation bar and which page to flip to
     setState(() {
       _selectedIndex = index;
     });
     if (index == 0) {
-      // The line below usually is preceded with the keyword 'await' but this
-      // threw errors due to the method not being an async method.
       FirebaseAuth.instance.signOut();
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -189,6 +180,7 @@ class _HomeScreen extends State<HomeScreen> {
         automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
+          //this allows us to scroll
           child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -203,6 +195,7 @@ class _HomeScreen extends State<HomeScreen> {
         ],
       )),
       bottomNavigationBar: BottomNavigationBar(
+        //this is the setup for the bottom navigation bar
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.logout_outlined),
