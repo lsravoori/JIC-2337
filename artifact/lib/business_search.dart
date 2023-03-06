@@ -45,6 +45,7 @@ class _FirstRoute extends State<FirstRoute> {
   Future<QuerySnapshot> getData() async {
     //getData brings in all of the business from the database based on filters
     int i = 0;
+    int j = 0;
     list.clear();
     list.add(const Padding(
       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -105,6 +106,35 @@ class _FirstRoute extends State<FirstRoute> {
             endIndent: 0,
             color: Colors.black,
           )); //Divider
+        } else if (i == 0 && j == 0) {
+          list.add(const Text("No Businesses with those filters available!",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 25.0,
+              )));
+          j++;
+          list.add(const Padding(padding: EdgeInsets.fromLTRB(20, 10, 20, 20)));
+          list.add(TextButton(
+              child: Container(
+                color: Colors.blueGrey,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                child: const Text(
+                  "Back to Filters",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15.0,
+                  ),
+                ),
+              ),
+              onPressed: () {
+                //button moves to the business_info page that displays all the details (that code is in business_info.dart)
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomeScreen(),
+                    ));
+              }));
         }
         // category[doc["Category"]] = doc[
         //     "Category"]; //populates the filter hashmap with pulled category/zipcode data from the for loop

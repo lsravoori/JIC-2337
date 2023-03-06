@@ -8,6 +8,7 @@ import '../../../login.dart';
 //firebase configuration file
 //import '../../../firebase_options.dart';
 import '../../../business_info.dart';
+import '../../../category_filters.dart';
 import '../../../business_search.dart';
 import '../../../account_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -123,7 +124,7 @@ class _HomeScreen extends State<HomeScreen> {
               color: Colors.blueGrey,
               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
               child: const Text(
-                "Submit",
+                "Next",
                 style: TextStyle(color: Colors.white, fontSize: 15.0),
               ),
             ),
@@ -132,10 +133,8 @@ class _HomeScreen extends State<HomeScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => FirstRoute(
-                          title: 'IDK',
-                          receivedMap: returnMap,
-                        )),
+                    builder: (context) =>
+                        CategoryScreen(receivedMap: returnMap)),
               );
             })));
   }
