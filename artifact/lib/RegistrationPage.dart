@@ -112,7 +112,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     "Gender": _gender!,
                     "LQBTQ+": _isLGBTQ!,
                     "Race": _ethnicity!,
-                    "Account Type": 0,
+                    "isAdmin": false,
                     "BusinessIDs": ""
                   });
                   CollectionReference usersRef =
