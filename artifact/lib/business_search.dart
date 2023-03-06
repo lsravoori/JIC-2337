@@ -58,8 +58,9 @@ class _FirstRoute extends State<FirstRoute> {
             widget.receivedMap.containsKey(doc["Zipcode"])) {
           //filters based on incoming map
           i++;
-          String name =
-              i.toString() + ". " + doc["Name"]; //logic for numbering business
+          String name = i.toString() +
+              ". " +
+              doc["Business Name"]; //logic for numbering business
           list.add(TextButton(
               //creates a button that contains a name of a business in it
               child: Container(
@@ -79,7 +80,7 @@ class _FirstRoute extends State<FirstRoute> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => BusinessInfo(
-                            title: doc["Name"],
+                            title: doc.id,
                             number: _selectedIndex,
                           )),
                 );
@@ -87,7 +88,7 @@ class _FirstRoute extends State<FirstRoute> {
           String hours = "Hours: " + doc["Hours"];
           list.add(Padding(
               padding: const EdgeInsets.fromLTRB(15, 0, 2, 2),
-              child: Text(doc["Details"]))); //prints details
+              child: Text(doc["Business Details"]))); //prints details
           list.add(Padding(
               padding: const EdgeInsets.fromLTRB(15, 2, 2, 2),
               child: Text(hours))); //prints hours

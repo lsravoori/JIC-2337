@@ -111,7 +111,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     "Age": _age!,
                     "Gender": _gender!,
                     "LQBTQ+": _isLGBTQ!,
-                    "Race": _ethnicity!
+                    "Race": _ethnicity!,
+                    "Account Type": 0,
+                    "BusinessIDs": ""
                   });
                   CollectionReference usersRef =
                       FirebaseFirestore.instance.collection('Accounts');
