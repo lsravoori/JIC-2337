@@ -73,7 +73,7 @@ class _CategoryScreen extends State<CategoryScreen> {
                   setState(() {
                     checked[i] = values!;
                     if (values = true) {
-                      returnMap[cats[i]] = i;
+                      widget.receivedMap[cats[i]] = i;
                     }
                   });
                 })));
