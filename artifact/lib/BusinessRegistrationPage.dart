@@ -154,22 +154,29 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
                           onPressed: () async {
                             Map<String, Object>? testData =
                                 Map<String, Object>();
+                            Map<String, int>? reasonsMap = Map<String, int>();
+                            reasonsMap.addAll(
+                                {"Reason1": 0, "Reason2": 0, "Reason3": 0});
                             testData.addAll({
-                              "Name": _businessName!,
-                              "Street": _streetAddress!,
+                              "Business Name": _businessName!,
+                              "Street Name": _streetAddress!,
                               "State": _state!,
                               "Hours": _hours!,
                               "Category": _category!,
-                              "Details":
+                              "Business Details":
                                   _description!, //had to change attribute from Description to Details so show all screen didnt break
                               "Owner's Name": _ownerName!,
-                              "Race": _ethnicity!,
-                              "Gender": _gender!,
+                              "Owner's Race": _ethnicity!,
+                              "Owner's Gender": _gender!,
                               "Phone Number": _phoneNumber!,
                               "Website": _website!,
                               "Logo": _logo!,
-                              "LGBTQ": _isLGBTQ!,
-                              "Zipcode": _zipcode!
+                              "Owner's LGBTQ+": _isLGBTQ!,
+                              "Zipcode": _zipcode!,
+                              "Ratings": "",
+                              "Verified": false,
+                              "Flag Count": 0,
+                              "Flag Reasons": reasonsMap
                             });
                             CollectionReference busRef = FirebaseFirestore
                                 .instance
@@ -193,7 +200,7 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
                                 .instance
                                 .collection('Accounts');
                             userRef.doc(uid).update(
-                                {"BusinessID": FieldValue.arrayUnion(doc_id)});
+                                {"BusinessIDs": FieldValue.arrayUnion(doc_id)});
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

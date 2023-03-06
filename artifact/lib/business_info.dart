@@ -23,8 +23,8 @@ class BusinessInfo extends StatefulWidget {
 
 class _BusinessInfoState extends State<BusinessInfo> {
   var business = ""; //name of the business
-  Map<String, String>? businessInfo =
-      Map<String, String>(); //hashmap of the business details
+  Map<String, Object>? businessInfo =
+      Map<String, Object>(); //hashmap of the business details
   List<Widget> infoList =
       []; //unused for now, but will be used for creation of the scaffold
   int number = 3;
@@ -39,7 +39,7 @@ class _BusinessInfoState extends State<BusinessInfo> {
   Future<QuerySnapshot> getInformation(business) async {
     _selectedIndex = number;
     //gets information of the businesses (by name) and puts into a hashmap
-    var retVal = Map<String, String>(); //temp hashmap for collection
+    var retVal = Map<String, Object>(); //temp hashmap for collection
 
     // gets a document from the collection if it exists and retrieves its info
     CollectionReference businesses =
@@ -153,7 +153,7 @@ class _BusinessInfoState extends State<BusinessInfo> {
             ),
             Padding(
                 padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Address: ${businessInfo!['Address']}",
+                child: Text("Address: ${businessInfo!['Street Name']}",
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
@@ -179,7 +179,7 @@ class _BusinessInfoState extends State<BusinessInfo> {
             ),
             Padding(
                 padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Details: ${businessInfo!['Details']}",
+                child: Text("Details: ${businessInfo!['Business Details']}",
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
