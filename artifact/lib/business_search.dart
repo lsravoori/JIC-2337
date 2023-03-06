@@ -78,7 +78,10 @@ class _FirstRoute extends State<FirstRoute> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => BusinessInfo(title: doc["Name"])),
+                      builder: (context) => BusinessInfo(
+                            title: doc["Name"],
+                            number: _selectedIndex,
+                          )),
                 );
               }));
           String hours = "Hours: " + doc["Hours"];
@@ -140,6 +143,7 @@ class _FirstRoute extends State<FirstRoute> {
 
   //This is a hash map that will store all of the categories that are found in the businesses (maybe hardcode for future)
   Map<String, String> category = {};
+  Map<String, int> defaultMap = {}; //used if viewing all (from nav. bar)
   int _selectedIndex = 3;
 
   void _onItemTapped(int index) {
@@ -166,6 +170,15 @@ class _FirstRoute extends State<FirstRoute> {
           builder: (context) => AccountPage(),
         ),
       );
+    } else if (index == 3) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => FirstRoute(
+            title: 'Search',
+            receivedMap: defaultMap,
+          ),
+        ),
+      );
     }
   }
 
@@ -181,7 +194,7 @@ class _FirstRoute extends State<FirstRoute> {
         backgroundColor: Colors.blueGrey,
         automaticallyImplyLeading: false,
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
