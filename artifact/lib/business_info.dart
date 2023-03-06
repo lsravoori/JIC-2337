@@ -1,28 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
-//import 'package:forthepeopleartifact/home.dart';
-//import '../../../firebase_options.dart';
-//import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
-//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../../login.dart';
 import '../../../business_search.dart';
 import '../../../home.dart';
 import '../../../account_page.dart';
-//import 'package:firebase_core/firebase_core.dart';
 
 class BusinessInfo extends StatefulWidget {
   const BusinessInfo({
     super.key,
     required this.title,
+    required this.number,
   });
 
   final String title;
+  final int number; //number is used for selected index logic for nav bar
 
   // Below, _BusinessInfoState passes in the string "title" which is the business name
   @override
-  State<BusinessInfo> createState() => _BusinessInfoState(title);
+  State<BusinessInfo> createState() => _BusinessInfoState(title, number);
 }
 
 class _BusinessInfoState extends State<BusinessInfo> {
@@ -31,14 +27,17 @@ class _BusinessInfoState extends State<BusinessInfo> {
       Map<String, String>(); //hashmap of the business details
   List<Widget> infoList =
       []; //unused for now, but will be used for creation of the scaffold
+  int number = 3;
 
-  _BusinessInfoState(String business) {
+  _BusinessInfoState(String business, int number) {
     this.business = business;
     getInformation(business);
+    this.number = number;
     //this.infoList = createInfoWidgets(businessInfo); //unused for now, will probably delete/repurpose
   }
 
   Future<QuerySnapshot> getInformation(business) async {
+    _selectedIndex = number;
     //gets information of the businesses (by name) and puts into a hashmap
     var retVal = Map<String, String>(); //temp hashmap for collection
 

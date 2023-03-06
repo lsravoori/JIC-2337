@@ -1,20 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-//import 'package:forthepeopleartifact/business_search.dart';
-//import 'package:google_fonts/google_fonts.dart';
 import '../../../login.dart';
-//firebase core plugin
-//import 'package:firebase_core/firebase_core.dart';
-//firebase configuration file
-//import '../../../firebase_options.dart';
-import '../../../business_info.dart';
+import '../../../category_filters.dart';
 import '../../../business_search.dart';
 import '../../../account_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class HomeScreen extends StatefulWidget {
-  //const HomeScreen({super.key, required this.title});
-
+  const HomeScreen({super.key});
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -29,150 +21,181 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreen extends State<HomeScreen> {
-  //const FirstRoute({super.key});
   List<Widget> list =
       []; //this is a list of children for the scaffold that shows up on screen
+  List<Widget> list2 = []; //this is the list for the second column
+  List<bool> checked = <bool>[]; //this is the checkbox values
+  List<String> zips = [
+    "30341",
+    "30340",
+    "30345",
+    "30319",
+    "30329",
+    "30342",
+    "30326",
+    "30324",
+    "30327",
+    "30305",
+    "30309",
+    "30318",
+    "30339",
+    "30332",
+    "30080",
+    "30363",
+    "30313",
+    "30314",
+    "30310",
+    "30303",
+    "30308",
+    "30311",
+    "30310",
+    "30312",
+    "30334",
+    "30315",
+    "30337",
+    "30354",
+    "30315",
+    "30316",
+    "30306",
+    "30307",
+    "30317",
+    "30032",
+    "30030",
+    "30002",
+    "30079",
+    "30033",
+    "30084"
+  ]; //this is a list of Atlanta zipcodes
 
-  Future<QuerySnapshot> getData() async {
-    //getData brings in all of the business from the database based on filters
-    int i = 0;
+  createCheckBox() {
+    //this methods creates the checkboxes and adds them to two seperate lists (one for each column)
     list.clear();
-    list.add(const Padding(
-      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-    ));
-    await FirebaseFirestore
-        .instance //this whole section pulls business names in with a for each loop
-        .collection('Businesses')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        category[doc["Category"]] =
-            i; //populates the filter hashmap with pulled category/zipcode data from the for loop
-        i++;
-        zipcode[doc["Zipcode"]] = i;
-        i++;
-        checked.add(false);
-        checked.add(false);
-        // list.add(CheckboxListTile(
-        //     value: checked[0],
-        //     checkColor: Colors.white,
-        //     title: Text(doc["Category"]),
-        //     onChanged: (bool? value) {
-        //       setState(() {
-        //         checked[0] = value!;
-        //       });
-        //     }));
-        // String zipcode = "Zipcode: " + doc["Zipcode"];
-        // checked.add(false);
-        // list.add(CheckboxListTile(
-        //     value: checked[1],
-        //     checkColor: Colors.white,
-        //     title: Text(zipcode),
-        //     onChanged: (bool? value) {
-        //       setState(() {
-        //         checked[1] = value!;
-        //       });
-        //     }));
-      });
-    });
-    category.forEach((key, value) {
-      if (checked[value]) {
-        returnMap[key] = value;
+    list2.clear();
+    for (int i = 0; i < zips.length; i++) {
+      checked.add(false);
+      if (i <= zips.length / 2) {
+        list.add(SizedBox(
+            width: 150,
+            child: CheckboxListTile(
+                value: checked[i],
+                checkColor: Colors.white,
+                title: Text(zips[i]),
+                onChanged: (bool? values) {
+                  setState(() {
+                    checked[i] = values!;
+                    if (values = true) {
+                      returnMap[zips[i]] = i;
+                    }
+                  });
+                })));
+      } else {
+        list2.add(SizedBox(
+            width: 150,
+            child: CheckboxListTile(
+                value: checked[i],
+                checkColor: Colors.white,
+                title: Text(zips[i]),
+                onChanged: (bool? values) {
+                  setState(() {
+                    checked[i] = values!;
+                    if (values = true) {
+                      returnMap[zips[i]] = i;
+                    }
+                  });
+                })));
       }
-      list.add(
-        CheckboxListTile(
-            value: checked[value],
-            checkColor: Colors.white,
-            title: Text(key),
-            onChanged: (bool? values) {
-              setState(() {
-                checked[value] = values!;
-              });
-            }),
-      );
-    });
-    zipcode.forEach((key, value) {
-      if (checked[value]) {
-        returnMap[key] = value;
-      }
-      list.add(
-        CheckboxListTile(
-            value: checked[value],
-            checkColor: Colors.white,
-            title: Text("Zipcode: " + key),
-            onChanged: (bool? values) {
-              setState(() {
-                checked[value] = values!;
-              });
-            }),
-      );
-    });
-    // list.add(CheckboxListTile(
-    //         value: checked[1],
-    //         checkColor: Colors.white,
-    //         title: Text(category.),
-    //         onChanged: (bool? value) {
-    //           setState(() {
-    //             checked[1] = value!;
-    //           });
-    //         }));
-    list.add(const Padding(
-      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-    ));
-    list.add(TextButton(
-        //creates a button that contains a name of a business in it
-        child: Container(
-          color: Colors.blueGrey,
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          child: const Text(
-            "Submit",
-            style: TextStyle(color: Colors.white, fontSize: 15.0),
-          ),
-        ),
-        onPressed: () {
-          //button moves to the business_info page that displays all the details (that code is in business_info.dart)
-          for (int i = 0; i < checked.length; i++) {
-            checked[i] = false;
-          }
-          i = 0;
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => FirstRoute(
-                      title: 'IDK',
-                      receivedMap: returnMap,
-                    )),
-          );
-        }));
-    return await FirebaseFirestore.instance.collection('Businesses').get();
+    }
+    //the button below is used to navigate to the next page
+    list.add(SizedBox(
+        width: 150,
+        child: TextButton(
+            //creates a button that goes to the next filter page
+            child: Container(
+              color: Colors.blueGrey,
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+              child: const Text(
+                "Next",
+                style: TextStyle(color: Colors.white, fontSize: 15.0),
+              ),
+            ),
+            onPressed: () {
+              //button moves to the category filter page
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        CategoryScreen(receivedMap: returnMap)),
+              );
+            })));
   }
 
-  List<bool> checked = <bool>[];
-  Map<String, int> category = {};
-  Map<String, int> zipcode = {};
-  Map<String, int> returnMap = {};
-  Map<String, int> defaultMap = {};
-  String info = "";
+  Map<String, int> defaultMap =
+      {}; //this is used if we want to go to business search without any entries
+  Map<String, int> returnMap =
+      {}; //this is used if we want to go to business search with filters
+
+  int _selectedIndex = 1; //this is the page we are on
+
+  void _onItemTapped(int index) {
+    //this is the logic for the bottom navigation bar and which page to flip to
+    setState(() {
+      _selectedIndex = index;
+    });
+    if (index == 0) {
+      FirebaseAuth.instance.signOut();
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => LoginScreen(),
+        ),
+      );
+    } else if (index == 2) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => AccountPage(),
+        ),
+      );
+    } else if (index == 3) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => FirstRoute(
+            title: 'Search',
+            receivedMap: defaultMap,
+          ),
+        ),
+      );
+    }
+  }
 
   Scaffold makeFirstScaffold() {
+    createCheckBox();
     //this creates the scaffold using the children list mentioned above (separate method to make build() smaller)
     return Scaffold(
       backgroundColor: Colors.white24,
       appBar: AppBar(
         title: const Text(
-          'For The People: Home',
+          'For The People: Possible ZipCodes',
           style: TextStyle(color: Colors.white, fontSize: 20.0),
         ),
         backgroundColor: Colors.blueGrey,
         automaticallyImplyLeading: false,
       ),
-      body: Center(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: list),
-      ),
+      body: SingleChildScrollView(
+          //this allows us to scroll
+          child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: list),
+          Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: list2),
+        ],
+      )),
       bottomNavigationBar: BottomNavigationBar(
+        //this is the setup for the bottom navigation bar
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.logout_outlined),
@@ -198,51 +221,15 @@ class _HomeScreen extends State<HomeScreen> {
     );
   }
 
-  int _selectedIndex = 1;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    if (index == 0) {
-      // The line below usually is preceded with the keyword 'await' but this
-      // threw errors due to the method not being an async method.
-      FirebaseAuth.instance.signOut();
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => LoginScreen(),
-        ),
-      );
-    } else if (index == 2) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => AccountPage(),
-        ),
-      );
-    } else if (index == 3) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => FirstRoute(
-            title: 'Search',
-            receivedMap: defaultMap,
-          ),
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     //builds the UI screen for the button page
-    return FutureBuilder(
-      future: getData(),
-      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
+    return Scaffold(
+      body: Builder(
+        builder: (BuildContext context) {
           return makeFirstScaffold();
-        } else {
-          return const Scaffold();
-        }
-      },
+        },
+      ),
     );
   }
 }
