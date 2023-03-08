@@ -72,12 +72,30 @@ class _BusinessInfoState extends State<BusinessInfo> {
 
   Scaffold makeSecondScaffold() {
     //makes the scaffold for the business_info page
-    return Scaffold(
-      backgroundColor: Colors.white24,
-      appBar: AppBar(
+    AppBar appBarInfo;
+    if (businessInfo?["Verified"] == true) {
+      appBarInfo = AppBar(
+        title: Row(
+          children: <Widget>[
+            Text(widget.title),
+            Image.asset(
+              'assets/images/verified_icon.png',
+              height: 25,
+              width: 25,
+            )
+          ]
+        ),
+        backgroundColor: Colors.blueGrey,
+      );
+    } else {
+      appBarInfo = AppBar(
         title: Text(widget.title),
         backgroundColor: Colors.blueGrey,
-      ),
+      );
+    }
+    return Scaffold(
+      backgroundColor: Colors.white24,
+      appBar: appBarInfo,
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
