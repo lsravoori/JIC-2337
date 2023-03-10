@@ -75,21 +75,28 @@ class _BusinessInfoState extends State<BusinessInfo> {
     AppBar appBarInfo;
     if (businessInfo?["Verified"] == true) {
       appBarInfo = AppBar(
-        title: Row(
-          children: <Widget>[
-            Text(widget.title),
-            Image.asset(
-              'assets/images/verified_icon.png',
-              height: 25,
-              width: 25,
-            )
-          ]
-        ),
+        title: Row(children: <Widget>[
+          Text("${businessInfo!['Business Name']}"),
+          Image.asset(
+            'assets/images/verified_icon.png',
+            height: 25,
+            width: 25,
+          )
+        ]),
+        backgroundColor: Colors.blueGrey,
+      );
+    }
+    if (businessInfo?["Flag Count"] != 0) {
+      appBarInfo = AppBar(
+        title: Row(children: <Widget>[
+          Text("${businessInfo!['Business Name']}"),
+          const Icon(Icons.flag),
+        ]),
         backgroundColor: Colors.blueGrey,
       );
     } else {
       appBarInfo = AppBar(
-        title: Text(widget.title),
+        title: Text("${businessInfo!['Business Name']}"),
         backgroundColor: Colors.blueGrey,
       );
     }
@@ -221,6 +228,78 @@ class _BusinessInfoState extends State<BusinessInfo> {
               endIndent: 0,
               color: Colors.black,
             ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(20, 0, 2, 2),
+                child: Text("See something off?",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 15))),
+            TextButton(
+              //creates a button that goes to the next filter page
+              child: Container(
+                color: Colors.red,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                child: const Text(
+                  "FLAG",
+                  style: TextStyle(color: Colors.white, fontSize: 10.0),
+                ),
+              ),
+              onPressed: () => showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: const Text('Submit Flag for Business'),
+                  content: const Text('Why are you flagging this business?'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () async {
+                        CollectionReference busRef =
+                            FirebaseFirestore.instance.collection('Businesses');
+                        busRef
+                            .doc(business)
+                            .update({"Flag Count": FieldValue.increment(1)});
+                        busRef.doc(business).update({
+                          "Flag Reasons.Inaccurate": FieldValue.increment(1)
+                        });
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Information Inaccurate'),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        CollectionReference busRef =
+                            FirebaseFirestore.instance.collection('Businesses');
+                        busRef
+                            .doc(business)
+                            .update({"Flag Count": FieldValue.increment(1)});
+                        busRef.doc(business).update({
+                          "Flag Reasons.Inappropriate": FieldValue.increment(1)
+                        });
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Information Inappropriate'),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        CollectionReference busRef =
+                            FirebaseFirestore.instance.collection('Businesses');
+                        busRef
+                            .doc(business)
+                            .update({"Flag Count": FieldValue.increment(1)});
+                        busRef.doc(business).update(
+                            {"Flag Reasons.Other": FieldValue.increment(1)});
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Other'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Cancel'),
+                      child: const Text('Cancel'),
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),

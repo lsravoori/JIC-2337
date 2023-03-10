@@ -155,8 +155,11 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
                             Map<String, Object>? testData =
                                 Map<String, Object>();
                             Map<String, int>? reasonsMap = Map<String, int>();
-                            reasonsMap.addAll(
-                                {"Reason1": 0, "Reason2": 0, "Reason3": 0});
+                            reasonsMap.addAll({
+                              "Inaccurate": 0,
+                              "Inappropriate": 0,
+                              "Other": 0
+                            });
                             Map<String, int>? _rating = Map<String, int>();
                             testData.addAll({
                               "Business Name": _businessName!,
