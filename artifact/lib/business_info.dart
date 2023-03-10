@@ -258,6 +258,9 @@ class _BusinessInfoState extends State<BusinessInfo> {
                         busRef
                             .doc(business)
                             .update({"Flag Count": FieldValue.increment(1)});
+                        busRef.doc(business).update({
+                          "Flag Reasons.Inaccurate": FieldValue.increment(1)
+                        });
                         Navigator.pop(context);
                       },
                       child: const Text('Information Inaccurate'),
@@ -269,6 +272,9 @@ class _BusinessInfoState extends State<BusinessInfo> {
                         busRef
                             .doc(business)
                             .update({"Flag Count": FieldValue.increment(1)});
+                        busRef.doc(business).update({
+                          "Flag Reasons.Inappropriate": FieldValue.increment(1)
+                        });
                         Navigator.pop(context);
                       },
                       child: const Text('Information Inappropriate'),
@@ -280,6 +286,8 @@ class _BusinessInfoState extends State<BusinessInfo> {
                         busRef
                             .doc(business)
                             .update({"Flag Count": FieldValue.increment(1)});
+                        busRef.doc(business).update(
+                            {"Flag Reasons.Other": FieldValue.increment(1)});
                         Navigator.pop(context);
                       },
                       child: const Text('Other'),

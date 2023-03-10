@@ -67,7 +67,7 @@ class _FirstRoute extends State<FirstRoute> {
               child: Row(children: <Widget>[
                 Container(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
                   child: Text(
                     name,
                     style: const TextStyle(
@@ -88,7 +88,7 @@ class _FirstRoute extends State<FirstRoute> {
               child: Row(children: <Widget>[
                 Container(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
                   child: Text(
                     name,
                     style: const TextStyle(
