@@ -64,56 +64,68 @@ class _FirstRoute extends State<FirstRoute> {
           Container businessContainer;
           if (doc["Verified"]) {
             businessContainer = Container(
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    padding:
+              child: Row(children: <Widget>[
+                Container(
+                  padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    child: Text(
-                      name,
-                      style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 25.0,
-                      decoration: TextDecoration.underline),
-                    ),
+                  child: Text(
+                    name,
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 25.0,
+                        decoration: TextDecoration.underline),
                   ),
-                  Image.asset(
-                    'assets/images/verified_icon.png',
-                    height: 25,
-                    width: 25,
-                  )
-                ]
-              ),
+                ),
+                Image.asset(
+                  'assets/images/verified_icon.png',
+                  height: 25,
+                  width: 25,
+                )
+              ]),
+            );
+          } else if (doc["Flag Count"] > 0) {
+            businessContainer = Container(
+              child: Row(children: <Widget>[
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  child: Text(
+                    name,
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 25.0,
+                        decoration: TextDecoration.underline),
+                  ),
+                ),
+                const Icon(Icons.flag),
+              ]),
             );
           } else {
             businessContainer = Container(
               child: Text(
                 name,
                 style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 25.0,
-                  decoration: TextDecoration.underline
-                ),
+                    color: Colors.black,
+                    fontSize: 25.0,
+                    decoration: TextDecoration.underline),
               ),
             );
           }
           list.add(TextButton(
-            //creates a button that contains a name of a business in it
-            child: businessContainer,
-            onPressed: () {
-              //button moves to the business_info page that displays all the details (that code is in business_info.dart)
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => BusinessInfo(
-                    title: doc.id,
-                    number: _selectedIndex,
-                  )
-                ),
-              );
-            }
-          ));
-          
+              //creates a button that contains a name of a business in it
+              child: businessContainer,
+              onPressed: () {
+                //button moves to the business_info page that displays all the details (that code is in business_info.dart)
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => BusinessInfo(
+                            title: doc.id,
+                            number: _selectedIndex,
+                          )),
+                );
+              }));
+
           String hours = "Hours: " + doc["Hours"];
           list.add(Padding(
               padding: const EdgeInsets.fromLTRB(15, 0, 2, 2),

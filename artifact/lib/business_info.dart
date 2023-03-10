@@ -76,7 +76,7 @@ class _BusinessInfoState extends State<BusinessInfo> {
     if (businessInfo?["Verified"] == true) {
       appBarInfo = AppBar(
         title: Row(children: <Widget>[
-          Text(widget.title),
+          Text("${businessInfo!['Business Name']}"),
           Image.asset(
             'assets/images/verified_icon.png',
             height: 25,
@@ -85,9 +85,18 @@ class _BusinessInfoState extends State<BusinessInfo> {
         ]),
         backgroundColor: Colors.blueGrey,
       );
+    }
+    if (businessInfo?["Flag Count"] != 0) {
+      appBarInfo = AppBar(
+        title: Row(children: <Widget>[
+          Text("${businessInfo!['Business Name']}"),
+          const Icon(Icons.flag),
+        ]),
+        backgroundColor: Colors.blueGrey,
+      );
     } else {
       appBarInfo = AppBar(
-        title: Text(widget.title),
+        title: Text("${businessInfo!['Business Name']}"),
         backgroundColor: Colors.blueGrey,
       );
     }
@@ -224,7 +233,7 @@ class _BusinessInfoState extends State<BusinessInfo> {
                 child: Text("See something off?",
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 15))),
             TextButton(
               //creates a button that goes to the next filter page
               child: Container(
@@ -243,15 +252,36 @@ class _BusinessInfoState extends State<BusinessInfo> {
                   content: const Text('Why are you flagging this business?'),
                   actions: <Widget>[
                     TextButton(
-                      onPressed: () => Navigator.pop(context, 'Inaccurate'),
+                      onPressed: () async {
+                        CollectionReference busRef =
+                            FirebaseFirestore.instance.collection('Businesses');
+                        busRef
+                            .doc(business)
+                            .update({"Flag Count": FieldValue.increment(1)});
+                        Navigator.pop(context);
+                      },
                       child: const Text('Information Inaccurate'),
                     ),
                     TextButton(
-                      onPressed: () => Navigator.pop(context, 'Inappropriate'),
+                      onPressed: () async {
+                        CollectionReference busRef =
+                            FirebaseFirestore.instance.collection('Businesses');
+                        busRef
+                            .doc(business)
+                            .update({"Flag Count": FieldValue.increment(1)});
+                        Navigator.pop(context);
+                      },
                       child: const Text('Information Inappropriate'),
                     ),
                     TextButton(
-                      onPressed: () => Navigator.pop(context, 'Other'),
+                      onPressed: () async {
+                        CollectionReference busRef =
+                            FirebaseFirestore.instance.collection('Businesses');
+                        busRef
+                            .doc(business)
+                            .update({"Flag Count": FieldValue.increment(1)});
+                        Navigator.pop(context);
+                      },
                       child: const Text('Other'),
                     ),
                     TextButton(
