@@ -62,7 +62,29 @@ class _FirstRoute extends State<FirstRoute> {
               ". " +
               doc["Business Name"]; //logic for numbering business
           Container businessContainer;
-          if (doc["Verified"]) {
+          if (doc["Verified"] && doc["Flag Count"] > 0) {
+            businessContainer = Container(
+              child: Row(children: <Widget>[
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+                  child: Text(
+                    name,
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 25.0,
+                        decoration: TextDecoration.underline),
+                  ),
+                ),
+                Image.asset(
+                  'assets/images/verified_icon.png',
+                  height: 25,
+                  width: 25,
+                ),
+                const Icon(Icons.flag),
+              ]),
+            );
+          } else if (doc["Verified"]) {
             businessContainer = Container(
               child: Row(children: <Widget>[
                 Container(
