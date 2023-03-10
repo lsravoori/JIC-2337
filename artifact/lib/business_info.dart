@@ -75,16 +75,14 @@ class _BusinessInfoState extends State<BusinessInfo> {
     AppBar appBarInfo;
     if (businessInfo?["Verified"] == true) {
       appBarInfo = AppBar(
-        title: Row(
-          children: <Widget>[
-            Text(widget.title),
-            Image.asset(
-              'assets/images/verified_icon.png',
-              height: 25,
-              width: 25,
-            )
-          ]
-        ),
+        title: Row(children: <Widget>[
+          Text(widget.title),
+          Image.asset(
+            'assets/images/verified_icon.png',
+            height: 25,
+            width: 25,
+          )
+        ]),
         backgroundColor: Colors.blueGrey,
       );
     } else {
@@ -221,6 +219,49 @@ class _BusinessInfoState extends State<BusinessInfo> {
               endIndent: 0,
               color: Colors.black,
             ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(20, 0, 2, 2),
+                child: Text("See something off?",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            TextButton(
+              //creates a button that goes to the next filter page
+              child: Container(
+                color: Colors.red,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                child: const Text(
+                  "FLAG",
+                  style: TextStyle(color: Colors.white, fontSize: 10.0),
+                ),
+              ),
+              onPressed: () => showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: const Text('Submit Flag for Business'),
+                  content: const Text('Why are you flagging this business?'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Inaccurate'),
+                      child: const Text('Information Inaccurate'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Inappropriate'),
+                      child: const Text('Information Inappropriate'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Other'),
+                      child: const Text('Other'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Cancel'),
+                      child: const Text('Cancel'),
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),
