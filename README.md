@@ -18,8 +18,6 @@ considered as the code base continues to grow.
 
 -Verification icon displayed for businesses that have been checked and approved by the admins
 
--Reviews allowing consumers to describe their experiences
-
 -Ratings allow users to get an idea of a business's quality
 
 -Broke user/business demographics into more categories to diversify filter system
