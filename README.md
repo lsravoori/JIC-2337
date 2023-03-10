@@ -12,6 +12,30 @@ considered as the code base continues to grow.
 
 # Release Notes
 
+## v0.3.0
+### Features
+-Flagging button to report businesses that misrepresent themselves
+
+-Verification icon displayed for businesses that have been checked and approved by the admins
+
+-Reviews allowing consumers to describe their experiences
+
+-Ratings allow users to get an idea of a business's quality
+
+-Broke user/business demographics into more categories to diversify filter system
+
+-Added 'assets/images/' folder to allow for ease of inserting basic images such as the app logo
+
+### Bug Fixes
+-Fixed the filter system
+
+-Fixed issues with displaying business information (correct name shown)
+
+### Known Issues
+-Need to hyperlink the address so users can click on it and be taken to the address on Google Maps
+
+-Editing the Account Page details does not save for Gender or Ethnicity
+
 ## v0.2.0
 ### Features
 -Filter page with checkboxes
