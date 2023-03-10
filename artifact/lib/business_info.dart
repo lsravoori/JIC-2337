@@ -77,24 +77,21 @@ class _BusinessInfoState extends State<BusinessInfo> {
       appBarInfo = AppBar(
         title: Row(children: <Widget>[
           Text("${businessInfo!['Business Name']}"),
-          Image.asset(
-            'assets/images/verified_icon.png',
-            height: 25,
-            width: 25,
-          )
+          const Icon(Icons.check_circle_outline),
         ]),
         backgroundColor: Colors.blueGrey,
       );
     }
-    if (businessInfo?["Flag Count"] != 0) {
-      appBarInfo = AppBar(
-        title: Row(children: <Widget>[
-          Text("${businessInfo!['Business Name']}"),
-          const Icon(Icons.flag),
-        ]),
-        backgroundColor: Colors.blueGrey,
-      );
-    } else {
+    // if (businessInfo?["Flag Count"] != 0) {
+    //   appBarInfo = AppBar(
+    //     title: Row(children: <Widget>[
+    //       Text("${businessInfo!['Business Name']}"),
+    //       const Icon(Icons.flag),
+    //     ]),
+    //     backgroundColor: Colors.blueGrey,
+    //   );
+    //}
+    else {
       appBarInfo = AppBar(
         title: Text("${businessInfo!['Business Name']}"),
         backgroundColor: Colors.blueGrey,
@@ -103,7 +100,7 @@ class _BusinessInfoState extends State<BusinessInfo> {
     return Scaffold(
       backgroundColor: Colors.white24,
       appBar: appBarInfo,
-      body: Center(
+      body: SingleChildScrollView(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
@@ -229,7 +226,7 @@ class _BusinessInfoState extends State<BusinessInfo> {
               color: Colors.black,
             ),
             const Padding(
-                padding: EdgeInsets.fromLTRB(20, 0, 2, 2),
+                padding: EdgeInsets.fromLTRB(10, 0, 2, 2),
                 child: Text("See something off?",
                     textAlign: TextAlign.left,
                     style: TextStyle(
