@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../login.dart';
 import '../../../business_search.dart';
 import '../../../home.dart';
@@ -15,7 +16,6 @@ class BusinessInfo extends StatefulWidget {
 
   final String title;
   final int number; //number is used for selected index logic for nav bar
-
   // Below, _BusinessInfoState passes in the string "title" which is the business name
   @override
   State<BusinessInfo> createState() => _BusinessInfoState(title, number);
@@ -28,6 +28,7 @@ class _BusinessInfoState extends State<BusinessInfo> {
   List<Widget> infoList =
       []; //unused for now, but will be used for creation of the scaffold
   int number = 3;
+  double _rating = 0;
 
   _BusinessInfoState(String business, int number) {
     this.business = business;
@@ -296,7 +297,54 @@ class _BusinessInfoState extends State<BusinessInfo> {
                   ],
                 ),
               ),
-            )
+            ),
+            ElevatedButton(
+              //creates a button that goes to the next filter page
+              child: Container(
+                child: const Text(
+                  "Review",
+                  style: TextStyle(color: Colors.white, fontSize: 10.0),
+                ),
+              ),
+              onPressed: () => showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                    title: const Text('Review this Business'),
+                    actions: <Widget>[
+                      RatingBar(
+                        minRating: 1,
+                        maxRating: 5,
+                        allowHalfRating: true,
+                        onRatingUpdate: (_rating) => setState(() {
+                          this._rating = _rating;
+                        }),
+                        ratingWidget: RatingWidget(
+                          full: Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          half: Icon(
+                            Icons.star_half,
+                            color: Colors.amber,
+                          ),
+                          empty: Icon(
+                            Icons.star,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Submit'), //Submit Logic goes here,
+                        child: const Text('Submit'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Cancel'),
+                        child: const Text('Cancel'),
+                      ),
+                    ],
+                    actionsAlignment: MainAxisAlignment.end),
+              ),
+            ),
           ],
         ),
       ),

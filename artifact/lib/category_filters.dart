@@ -36,7 +36,7 @@ class _CategoryScreen extends State<CategoryScreen> {
     "Black",
     "Hispanic",
     "Asian",
-    "Pacifc Islander",
+    "Pacific Islander",
     "Native American",
     "Middle Eastern"
   ]; //list of "categories"
