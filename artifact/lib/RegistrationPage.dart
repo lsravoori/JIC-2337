@@ -76,6 +76,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   'White',
                   'Black',
                   'Hispanic',
+                  'Middle Eastern',
                   'Asian',
                   'Pacific Islander',
                   'Native American',

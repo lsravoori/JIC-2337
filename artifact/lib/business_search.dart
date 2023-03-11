@@ -146,12 +146,20 @@ class _FirstRoute extends State<FirstRoute> {
               }));
 
           String hours = "Hours: " + doc["Hours"];
+          String phoneNumber = "Phone Number:" + doc["Phone Number"];
+          String webSite = "Website:" + doc["Website"];
           list.add(Padding(
               padding: const EdgeInsets.fromLTRB(15, 0, 2, 2),
               child: Text(doc["Business Details"]))); //prints details
           list.add(Padding(
               padding: const EdgeInsets.fromLTRB(15, 2, 2, 2),
               child: Text(hours))); //prints hours
+          list.add(Padding(
+              padding: const EdgeInsets.fromLTRB(15, 2, 2, 2),
+              child: Text(phoneNumber))); //prints phonenumber
+          list.add(Padding(
+              padding: const EdgeInsets.fromLTRB(15, 2, 2, 2),
+              child: Text(webSite))); //prints phonenumber
 
           list.add(const Padding(
             padding: EdgeInsets.fromLTRB(0, 10, 0, 0),

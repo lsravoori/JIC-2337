@@ -88,6 +88,7 @@ class _AccountPageState extends State<AccountPage> {
                         'White',
                         'Black',
                         'Hispanic',
+                        'Middle Eastern',
                         'Asian',
                         'Pacific Islander',
                         'Native American',
