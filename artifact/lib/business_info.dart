@@ -29,23 +29,12 @@ class _BusinessInfoState extends State<BusinessInfo> {
       []; //unused for now, but will be used for creation of the scaffold
   int number = 3;
   double _rating = 0;
+  double avgRating = 0;
 
   _BusinessInfoState(String business, int number) {
     this.business = business;
     getInformation(business);
     this.number = number;
-    //Map<String, double> ratingMap =
-    //businessInfo['Ratings'] as Map<String, double>;
-    //print(businessInfo);
-    //print(ratingMap);
-    final auth = FirebaseAuth.instance;
-    final User? user = auth.currentUser;
-    final uid = user?.uid;
-    /*if (ratingMap.containsKey("$uid")) {
-      this._rating = ratingMap["$uid"]!;
-    } else {
-      this._rating = 0;
-    }*/
     //this.infoList = createInfoWidgets(businessInfo); //unused for now, will probably delete/repurpose
   }
 
@@ -118,6 +107,16 @@ class _BusinessInfoState extends State<BusinessInfo> {
     if (this._rating == 0) {
       if (ratingMap.containsKey("$uid")) {
         this._rating = ratingMap["$uid"]!;
+      }
+      int count = 0;
+      ratingMap.forEach(((key, value) {
+        avgRating = avgRating + value;
+        count++;
+      }));
+      if (count == 0) {
+        avgRating = 0;
+      } else {
+        avgRating = avgRating / count;
       }
     }
     return Scaffold(
@@ -238,6 +237,19 @@ class _BusinessInfoState extends State<BusinessInfo> {
             Padding(
                 padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
                 child: Text("Website: ${businessInfo!['Website']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            const Divider(
+              height: 20,
+              thickness: 3,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black,
+            ),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
+                child: Text("Rating: $avgRating/5",
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
