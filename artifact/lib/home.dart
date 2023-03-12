@@ -71,6 +71,10 @@ class _HomeScreen extends State<HomeScreen> {
     //this methods creates the checkboxes and adds them to two seperate lists (one for each column)
     list.clear();
     list2.clear();
+    zips.sort((a, b) {
+      //sorting in ascending order
+      return a.compareTo(b);
+    });
     for (int i = 0; i < zips.length; i++) {
       checked.add(false);
       if (i <= zips.length / 2) {
