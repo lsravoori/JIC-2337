@@ -16,7 +16,7 @@ class BusinessInfo extends StatefulWidget {
 
   final String title;
   final int number; //number is used for selected index logic for nav bar
-  // Below, _BusinessInfoState passes in the string "title" which is the business name
+  // Below, _BusinessInfoState passes in the string "title" which is the business id
   @override
   State<BusinessInfo> createState() => _BusinessInfoState(title, number);
 }
@@ -34,6 +34,18 @@ class _BusinessInfoState extends State<BusinessInfo> {
     this.business = business;
     getInformation(business);
     this.number = number;
+    //Map<String, double> ratingMap =
+    //businessInfo['Ratings'] as Map<String, double>;
+    //print(businessInfo);
+    //print(ratingMap);
+    final auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    final uid = user?.uid;
+    /*if (ratingMap.containsKey("$uid")) {
+      this._rating = ratingMap["$uid"]!;
+    } else {
+      this._rating = 0;
+    }*/
     //this.infoList = createInfoWidgets(businessInfo); //unused for now, will probably delete/repurpose
   }
 
@@ -97,6 +109,16 @@ class _BusinessInfoState extends State<BusinessInfo> {
         title: Text("${businessInfo!['Business Name']}"),
         backgroundColor: Colors.blueGrey,
       );
+    }
+    Map<String, dynamic> ratingMap =
+        businessInfo!['Ratings'] as Map<String, dynamic>;
+    final auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    final uid = user?.uid;
+    if (this._rating == 0) {
+      if (ratingMap.containsKey("$uid")) {
+        this._rating = ratingMap["$uid"]!;
+      }
     }
     return Scaffold(
       backgroundColor: Colors.white24,
@@ -312,6 +334,7 @@ class _BusinessInfoState extends State<BusinessInfo> {
                     title: const Text('Review this Business'),
                     actions: <Widget>[
                       RatingBar(
+                        initialRating: _rating,
                         minRating: 1,
                         maxRating: 5,
                         allowHalfRating: true,
@@ -334,7 +357,18 @@ class _BusinessInfoState extends State<BusinessInfo> {
                         ),
                       ),
                       TextButton(
-                        onPressed: () => Navigator.pop(context, 'Submit'), //Submit Logic goes here,
+                        onPressed: () async {
+                          CollectionReference busRef = FirebaseFirestore
+                              .instance
+                              .collection('Businesses');
+                          final auth = FirebaseAuth.instance;
+                          final User? user = auth.currentUser;
+                          final uid = user?.uid;
+                          busRef
+                              .doc(business)
+                              .update({"Ratings.$uid": _rating});
+                          Navigator.pop(context);
+                        },
                         child: const Text('Submit'),
                       ),
                       TextButton(
