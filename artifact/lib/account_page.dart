@@ -156,7 +156,7 @@ class _AccountPageState extends State<AccountPage> {
                           "Name": _name!,
                           "Age": _age!,
                           "Gender": _gender!,
-                          "LQBTQ+": _isLGBTQ!,
+                          "LGBTQ+": _isLGBTQ!,
                           "Race": _ethnicity!
                         });
                         CollectionReference usersRef =
@@ -278,7 +278,7 @@ class _AccountPageState extends State<AccountPage> {
       _age = previousInfo!['Age'] as int?;
       _gender = "${previousInfo!['Gender']}";
       _ethnicity = "${previousInfo!['Race']}";
-      _isLGBTQ = previousInfo!['LQBTQ+'] as bool?;
+      _isLGBTQ = previousInfo!['LGBTQ+'] as bool?;
       firstUpdate = true;
     }
   }
