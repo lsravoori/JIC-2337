@@ -1,4 +1,6 @@
+
 import 'package:artifact/admin_business_info.dart';
+=======
 import 'package:artifact/home.dart';
 import 'package:flutter/material.dart';
 import '../../../login.dart';
@@ -8,6 +10,7 @@ import '../../../account_page.dart';
 import '../../../admin_business.dart';
 import '../../../business_info.dart';
 import '../../../admin_business_info.dart';
+=======
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -48,7 +51,6 @@ class _AdminScreen extends State<AdminScreen> {
           //filters based on incoming map
           String name = doc["Business Name"]; //logic for numbering business
           Container businessContainer;
-
           if (doc["Verified"]) {
             businessContainer = Container(
               child: Row(children: <Widget>[

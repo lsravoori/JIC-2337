@@ -19,6 +19,7 @@ class _AccountPageState extends State<AccountPage> {
   bool? _isLGBTQ = false;
   final uid = FirebaseAuth.instance.currentUser?.uid;
   Map<String, Object>? previousInfo = Map<String, Object>();
+  bool firstUpdate = false;
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +156,7 @@ class _AccountPageState extends State<AccountPage> {
                           "Name": _name!,
                           "Age": _age!,
                           "Gender": _gender!,
-                          "LQBTQ+": _isLGBTQ!,
+                          "LGBTQ+": _isLGBTQ!,
                           "Race": _ethnicity!
                         });
                         CollectionReference usersRef =
@@ -272,11 +273,14 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   void initializeInfo() {
-    _name = "${previousInfo!['Name']}";
-    _age = previousInfo!['Age'] as int?;
-    _gender = "${previousInfo!['Gender']}";
-    _ethnicity = "${previousInfo!['Race']}";
-    //_isLGBTQ = previousInfo!['LQBTQ+'] as bool?;
+    if (firstUpdate == false) {
+      _name = "${previousInfo!['Name']}";
+      _age = previousInfo!['Age'] as int?;
+      _gender = "${previousInfo!['Gender']}";
+      _ethnicity = "${previousInfo!['Race']}";
+      _isLGBTQ = previousInfo!['LGBTQ+'] as bool?;
+      firstUpdate = true;
+    }
   }
 
   Future<QuerySnapshot> getInformation(uid) async {
