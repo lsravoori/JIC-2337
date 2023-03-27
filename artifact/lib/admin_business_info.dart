@@ -1,8 +1,10 @@
+import 'package:artifact/admin_business.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../../login.dart';
 import '../../../business_search.dart';
+import '../../../admin_business.dart';
 import '../../../home.dart';
 import '../../../admin.dart';
 import '../../../account_page.dart';
@@ -332,6 +334,14 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => const AdminScreen(),
+        ),
+      );
+    } else if (index == 1) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const AdminBusiness(
+            title: 'admin',
+          ),
         ),
       );
     }
