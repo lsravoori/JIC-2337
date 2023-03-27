@@ -1,7 +1,9 @@
+import 'package:artifact/admin.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../../login.dart';
 import '../../../home.dart';
+import '../../../admin.dart';
 import '../../../admin_business_info.dart';
 import '../../../account_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -167,10 +169,10 @@ class _AdminBusiness extends State<AdminBusiness> {
   //This is a hash map that will store all of the categories that are found in the businesses (maybe hardcode for future)
   Map<String, String> category = {};
   Map<String, int> defaultMap = {}; //used if viewing all (from nav. bar)
-  int _selectedIndex = 3;
+  int _selectedIndex = 1;
 
   void _onItemTapped(int index) {
-    //logic for nav bar
+    //this is the logic for the bottom navigation bar and which page to flip to
     setState(() {
       _selectedIndex = index;
     });
@@ -181,22 +183,10 @@ class _AdminBusiness extends State<AdminBusiness> {
           builder: (context) => LoginScreen(),
         ),
       );
-    } else if (index == 1) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ),
-      );
     } else if (index == 2) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => AccountPage(),
-        ),
-      );
-    } else if (index == 3) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const AdminBusiness(title: "flags"),
+          builder: (context) => const AdminScreen(),
         ),
       );
     }
@@ -221,21 +211,19 @@ class _AdminBusiness extends State<AdminBusiness> {
             children: list),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        //nav bar
+        //this is the setup for the bottom navigation bar
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.logout_outlined),
             label: 'Logout',
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.filter_list), label: "Filters"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_rounded),
-            label: 'Account',
+            icon: Icon(Icons.flag),
+            label: 'Flagged',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            label: 'Search All',
+            label: 'All',
           ),
         ],
         selectedItemColor: Colors.blueGrey,

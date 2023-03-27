@@ -13,6 +13,7 @@ import '../../../business_info.dart';
 import '../../../business_search.dart';
 import '../../../login.dart';
 import '../../../home.dart';
+import '../../../admin.dart';
 
 void main() async {
   //main file that simply starts the application on the login screen
@@ -39,6 +40,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
   bool exists = false;
+  Map<String, Object>? previousInfo = Map<String, Object>();
 
   // This widget is the root of your application.
   @override
@@ -76,13 +78,17 @@ class MyApp extends StatelessWidget {
         'search': (context) {
           final User? user = auth.currentUser;
           final uid = user?.uid;
-          //bool exists = false;
           return FutureBuilder(
             future: testUID(uid),
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (exists) {
-                  return HomeScreen();
+                  bool isAdmin = previousInfo!['isAdmin'] as bool;
+                  if (isAdmin) {
+                    return AdminScreen();
+                  } else {
+                    return HomeScreen();
+                  }
                 } else {
                   return RegistrationPage();
                 }
@@ -97,6 +103,7 @@ class MyApp extends StatelessWidget {
   }
 
   Future<QuerySnapshot> testUID(uid) async {
+    var retVal = Map<String, Object>(); //temp hashmap for collection
     await FirebaseFirestore.instance
         .collection('Accounts')
         .doc(uid)
@@ -104,10 +111,18 @@ class MyApp extends StatelessWidget {
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         exists = true;
+        //checks if the user with the given name exists
+        Map<String, dynamic>? documentFields =
+            documentSnapshot.data() as Map<String, dynamic>?;
+        documentFields?.forEach((key, value) {
+          //collects the data from a hashmap and moves to temp hashmap (inefficient, make better later)
+          retVal.addAll({"$key": documentFields["$key"]});
+        });
       } else {
         exists = false;
       }
     });
+    previousInfo = retVal; //sets previousInfo equal to temp hashmap
     return await FirebaseFirestore.instance.collection('Accounts').get();
     ;
   }

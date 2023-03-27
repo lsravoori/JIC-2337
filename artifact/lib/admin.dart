@@ -1,10 +1,13 @@
+import 'package:artifact/admin_business_info.dart';
 import 'package:artifact/home.dart';
 import 'package:flutter/material.dart';
 import '../../../login.dart';
 import '../../../category_filters.dart';
 import '../../../business_search.dart';
 import '../../../account_page.dart';
+import '../../../admin_business.dart';
 import '../../../business_info.dart';
+import '../../../admin_business_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -82,7 +85,7 @@ class _AdminScreen extends State<AdminScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => BusinessInfo(
+                      builder: (context) => AdminBusinessInfo(
                             title: doc.id,
                             number: _selectedIndex,
                           )),
@@ -137,6 +140,12 @@ class _AdminScreen extends State<AdminScreen> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => LoginScreen(),
+        ),
+      );
+    } else if (index == 1) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const AdminBusiness(title: 'admin'),
         ),
       );
     }

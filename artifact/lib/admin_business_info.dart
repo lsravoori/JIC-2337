@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../login.dart';
 import '../../../business_search.dart';
 import '../../../home.dart';
+import '../../../admin.dart';
 import '../../../account_page.dart';
 
 class AdminBusinessInfo extends StatefulWidget {
@@ -348,20 +348,19 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        //this is the setup for the bottom navigation bar
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.logout_outlined),
             label: 'Logout',
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.filter_list), label: "Filters"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_rounded),
-            label: 'Account',
+            icon: Icon(Icons.flag),
+            label: 'Flagged',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            label: 'Search All',
+            label: 'All',
           ),
         ],
         selectedItemColor: Colors.blueGrey,
@@ -373,41 +372,25 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
     );
   }
 
-  int _selectedIndex = 3;
+  int _selectedIndex = 2;
   Map<String, int> random = {};
 
   void _onItemTapped(int index) {
+    //this is the logic for the bottom navigation bar and which page to flip to
     setState(() {
       _selectedIndex = index;
     });
     if (index == 0) {
-      // The line below usually is preceded with the keyword 'await' but this
-      // threw errors due to the method not being an async method.
       FirebaseAuth.instance.signOut();
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => LoginScreen(),
         ),
       );
-    } else if (index == 1) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(),
-        ),
-      );
     } else if (index == 2) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => AccountPage(),
-        ),
-      );
-    } else if (index == 3) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => FirstRoute(
-            title: 'Search',
-            receivedMap: random,
-          ),
+          builder: (context) => const AdminScreen(),
         ),
       );
     }
