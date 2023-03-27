@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (exists) {
                   bool isAdmin = previousInfo!['isAdmin'] as bool;
-                  if(isAdmin) {
+                  if (isAdmin) {
                     return AdminScreen();
                   } else {
                     return HomeScreen();

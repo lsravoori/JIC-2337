@@ -1,21 +1,18 @@
-
-import 'package:artifact/admin_business_info.dart';
-=======
-import 'package:artifact/home.dart';
+import 'package:artifact/admin.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../../login.dart';
-import '../../../category_filters.dart';
-import '../../../business_search.dart';
-import '../../../account_page.dart';
-import '../../../admin_business.dart';
-import '../../../business_info.dart';
+import '../../../home.dart';
+import '../../../admin.dart';
 import '../../../admin_business_info.dart';
-=======
+import '../../../account_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AdminScreen extends StatefulWidget {
-  const AdminScreen({super.key});
+class AdminBusiness extends StatefulWidget {
+  const AdminBusiness({super.key, required this.title});
+
+  //this map pulls in filter information
+
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -25,17 +22,26 @@ class AdminScreen extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
+  final String title;
+
   @override
-  State<AdminScreen> createState() => _AdminScreen();
+  State<AdminBusiness> createState() => _AdminBusiness();
 }
 
-class _AdminScreen extends State<AdminScreen> {
-  Map<String, int> defaultMap = {};
+class _AdminBusiness extends State<AdminBusiness> {
   List<Widget> list =
       []; //this is a list of children for the scaffold that shows up on screen
 
+  _AdminBusiness(); //makes instance of the map
+
   Future<QuerySnapshot> getData() async {
-    list.clear(); //start blank slate
+    //getData brings in all of the business from the database based on filters
+    int i = 0;
+    //used to number the amount of entries
+    int j = 0;
+    //used to check if empty page
+    list.clear();
+    //start blank slate
     list.add(const Padding(
       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
     ));
@@ -44,12 +50,13 @@ class _AdminScreen extends State<AdminScreen> {
         .collection('Businesses')
         .get()
         .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        if (defaultMap.isEmpty ||
-            defaultMap.containsKey(doc["Category"]) ||
-            defaultMap.containsKey(doc["Zipcode"].toString())) {
-          //filters based on incoming map
-          String name = doc["Business Name"]; //logic for numbering business
+      for (var doc in querySnapshot.docs) {
+        if (doc["Flag Count"] > 0) {
+          //filters based on if there is a flag on a specific business
+          i++;
+          String name = i.toString() +
+              ". " +
+              doc["Business Name"]; //logic for numbering business
           Container businessContainer;
           if (doc["Verified"]) {
             businessContainer = Container(
@@ -121,16 +128,48 @@ class _AdminScreen extends State<AdminScreen> {
             color: Colors.black,
           )); //Divider
         }
-      });
+      }
     });
-
+    if (i == 0 && j == 0) {
+      //done if there is no businesses that were matching the filters
+      list.add(const Text("No Businesses with those filters available!",
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 25.0,
+          )));
+      j++;
+      list.add(const Padding(padding: EdgeInsets.fromLTRB(20, 10, 20, 20)));
+      list.add(TextButton(
+          child: Container(
+            color: Colors.blueGrey,
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            child: const Text(
+              "Back to Filters",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 15.0,
+              ),
+            ),
+          ),
+          onPressed: () {
+            //button moves to the first filter page
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomeScreen(),
+                ));
+          }));
+    }
     list.add(const Padding(
       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
     ));
     return await FirebaseFirestore.instance.collection('Businesses').get();
   }
 
-  int _selectedIndex = 2; //this is the page we are on
+  //This is a hash map that will store all of the categories that are found in the businesses (maybe hardcode for future)
+  Map<String, String> category = {};
+  Map<String, int> defaultMap = {}; //used if viewing all (from nav. bar)
+  int _selectedIndex = 1;
 
   void _onItemTapped(int index) {
     //this is the logic for the bottom navigation bar and which page to flip to
@@ -144,21 +183,22 @@ class _AdminScreen extends State<AdminScreen> {
           builder: (context) => LoginScreen(),
         ),
       );
-    } else if (index == 1) {
+    } else if (index == 2) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => const AdminBusiness(title: 'admin'),
+          builder: (context) => const AdminScreen(),
         ),
       );
     }
   }
 
-  Scaffold makeScaffold() {
+  Scaffold makeFirstScaffold() {
+    //this creates the scaffold using the children list mentioned above (separate method to make build() smaller)
     return Scaffold(
       backgroundColor: Colors.white24,
       appBar: AppBar(
         title: const Text(
-          'Administrator View',
+          'For The People: Flagged Businesses',
           style: TextStyle(color: Colors.white, fontSize: 20.0),
         ),
         backgroundColor: Colors.blueGrey,
@@ -197,12 +237,12 @@ class _AdminScreen extends State<AdminScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //builds the UI screen
+    //builds the UI screen for the button page
     return FutureBuilder(
       future: getData(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return makeScaffold();
+          return makeFirstScaffold();
         } else {
           return const Scaffold();
         }
