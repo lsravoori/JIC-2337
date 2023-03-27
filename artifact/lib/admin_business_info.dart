@@ -285,65 +285,6 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
                 ),
               ),
             ),
-            // ElevatedButton(
-            //   //creates a button that goes to the next filter page
-            //   child: Container(
-            //     child: const Text(
-            //       "Review",
-            //       style: TextStyle(color: Colors.white, fontSize: 10.0),
-            //     ),
-            //   ),
-            //   onPressed: () => showDialog<String>(
-            //     context: context,
-            //     builder: (BuildContext context) => AlertDialog(
-            //         title: const Text('Review this Business'),
-            //         actions: <Widget>[
-            //           RatingBar(
-            //             initialRating: _rating,
-            //             minRating: 1,
-            //             maxRating: 5,
-            //             allowHalfRating: true,
-            //             onRatingUpdate: (_rating) => setState(() {
-            //               this._rating = _rating;
-            //             }),
-            //             ratingWidget: RatingWidget(
-            //               full: const Icon(
-            //                 Icons.star,
-            //                 color: Colors.amber,
-            //               ),
-            //               half: const Icon(
-            //                 Icons.star_half,
-            //                 color: Colors.amber,
-            //               ),
-            //               empty: const Icon(
-            //                 Icons.star,
-            //                 color: Colors.grey,
-            //               ),
-            //             ),
-            //           ),
-            //           TextButton(
-            //             onPressed: () async {
-            //               CollectionReference busRef = FirebaseFirestore
-            //                   .instance
-            //                   .collection('Businesses');
-            //               final auth = FirebaseAuth.instance;
-            //               final User? user = auth.currentUser;
-            //               final uid = user?.uid;
-            //               busRef
-            //                   .doc(business)
-            //                   .update({"Ratings.$uid": _rating});
-            //               Navigator.pop(context);
-            //             },
-            //             child: const Text('Submit'),
-            //           ),
-            //           TextButton(
-            //             onPressed: () => Navigator.pop(context, 'Cancel'),
-            //             child: const Text('Cancel'),
-            //           ),
-            //         ],
-            //         actionsAlignment: MainAxisAlignment.end),
-            //   ),
-            // ),
           ],
         ),
       ),
