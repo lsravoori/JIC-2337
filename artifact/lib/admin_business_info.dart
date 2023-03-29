@@ -276,7 +276,17 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
                   content: const Text('This cannot be undone.'),
                   actions: <Widget>[
                     TextButton(
-                      onPressed: () => Navigator.pop(context, 'Remove'),
+                      onPressed: () {
+                        Navigator.pop(context, 'Remove');
+                        deleteBusiness(business, businessInfo);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const AdminScreen(),
+                          ),
+                        );
+                      },
                       child: const Text('REMOVE'),
                     ),
                     TextButton(
@@ -340,6 +350,51 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
       ),
     );
   }
+
+
+  void deleteBusiness(String business, Map<String, Object>? businessInfo) {
+    CollectionReference businesses = FirebaseFirestore.instance.collection('Businesses');
+    CollectionReference delBusinesses = FirebaseFirestore.instance.collection('DeletedBusinesses');
+    CollectionReference users = FirebaseFirestore.instance.collection('Accounts');
+    businesses.doc(business).get().then((DocumentSnapshot documentSnapshot) {
+      //creates a snapshot for the business by name
+      if (documentSnapshot.exists) {
+        //checks if the business with the given name exists
+        Map<String, dynamic>? documentFields = documentSnapshot.data() as Map<String, dynamic>?;
+        if (documentFields != null) {
+          //Find out the userID below and remove businessID from their list of businesses.
+          if (documentFields.keys.toList().contains("UserID")) {
+            String userID = documentFields["UserID"];
+            users.doc(userID).get().then((DocumentSnapshot userSnapshot) {
+              if (userSnapshot.exists) {
+                Map<String, dynamic>? userFields = userSnapshot.data() as Map<String, dynamic>?;
+                if (userFields != null) {
+                  if (userFields.keys.toList().contains("BusinessIDs")) {
+                    List businessIDS = userFields["BusinessIDs"];
+                    businessIDS.remove(documentSnapshot.id);
+                    FirebaseFirestore.instance.collection('Accounts').doc(userID).update({'BusinessIDs' : businessIDS});
+                  }
+                }
+              }
+            });
+          }
+          //Copy business document from the 'Businesses' collection to the 'DeletedBusinesses' collection
+          delBusinesses.doc(business).get().then((DocumentSnapshot delDocSnapshot) {
+            /*
+            if (delDocSnapshot.exists) {
+              FirebaseFirestore.instance.collection('DeletedBusinesses').doc(documentSnapshot.id).set(documentFields);
+            } else {
+              FirebaseFirestore.instance.collection('DeletedBusinesses').doc(documentSnapshot.id).set(documentFields);
+            }
+            */
+            FirebaseFirestore.instance.collection('DeletedBusinesses').doc(documentSnapshot.id).set(documentFields);
+          });
+        }
+        businesses.doc(business).delete();
+      }
+    });
+  }
+
 
   int _selectedIndex = 2;
   Map<String, int> random = {};
