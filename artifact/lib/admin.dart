@@ -36,6 +36,7 @@ class _AdminScreen extends State<AdminScreen> {
     list.add(const Padding(
       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
     ));
+    int i = 0;
     await FirebaseFirestore
         .instance //this whole section pulls business names in with a for each loop
         .collection('Businesses')
@@ -46,76 +47,117 @@ class _AdminScreen extends State<AdminScreen> {
             defaultMap.containsKey(doc["Category"]) ||
             defaultMap.containsKey(doc["Zipcode"].toString())) {
           //filters based on incoming map
-          String name = doc["Business Name"]; //logic for numbering business
+          i++;
+          String name = i.toString() + ". ";
+          //doc["Business Name"]; //logic for numbering business
           Container businessContainer;
+          String hours = "Hours: " + doc["Hours"];
+          String phoneNumber = "Phone Number: " + doc["Phone Number"];
+          String webSite = "Website: " + doc["Website"];
+
           if (doc["Verified"]) {
             businessContainer = Container(
-              child: Row(children: <Widget>[
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
-                  child: Text(
-                    name,
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 25.0,
-                        decoration: TextDecoration.underline),
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(children: <Widget>[
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 2),
+                      child: Text(
+                        name,
+                        style: const TextStyle(
+                            color: Colors.black, fontSize: 25.0),
+                      )),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    child: Text(
+                      doc["Business Name"],
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 25.0,
+                          decoration: TextDecoration.underline),
+                    ),
                   ),
-                ),
-                const Icon(Icons.check_circle_outline),
-              ]),
-            );
+                  const Icon(Icons.check_circle_outline)
+                ]),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 0, 2, 2),
+                    child: Text(doc["Business Details"])),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 2, 2, 2),
+                    child: Text(hours)),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 2, 2, 2),
+                    child: Text(phoneNumber)),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 2, 2, 10),
+                    child: Text(webSite))
+              ],
+            ));
           } else {
             businessContainer = Container(
-              child: Text(
-                name,
-                style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 25.0,
-                    decoration: TextDecoration.underline),
-              ),
-            );
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 2),
+                        child: Text(
+                          name,
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 25.0),
+                        )),
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(5, 0, 2, 2),
+                        child: Text(
+                          doc["Business Name"],
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 25.0,
+                              decoration: TextDecoration.underline),
+                        )),
+                  ],
+                ),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 0, 2, 2),
+                    child: Text(doc["Business Details"])),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 2, 2, 2),
+                    child: Text(hours)),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 2, 2, 2),
+                    child: Text(phoneNumber)),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 2, 2, 10),
+                    child: Text(webSite))
+              ],
+            ));
           }
-          list.add(TextButton(
-              //creates a button that contains a name of a business in it
-              child: businessContainer,
-              onPressed: () {
-                //button moves to the business_info page that displays all the details (that code is in business_info.dart)
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AdminBusinessInfo(
-                            title: doc.id,
-                            number: _selectedIndex,
-                          )),
-                );
-              }));
 
-          String hours = "Hours: " + doc["Hours"];
-          String phoneNumber = "Phone Number:" + doc["Phone Number"];
-          String webSite = "Website:" + doc["Website"];
-          list.add(Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 2, 2),
-              child: Text(doc["Business Details"]))); //prints details
-          list.add(Padding(
-              padding: const EdgeInsets.fromLTRB(15, 2, 2, 2),
-              child: Text(hours))); //prints hours
-          list.add(Padding(
-              padding: const EdgeInsets.fromLTRB(15, 2, 2, 2),
-              child: Text(phoneNumber))); //prints phonenumber
-          list.add(Padding(
-              padding: const EdgeInsets.fromLTRB(15, 2, 2, 2),
-              child: Text(webSite))); //prints phonenumber
-
+          list.add(
+            Card(
+              elevation: 10,
+              color: const Color.fromARGB(255, 240, 240, 240),
+              child: InkWell(
+                  splashColor: Colors.blue.withAlpha(30),
+                  onTap: () {
+                    //button moves to the business_info page that displays all the details (that code is in business_info.dart)
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AdminBusinessInfo(
+                                title: doc.id,
+                                number: _selectedIndex,
+                              )),
+                    );
+                  },
+                  child: businessContainer),
+            ),
+          );
           list.add(const Padding(
-            padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-          ));
-          list.add(const Divider(
-            height: 20,
-            thickness: 3,
-            indent: 0,
-            endIndent: 0,
-            color: Colors.black,
+            padding: EdgeInsets.fromLTRB(5, 2, 2, 5),
           )); //Divider
         }
       });

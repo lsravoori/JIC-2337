@@ -58,13 +58,12 @@ class _FirstRoute extends State<FirstRoute> {
             widget.receivedMap.containsKey(doc["Zipcode"].toString())) {
           //filters based on incoming map
           i++;
-          String name = i.toString() +
-              ". " +
-              doc["Business Name"]; //logic for numbering business
+          String name = i.toString() + ". ";
+          //doc["Business Name"]; //logic for numbering business
           Container businessContainer;
           String hours = "Hours: " + doc["Hours"];
-          String phoneNumber = "Phone Number:" + doc["Phone Number"];
-          String webSite = "Website:" + doc["Website"];
+          String phoneNumber = "Phone Number: " + doc["Phone Number"];
+          String webSite = "Website: " + doc["Website"];
 
           if (doc["Verified"]) {
             businessContainer = Container(
@@ -72,11 +71,18 @@ class _FirstRoute extends State<FirstRoute> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Row(children: <Widget>[
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 2),
+                      child: Text(
+                        name,
+                        style: const TextStyle(
+                            color: Colors.black, fontSize: 25.0),
+                      )),
                   Container(
                     padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                     child: Text(
-                      name,
+                      doc["Business Name"],
                       style: const TextStyle(
                           color: Colors.black,
                           fontSize: 25.0,
@@ -104,13 +110,25 @@ class _FirstRoute extends State<FirstRoute> {
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(),
-                Text(
-                  name,
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 25.0,
-                      decoration: TextDecoration.underline),
+                Row(
+                  children: [
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 2),
+                        child: Text(
+                          name,
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 25.0),
+                        )),
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(5, 0, 2, 2),
+                        child: Text(
+                          doc["Business Name"],
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 25.0,
+                              decoration: TextDecoration.underline),
+                        )),
+                  ],
                 ),
                 Padding(
                     padding: const EdgeInsets.fromLTRB(15, 0, 2, 2),
@@ -147,7 +165,10 @@ class _FirstRoute extends State<FirstRoute> {
                   },
                   child: businessContainer),
             ),
-          ); //prints phonenumber//Divider
+          );
+          list.add(const Padding(
+            padding: EdgeInsets.fromLTRB(5, 2, 2, 5),
+          ));
         }
       });
     });
