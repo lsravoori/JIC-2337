@@ -24,6 +24,7 @@ class _HomeScreen extends State<HomeScreen> {
   List<Widget> list =
       []; //this is a list of children for the scaffold that shows up on screen
   List<Widget> list2 = []; //this is the list for the second column
+  List<Widget> list3 = [];
   List<bool> checked = <bool>[]; //this is the checkbox values
   List<String> zips = [
     "30341",
@@ -71,13 +72,14 @@ class _HomeScreen extends State<HomeScreen> {
     //this methods creates the checkboxes and adds them to two seperate lists (one for each column)
     list.clear();
     list2.clear();
+    list3.clear();
     zips.sort((a, b) {
       //sorting in ascending order
       return a.compareTo(b);
     });
     for (int i = 0; i < zips.length; i++) {
       checked.add(false);
-      if (i <= zips.length / 2) {
+      if (i < zips.length / 3) {
         list.add(SizedBox(
             width: 150,
             child: CheckboxListTile(
@@ -92,8 +94,23 @@ class _HomeScreen extends State<HomeScreen> {
                     }
                   });
                 })));
-      } else {
+      } else if (i < zips.length / 3 * 2) {
         list2.add(SizedBox(
+            width: 150,
+            child: CheckboxListTile(
+                value: checked[i],
+                checkColor: Colors.white,
+                title: Text(zips[i]),
+                onChanged: (bool? values) {
+                  setState(() {
+                    checked[i] = values!;
+                    if (values = true) {
+                      returnMap[zips[i]] = i;
+                    }
+                  });
+                })));
+      } else {
+        list3.add(SizedBox(
             width: 150,
             child: CheckboxListTile(
                 value: checked[i],
@@ -109,28 +126,6 @@ class _HomeScreen extends State<HomeScreen> {
                 })));
       }
     }
-    //the button below is used to navigate to the next page
-    list.add(SizedBox(
-        width: 150,
-        child: TextButton(
-            //creates a button that goes to the next filter page
-            child: Container(
-              color: Colors.blueGrey,
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-              child: const Text(
-                "Next",
-                style: TextStyle(color: Colors.white, fontSize: 15.0),
-              ),
-            ),
-            onPressed: () {
-              //button moves to the category filter page
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        CategoryScreen(receivedMap: returnMap)),
-              );
-            })));
   }
 
   Map<String, int> defaultMap =
@@ -184,20 +179,50 @@ class _HomeScreen extends State<HomeScreen> {
         automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
-          //this allows us to scroll
-          child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: list),
-          Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: list2),
-        ],
-      )),
+        //this allows us to scroll
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: list),
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: list2),
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: list3),
+              ],
+            ),
+            SizedBox(
+                child: TextButton(
+                    //creates a button that goes to the next filter page
+                    child: Container(
+                      color: Colors.blueGrey,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 10),
+                      child: const Text(
+                        "Next",
+                        style: TextStyle(color: Colors.white, fontSize: 15.0),
+                      ),
+                    ),
+                    onPressed: () {
+                      //button moves to the category filter page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                CategoryScreen(receivedMap: returnMap)),
+                      );
+                    }))
+          ],
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         //this is the setup for the bottom navigation bar
         items: const <BottomNavigationBarItem>[
