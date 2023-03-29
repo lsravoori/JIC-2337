@@ -72,41 +72,16 @@ class _BusinessInfoState extends State<BusinessInfo> {
 
   Scaffold makeSecondScaffold() {
     //makes the scaffold for the business_info page
-    AppBar appBarInfo;
-    if (businessInfo?["Verified"] == true) {
-      appBarInfo = AppBar(
-        title: Row(children: <Widget>[
-          Text("${businessInfo!['Business Name']}"),
-          const Icon(Icons.check_circle_outline),
-        ]),
-        backgroundColor: Colors.blueGrey,
-      );
-    }
-    // if (businessInfo?["Flag Count"] != 0) {
-    //   appBarInfo = AppBar(
-    //     title: Row(children: <Widget>[
-    //       Text("${businessInfo!['Business Name']}"),
-    //       const Icon(Icons.flag),
-    //     ]),
-    //     backgroundColor: Colors.blueGrey,
-    //   );
-    //}
-    else {
-      appBarInfo = AppBar(
-        title: Text("${businessInfo!['Business Name']}"),
-        backgroundColor: Colors.blueGrey,
-      );
-    }
     Map<String, dynamic> ratingMap =
         businessInfo!['Ratings'] as Map<String, dynamic>;
     final auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
+    int count = 0;
     if (_rating == 0) {
       if (ratingMap.containsKey("$uid")) {
         _rating = ratingMap["$uid"]!;
       }
-      int count = 0;
       ratingMap.forEach(((key, value) {
         avgRating = avgRating + value;
         count++;
@@ -116,6 +91,51 @@ class _BusinessInfoState extends State<BusinessInfo> {
       } else {
         avgRating = avgRating / count;
       }
+    }
+    AppBar appBarInfo;
+    if (businessInfo?["Verified"] == true) {
+      appBarInfo = AppBar(
+        title: Row(children: <Widget>[
+          Text("${businessInfo!['Business Name']}"),
+          const Icon(Icons.check_circle_outline),
+          RatingBarIndicator(
+            rating: avgRating,
+            itemBuilder: (context, index) => const Icon(
+              Icons.star,
+              color: Colors.amber,
+            ),
+            itemCount: 5,
+            itemSize: 20.0,
+            direction: Axis.horizontal,
+          ),
+          Text(
+            "$count reviews",
+            style: const TextStyle(fontSize: 10),
+          )
+        ]),
+        backgroundColor: Colors.blueGrey,
+      );
+    } else {
+      appBarInfo = AppBar(
+        title: Row(children: <Widget>[
+          Text("${businessInfo!['Business Name']}"),
+          RatingBarIndicator(
+            rating: avgRating,
+            itemBuilder: (context, index) => const Icon(
+              Icons.star,
+              color: Colors.amber,
+            ),
+            itemCount: 5,
+            itemSize: 20.0,
+            direction: Axis.horizontal,
+          ),
+          Text(
+            "$count reviews",
+            style: const TextStyle(fontSize: 10),
+          )
+        ]),
+        backgroundColor: Colors.blueGrey,
+      );
     }
     return Scaffold(
       backgroundColor: Colors.white24,
@@ -142,118 +162,105 @@ class _BusinessInfoState extends State<BusinessInfo> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 2, 2),
+                padding: const EdgeInsets.fromLTRB(10, 10, 2, 2),
                 child: Text("Logo: ${businessInfo!['Logo']}",
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
             const Divider(
               height: 20,
-              thickness: 3,
+              thickness: 1,
               indent: 0,
               endIndent: 0,
               color: Colors.black,
             ),
             Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Category: ${businessInfo!['Category']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 3,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Phone Number: ${businessInfo!['Phone Number']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 3,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Hours: ${businessInfo!['Hours']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 3,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Address: ${businessInfo!['Street Name']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 3,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Zipcode: ${businessInfo!['Zipcode']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 3,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
                 child: Text("Details: ${businessInfo!['Business Details']}",
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
             const Divider(
               height: 20,
-              thickness: 3,
+              thickness: 1,
               indent: 0,
               endIndent: 0,
               color: Colors.black,
             ),
             Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
+                child: Text("Category: ${businessInfo!['Category']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            const Divider(
+              height: 20,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black,
+            ),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
+                child: Text("Phone Number: ${businessInfo!['Phone Number']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            const Divider(
+              height: 20,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black,
+            ),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
+                child: Text("Hours: ${businessInfo!['Hours']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            const Divider(
+              height: 20,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black,
+            ),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
+                child: Text("Address: ${businessInfo!['Street Name']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            const Divider(
+              height: 20,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black,
+            ),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
+                child: Text("Zipcode: ${businessInfo!['Zipcode']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            const Divider(
+              height: 20,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black,
+            ),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
                 child: Text("Website: ${businessInfo!['Website']}",
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
             const Divider(
               height: 20,
-              thickness: 3,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Rating: $avgRating/5",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 3,
+              thickness: 1,
               indent: 0,
               endIndent: 0,
               color: Colors.black,
