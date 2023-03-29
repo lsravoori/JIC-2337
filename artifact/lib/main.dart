@@ -48,7 +48,8 @@ class MyApp extends StatelessWidget {
     final auth = FirebaseAuth.instance;
 
     return MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.blueGrey),
+      theme:
+          ThemeData(primarySwatch: Colors.blueGrey, fontFamily: 'Montserrat'),
       title: 'We The People',
       initialRoute: auth.currentUser == null ? 'landing' : '/profile',
       routes: {

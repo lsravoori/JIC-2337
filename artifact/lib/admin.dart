@@ -1,13 +1,7 @@
 import 'package:artifact/admin_business_info.dart';
-import 'package:artifact/home.dart';
 import 'package:flutter/material.dart';
 import '../../../login.dart';
-import '../../../category_filters.dart';
-import '../../../business_search.dart';
-import '../../../account_page.dart';
 import '../../../admin_business.dart';
-import '../../../business_info.dart';
-import '../../../admin_business_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

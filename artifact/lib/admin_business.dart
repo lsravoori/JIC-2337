@@ -3,9 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../../login.dart';
 import '../../../home.dart';
-import '../../../admin.dart';
 import '../../../admin_business_info.dart';
-import '../../../account_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AdminBusiness extends StatefulWidget {
