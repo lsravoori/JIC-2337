@@ -287,6 +287,32 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
                 ),
               ),
             ),
+            ElevatedButton(
+              child: Container(
+                child: const Text(
+                  "Clear Flags?",
+                  style: TextStyle(color: Colors.white, fontSize: 10.0),
+                ),
+              ),
+              onPressed: () => showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: const Text(
+                      'Are you sure you want to clear the flags for this business?'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Clear'),
+                      child: const Text('Clear'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Cancel'),
+                      child: const Text('Cancel'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
           ],
         ),
       ),
