@@ -114,7 +114,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     "LGBTQ+": _isLGBTQ!,
                     "Race": _ethnicity!,
                     "isAdmin": false,
-                    "BusinessIDs": ""
+                    "BusinessIDs": []
                   });
                   CollectionReference usersRef =
                       FirebaseFirestore.instance.collection('Accounts');
