@@ -24,24 +24,22 @@ class BusinessInfo extends StatefulWidget {
 class _BusinessInfoState extends State<BusinessInfo> {
   var business = ""; //name of the business
   Map<String, Object>? businessInfo =
-      Map<String, Object>(); //hashmap of the business details
+      <String, Object>{}; //hashmap of the business details
   List<Widget> infoList =
       []; //unused for now, but will be used for creation of the scaffold
   int number = 3;
   double _rating = 0;
   double avgRating = 0;
 
-  _BusinessInfoState(String business, int number) {
-    this.business = business;
+  _BusinessInfoState(this.business, this.number) {
     getInformation(business);
-    this.number = number;
     //this.infoList = createInfoWidgets(businessInfo); //unused for now, will probably delete/repurpose
   }
 
   Future<QuerySnapshot> getInformation(business) async {
     _selectedIndex = number;
     //gets information of the businesses (by name) and puts into a hashmap
-    var retVal = Map<String, Object>(); //temp hashmap for collection
+    var retVal = <String, Object>{}; //temp hashmap for collection
 
     // gets a document from the collection if it exists and retrieves its info
     CollectionReference businesses =
@@ -104,9 +102,9 @@ class _BusinessInfoState extends State<BusinessInfo> {
     final auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
-    if (this._rating == 0) {
+    if (_rating == 0) {
       if (ratingMap.containsKey("$uid")) {
-        this._rating = ratingMap["$uid"]!;
+        _rating = ratingMap["$uid"]!;
       }
       int count = 0;
       ratingMap.forEach(((key, value) {
@@ -267,7 +265,6 @@ class _BusinessInfoState extends State<BusinessInfo> {
                     style: TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0), fontSize: 15))),
             TextButton(
-              //creates a button that goes to the next filter page
               child: Container(
                 color: Colors.red,
                 padding:
@@ -332,9 +329,12 @@ class _BusinessInfoState extends State<BusinessInfo> {
                 ),
               ),
             ),
-            ElevatedButton(
+            TextButton(
               //creates a button that goes to the next filter page
               child: Container(
+                color: Colors.blueGrey,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 child: const Text(
                   "Review",
                   style: TextStyle(color: Colors.white, fontSize: 10.0),
@@ -354,15 +354,15 @@ class _BusinessInfoState extends State<BusinessInfo> {
                           this._rating = _rating;
                         }),
                         ratingWidget: RatingWidget(
-                          full: Icon(
+                          full: const Icon(
                             Icons.star,
                             color: Colors.amber,
                           ),
-                          half: Icon(
+                          half: const Icon(
                             Icons.star_half,
                             color: Colors.amber,
                           ),
-                          empty: Icon(
+                          empty: const Icon(
                             Icons.star,
                             color: Colors.grey,
                           ),
