@@ -111,7 +111,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     "Name": _name!,
                     "Age": _age!,
                     "Gender": _gender!,
-                    "LQBTQ+": _isLGBTQ!,
+                    "LGBTQ+": _isLGBTQ!,
                     "Race": _ethnicity!,
                     "isAdmin": false,
                     "BusinessIDs": ""
