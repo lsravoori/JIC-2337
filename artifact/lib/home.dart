@@ -24,7 +24,6 @@ class _HomeScreen extends State<HomeScreen> {
   List<Widget> list =
       []; //this is a list of children for the scaffold that shows up on screen
   List<Widget> list2 = []; //this is the list for the second column
-  List<Widget> list3 = [];
   List<bool> checked = <bool>[]; //this is the checkbox values
   List<String> zips = [
     "30341",
@@ -40,7 +39,7 @@ class _HomeScreen extends State<HomeScreen> {
     "30309",
     "30318",
     "30339",
-    "30332",
+    //"30332",
     "30080",
     "30363",
     "30313",
@@ -72,14 +71,13 @@ class _HomeScreen extends State<HomeScreen> {
     //this methods creates the checkboxes and adds them to two seperate lists (one for each column)
     list.clear();
     list2.clear();
-    list3.clear();
     zips.sort((a, b) {
       //sorting in ascending order
       return a.compareTo(b);
     });
     for (int i = 0; i < zips.length; i++) {
       checked.add(false);
-      if (i < zips.length / 3) {
+      if (i < zips.length / 2) {
         list.add(SizedBox(
             width: 150,
             child: CheckboxListTile(
@@ -94,23 +92,8 @@ class _HomeScreen extends State<HomeScreen> {
                     }
                   });
                 })));
-      } else if (i < zips.length / 3 * 2) {
-        list2.add(SizedBox(
-            width: 150,
-            child: CheckboxListTile(
-                value: checked[i],
-                checkColor: Colors.white,
-                title: Text(zips[i]),
-                onChanged: (bool? values) {
-                  setState(() {
-                    checked[i] = values!;
-                    if (values = true) {
-                      returnMap[zips[i]] = i;
-                    }
-                  });
-                })));
       } else {
-        list3.add(SizedBox(
+        list2.add(SizedBox(
             width: 150,
             child: CheckboxListTile(
                 value: checked[i],
@@ -181,6 +164,7 @@ class _HomeScreen extends State<HomeScreen> {
       body: SingleChildScrollView(
         //this allows us to scroll
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -193,10 +177,6 @@ class _HomeScreen extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: list2),
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: list3),
               ],
             ),
             SizedBox(
