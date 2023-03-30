@@ -2,9 +2,6 @@ import 'package:artifact/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../../login.dart';
-import 'package:firebase_core/firebase_core.dart';
-import '../../../business_search.dart';
 
 class RegistrationPage extends StatefulWidget {
   @override
@@ -20,25 +17,29 @@ class _RegistrationPageState extends State<RegistrationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registration Page'),
+        title: const Text('User Registration Page'),
         backgroundColor: Colors.blueGrey,
       ),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              const Padding(
+                padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                child: Text('Please input the information to creat an account'),
+              ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: const InputDecoration(labelText: 'Name'),
                 validator: (input) => input == null ? 'Invalid Name' : null,
                 onChanged: (input) => setState(() => _name = input!),
                 onSaved: (input) => _name = input,
               ),
               TextFormField(
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Enter your age',
                 ),
                 validator: (value) {
@@ -56,12 +57,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 },
               ),
               DropdownButtonFormField(
-                decoration: InputDecoration(labelText: 'Gender'),
+                decoration: const InputDecoration(labelText: 'Gender'),
                 value: _gender,
                 items: ['Woman', 'Man', 'Non-binary', 'Other']
                     .map((gender) => DropdownMenuItem(
-                          child: Text(gender),
                           value: gender,
+                          child: Text(gender),
                         ))
                     .toList(),
                 validator: (input) =>
@@ -70,7 +71,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 onSaved: (input) => _gender = input!,
               ),
               DropdownButtonFormField(
-                decoration: InputDecoration(labelText: 'Ethnicity'),
+                decoration: const InputDecoration(labelText: 'Ethnicity'),
                 value: _ethnicity,
                 items: [
                   'White',
@@ -84,8 +85,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   'Other'
                 ]
                     .map((ethnicity) => DropdownMenuItem(
-                          child: Text(ethnicity),
                           value: ethnicity,
+                          child: Text(ethnicity),
                         ))
                     .toList(),
                 validator: (input) =>
@@ -94,7 +95,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 onSaved: (input) => _ethnicity = input!,
               ),
               CheckboxListTile(
-                title: Text("LGBTQ+?"),
+                title: const Text("LGBTQ+?"),
                 value: _isLGBTQ,
                 onChanged: (newValue) {
                   setState(() {
@@ -106,7 +107,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               ),
               MaterialButton(
                 onPressed: () {
-                  Map<String, Object>? testData = Map<String, Object>();
+                  Map<String, Object>? testData = <String, Object>{};
                   testData.addAll({
                     "Name": _name!,
                     "Age": _age!,
@@ -124,7 +125,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   usersRef.doc(uid).set(testData);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    MaterialPageRoute(builder: (context) => const HomeScreen()),
                   );
                   //_submit uncomment when submit implemented
                 },
@@ -144,7 +145,4 @@ class _RegistrationPageState extends State<RegistrationPage> {
       ),
     );
   }
-  // void _submit() async {
-  // Todo implement firebase auth when submit is pressed
-  //}
 }

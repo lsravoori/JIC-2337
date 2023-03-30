@@ -2,12 +2,9 @@ import 'package:artifact/admin_business.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../login.dart';
-import '../../../business_search.dart';
-import '../../../admin_business.dart';
-import '../../../home.dart';
 import '../../../admin.dart';
-import '../../../account_page.dart';
 
 class AdminBusinessInfo extends StatefulWidget {
   const AdminBusinessInfo({
@@ -26,24 +23,22 @@ class AdminBusinessInfo extends StatefulWidget {
 class _AdminBusinessInfo extends State<AdminBusinessInfo> {
   var business = ""; //name of the business
   Map<String, Object>? businessInfo =
-      Map<String, Object>(); //hashmap of the business details
+      <String, Object>{}; //hashmap of the business details
   List<Widget> infoList =
       []; //unused for now, but will be used for creation of the scaffold
   int number = 3;
   double _rating = 0;
   double avgRating = 0;
 
-  _AdminBusinessInfo(String business, int number) {
-    this.business = business;
+  _AdminBusinessInfo(this.business, this.number) {
     getInformation(business);
-    this.number = number;
     //this.infoList = createInfoWidgets(businessInfo); //unused for now, will probably delete/repurpose
   }
 
   Future<QuerySnapshot> getInformation(business) async {
     _selectedIndex = number;
     //gets information of the businesses (by name) and puts into a hashmap
-    var retVal = Map<String, Object>(); //temp hashmap for collection
+    var retVal = <String, Object>{}; //temp hashmap for collection
 
     // gets a document from the collection if it exists and retrieves its info
     CollectionReference businesses =
@@ -56,7 +51,7 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
             documentSnapshot.data() as Map<String, dynamic>?;
         documentFields?.forEach((key, value) {
           //collects the from a hashmap and moves to temp hashmap (inefficient, make better later)
-          retVal.addAll({"$key": documentFields["$key"]});
+          retVal.addAll({key: documentFields[key]});
         });
       }
     });
@@ -77,30 +72,16 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
   Scaffold makeSecondScaffold() {
     //makes the scaffold for the business_info page
     AppBar appBarInfo;
-    if (businessInfo?["Verified"] == true) {
-      appBarInfo = AppBar(
-        title: Row(children: <Widget>[
-          Text("${businessInfo!['Business Name']}"),
-          const Icon(Icons.check_circle_outline),
-        ]),
-        backgroundColor: Colors.blueGrey,
-      );
-    } else {
-      appBarInfo = AppBar(
-        title: Text("${businessInfo!['Business Name']}"),
-        backgroundColor: Colors.blueGrey,
-      );
-    }
     Map<String, dynamic> ratingMap =
         businessInfo!['Ratings'] as Map<String, dynamic>;
     final auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
-    if (this._rating == 0) {
+    int count = 0;
+    if (_rating == 0) {
       if (ratingMap.containsKey("$uid")) {
-        this._rating = ratingMap["$uid"]!;
+        _rating = ratingMap["$uid"]!;
       }
-      int count = 0;
       ratingMap.forEach(((key, value) {
         avgRating = avgRating + value;
         count++;
@@ -110,6 +91,52 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
       } else {
         avgRating = avgRating / count;
       }
+    }
+    if (businessInfo?["Verified"] == true) {
+      appBarInfo = AppBar(
+        title: Row(children: <Widget>[
+          Text("${businessInfo!['Business Name']}"),
+          const Icon(Icons.check_circle_outline),
+          RatingBarIndicator(
+            rating: avgRating,
+            itemBuilder: (context, index) => const Icon(
+              Icons.star,
+              color: Colors.amber,
+            ),
+            itemCount: 5,
+            itemSize: 20.0,
+            direction: Axis.horizontal,
+          ),
+          Text(
+            "$count reviews",
+            style: const TextStyle(fontSize: 10),
+          )
+        ]),
+        backgroundColor: Colors.blueGrey,
+      );
+    } else {
+      appBarInfo = AppBar(
+        title: Row(
+          children: [
+            Text("${businessInfo!['Business Name']}"),
+            RatingBarIndicator(
+              rating: avgRating,
+              itemBuilder: (context, index) => const Icon(
+                Icons.star,
+                color: Colors.amber,
+              ),
+              itemCount: 5,
+              itemSize: 20.0,
+              direction: Axis.horizontal,
+            ),
+            Text(
+              "$count reviews",
+              style: const TextStyle(fontSize: 10),
+            )
+          ],
+        ),
+        backgroundColor: Colors.blueGrey,
+      );
     }
     return Scaffold(
       backgroundColor: Colors.white24,
@@ -136,125 +163,112 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 2, 2),
+                padding: const EdgeInsets.fromLTRB(10, 10, 2, 2),
                 child: Text("Logo: ${businessInfo!['Logo']}",
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
             const Divider(
               height: 20,
-              thickness: 3,
+              thickness: 1,
               indent: 0,
               endIndent: 0,
               color: Colors.black,
             ),
             Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
                 child: Text("Category: ${businessInfo!['Category']}",
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
             const Divider(
               height: 20,
-              thickness: 3,
+              thickness: 1,
               indent: 0,
               endIndent: 0,
               color: Colors.black,
             ),
             Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Phone Number: ${businessInfo!['Phone Number']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 3,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Hours: ${businessInfo!['Hours']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 3,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Address: ${businessInfo!['Street Name']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 3,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Zipcode: ${businessInfo!['Zipcode']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 3,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
                 child: Text("Details: ${businessInfo!['Business Details']}",
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
             const Divider(
               height: 20,
-              thickness: 3,
+              thickness: 1,
               indent: 0,
               endIndent: 0,
               color: Colors.black,
             ),
             Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
+                child: Text("Phone Number: ${businessInfo!['Phone Number']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            const Divider(
+              height: 20,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black,
+            ),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
+                child: Text("Hours: ${businessInfo!['Hours']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            const Divider(
+              height: 20,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black,
+            ),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
+                child: Text("Address: ${businessInfo!['Street Name']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            const Divider(
+              height: 20,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black,
+            ),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
+                child: Text("Zipcode: ${businessInfo!['Zipcode']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            const Divider(
+              height: 20,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black,
+            ),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
                 child: Text("Website: ${businessInfo!['Website']}",
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
             const Divider(
               height: 20,
-              thickness: 3,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Rating: $avgRating/5",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 3,
+              thickness: 1,
               indent: 0,
               endIndent: 0,
               color: Colors.black,
             ),
             const Padding(
                 padding: EdgeInsets.fromLTRB(10, 0, 2, 2),
-                child: Text("See something off?",
+                child: Text("Actions:",
                     textAlign: TextAlign.left,
                     style: TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0), fontSize: 15))),
@@ -297,13 +311,15 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
                 ),
               ),
             ),
-            ElevatedButton(
+            TextButton(
               child: Container(
-                child: const Text(
-                  "Clear Flags?",
-                  style: TextStyle(color: Colors.white, fontSize: 10.0),
-                ),
-              ),
+                  color: Colors.lightGreenAccent,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                  child: const Text(
+                    "Clear Flags",
+                    style: TextStyle(fontSize: 10.0),
+                  )),
               onPressed: () => showDialog<String>(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
@@ -322,7 +338,6 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
                 ),
               ),
             ),
-
           ],
         ),
       ),
@@ -351,50 +366,55 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
     );
   }
 
-
   void deleteBusiness(String business, Map<String, Object>? businessInfo) {
-    CollectionReference businesses = FirebaseFirestore.instance.collection('Businesses');
-    CollectionReference delBusinesses = FirebaseFirestore.instance.collection('DeletedBusinesses');
-    CollectionReference users = FirebaseFirestore.instance.collection('Accounts');
+    CollectionReference businesses =
+        FirebaseFirestore.instance.collection('Businesses');
+    CollectionReference delBusinesses =
+        FirebaseFirestore.instance.collection('DeletedBusinesses');
+    CollectionReference users =
+        FirebaseFirestore.instance.collection('Accounts');
     businesses.doc(business).get().then((DocumentSnapshot documentSnapshot) {
       //creates a snapshot for the business by name
       if (documentSnapshot.exists) {
         //checks if the business with the given name exists
-        Map<String, dynamic>? documentFields = documentSnapshot.data() as Map<String, dynamic>?;
+        Map<String, dynamic>? documentFields =
+            documentSnapshot.data() as Map<String, dynamic>?;
         if (documentFields != null) {
           //Find out the userID below and remove businessID from their list of businesses.
           if (documentFields.keys.toList().contains("UserID")) {
             String userID = documentFields["UserID"];
             users.doc(userID).get().then((DocumentSnapshot userSnapshot) {
               if (userSnapshot.exists) {
-                Map<String, dynamic>? userFields = userSnapshot.data() as Map<String, dynamic>?;
+                Map<String, dynamic>? userFields =
+                    userSnapshot.data() as Map<String, dynamic>?;
                 if (userFields != null) {
                   if (userFields.keys.toList().contains("BusinessIDs")) {
                     List businessIDS = userFields["BusinessIDs"];
                     businessIDS.remove(documentSnapshot.id);
-                    FirebaseFirestore.instance.collection('Accounts').doc(userID).update({'BusinessIDs' : businessIDS});
+                    FirebaseFirestore.instance
+                        .collection('Accounts')
+                        .doc(userID)
+                        .update({'BusinessIDs': businessIDS});
                   }
                 }
               }
             });
           }
           //Copy business document from the 'Businesses' collection to the 'DeletedBusinesses' collection
-          delBusinesses.doc(business).get().then((DocumentSnapshot delDocSnapshot) {
-            /*
-            if (delDocSnapshot.exists) {
-              FirebaseFirestore.instance.collection('DeletedBusinesses').doc(documentSnapshot.id).set(documentFields);
-            } else {
-              FirebaseFirestore.instance.collection('DeletedBusinesses').doc(documentSnapshot.id).set(documentFields);
-            }
-            */
-            FirebaseFirestore.instance.collection('DeletedBusinesses').doc(documentSnapshot.id).set(documentFields);
+          delBusinesses
+              .doc(business)
+              .get()
+              .then((DocumentSnapshot delDocSnapshot) {
+            FirebaseFirestore.instance
+                .collection('DeletedBusinesses')
+                .doc(documentSnapshot.id)
+                .set(documentFields);
           });
         }
         businesses.doc(business).delete();
       }
     });
   }
-
 
   int _selectedIndex = 2;
   Map<String, int> random = {};
