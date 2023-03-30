@@ -267,10 +267,81 @@ class _BusinessInfoState extends State<BusinessInfo> {
             ),
             const Padding(
                 padding: EdgeInsets.fromLTRB(10, 0, 2, 2),
-                child: Text("See something off?",
+                child: Text("Been Here?",
                     textAlign: TextAlign.left,
                     style: TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0), fontSize: 15))),
+            TextButton(
+              //creates a button that goes to the next filter page
+              child: Container(
+                color: Colors.blueGrey,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                child: const Text(
+                  "Review",
+                  style: TextStyle(color: Colors.white, fontSize: 15.0),
+                ),
+              ),
+              onPressed: () => showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                    title: const Text('Review this Business'),
+                    actions: <Widget>[
+                      RatingBar(
+                        initialRating: _rating,
+                        minRating: 1,
+                        maxRating: 5,
+                        allowHalfRating: true,
+                        onRatingUpdate: (_rating) => setState(() {
+                          this._rating = _rating;
+                        }),
+                        ratingWidget: RatingWidget(
+                          full: const Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          half: const Icon(
+                            Icons.star_half,
+                            color: Colors.amber,
+                          ),
+                          empty: const Icon(
+                            Icons.star,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          CollectionReference busRef = FirebaseFirestore
+                              .instance
+                              .collection('Businesses');
+                          final auth = FirebaseAuth.instance;
+                          final User? user = auth.currentUser;
+                          final uid = user?.uid;
+                          busRef
+                              .doc(business)
+                              .update({"Ratings.$uid": _rating});
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Submit'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Cancel'),
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(color: Colors.redAccent),
+                        ),
+                      ),
+                    ],
+                    actionsAlignment: MainAxisAlignment.end),
+              ),
+            ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(10, 10, 2, 2),
+                child: Text("See something off?",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 12))),
             TextButton(
               child: Container(
                 color: Colors.red,
@@ -330,72 +401,13 @@ class _BusinessInfoState extends State<BusinessInfo> {
                     ),
                     TextButton(
                       onPressed: () => Navigator.pop(context, 'Cancel'),
-                      child: const Text('Cancel'),
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(color: Colors.redAccent),
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ),
-            TextButton(
-              //creates a button that goes to the next filter page
-              child: Container(
-                color: Colors.blueGrey,
-                padding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                child: const Text(
-                  "Review",
-                  style: TextStyle(color: Colors.white, fontSize: 10.0),
-                ),
-              ),
-              onPressed: () => showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                    title: const Text('Review this Business'),
-                    actions: <Widget>[
-                      RatingBar(
-                        initialRating: _rating,
-                        minRating: 1,
-                        maxRating: 5,
-                        allowHalfRating: true,
-                        onRatingUpdate: (_rating) => setState(() {
-                          this._rating = _rating;
-                        }),
-                        ratingWidget: RatingWidget(
-                          full: const Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                          half: const Icon(
-                            Icons.star_half,
-                            color: Colors.amber,
-                          ),
-                          empty: const Icon(
-                            Icons.star,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () async {
-                          CollectionReference busRef = FirebaseFirestore
-                              .instance
-                              .collection('Businesses');
-                          final auth = FirebaseAuth.instance;
-                          final User? user = auth.currentUser;
-                          final uid = user?.uid;
-                          busRef
-                              .doc(business)
-                              .update({"Ratings.$uid": _rating});
-                          Navigator.pop(context);
-                        },
-                        child: const Text('Submit'),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'Cancel'),
-                        child: const Text('Cancel'),
-                      ),
-                    ],
-                    actionsAlignment: MainAxisAlignment.end),
               ),
             ),
           ],
@@ -404,7 +416,10 @@ class _BusinessInfoState extends State<BusinessInfo> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.logout_outlined),
+            icon: Icon(
+              Icons.logout_outlined,
+              color: Colors.redAccent,
+            ),
             label: 'Logout',
           ),
           BottomNavigationBarItem(
@@ -422,7 +437,7 @@ class _BusinessInfoState extends State<BusinessInfo> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         showUnselectedLabels: true,
-        unselectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
       ),
     );
   }

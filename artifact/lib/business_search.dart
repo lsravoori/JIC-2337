@@ -268,10 +268,12 @@ class _FirstRoute extends State<FirstRoute> {
             children: list),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        //nav bar
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.logout_outlined),
+            icon: Icon(
+              Icons.logout_outlined,
+              color: Colors.redAccent,
+            ),
             label: 'Logout',
           ),
           BottomNavigationBarItem(
@@ -289,7 +291,7 @@ class _FirstRoute extends State<FirstRoute> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         showUnselectedLabels: true,
-        unselectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
       ),
     );
   }

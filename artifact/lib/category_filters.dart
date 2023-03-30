@@ -177,10 +177,12 @@ class _CategoryScreen extends State<CategoryScreen> {
         ],
       )),
       bottomNavigationBar: BottomNavigationBar(
-        //navigation bar
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.logout_outlined),
+            icon: Icon(
+              Icons.logout_outlined,
+              color: Colors.redAccent,
+            ),
             label: 'Logout',
           ),
           BottomNavigationBarItem(
@@ -198,7 +200,7 @@ class _CategoryScreen extends State<CategoryScreen> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         showUnselectedLabels: true,
-        unselectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
       ),
     );
   }

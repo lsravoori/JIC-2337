@@ -250,7 +250,10 @@ class _AdminBusiness extends State<AdminBusiness> {
         //this is the setup for the bottom navigation bar
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.logout_outlined),
+            icon: Icon(
+              Icons.logout_outlined,
+              color: Colors.redAccent,
+            ),
             label: 'Logout',
           ),
           BottomNavigationBarItem(
@@ -266,7 +269,7 @@ class _AdminBusiness extends State<AdminBusiness> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         showUnselectedLabels: true,
-        unselectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
       ),
     );
   }

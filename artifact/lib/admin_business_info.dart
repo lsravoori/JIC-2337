@@ -345,7 +345,10 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
         //this is the setup for the bottom navigation bar
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.logout_outlined),
+            icon: Icon(
+              Icons.logout_outlined,
+              color: Colors.redAccent,
+            ),
             label: 'Logout',
           ),
           BottomNavigationBarItem(
@@ -361,7 +364,7 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         showUnselectedLabels: true,
-        unselectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
       ),
     );
   }
@@ -440,9 +443,7 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
     } else if (index == 1) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => const AdminBusiness(
-            title: 'admin',
-          ),
+          builder: (context) => const AdminBusiness(title: 'admin'),
         ),
       );
     }
