@@ -24,24 +24,22 @@ class BusinessInfo extends StatefulWidget {
 class _BusinessInfoState extends State<BusinessInfo> {
   var business = ""; //name of the business
   Map<String, Object>? businessInfo =
-      Map<String, Object>(); //hashmap of the business details
+      <String, Object>{}; //hashmap of the business details
   List<Widget> infoList =
       []; //unused for now, but will be used for creation of the scaffold
   int number = 3;
   double _rating = 0;
   double avgRating = 0;
 
-  _BusinessInfoState(String business, int number) {
-    this.business = business;
+  _BusinessInfoState(this.business, this.number) {
     getInformation(business);
-    this.number = number;
     //this.infoList = createInfoWidgets(businessInfo); //unused for now, will probably delete/repurpose
   }
 
   Future<QuerySnapshot> getInformation(business) async {
     _selectedIndex = number;
     //gets information of the businesses (by name) and puts into a hashmap
-    var retVal = Map<String, Object>(); //temp hashmap for collection
+    var retVal = <String, Object>{}; //temp hashmap for collection
 
     // gets a document from the collection if it exists and retrieves its info
     CollectionReference businesses =
@@ -74,41 +72,16 @@ class _BusinessInfoState extends State<BusinessInfo> {
 
   Scaffold makeSecondScaffold() {
     //makes the scaffold for the business_info page
-    AppBar appBarInfo;
-    if (businessInfo?["Verified"] == true) {
-      appBarInfo = AppBar(
-        title: Row(children: <Widget>[
-          Text("${businessInfo!['Business Name']}"),
-          const Icon(Icons.check_circle_outline),
-        ]),
-        backgroundColor: Colors.blueGrey,
-      );
-    }
-    // if (businessInfo?["Flag Count"] != 0) {
-    //   appBarInfo = AppBar(
-    //     title: Row(children: <Widget>[
-    //       Text("${businessInfo!['Business Name']}"),
-    //       const Icon(Icons.flag),
-    //     ]),
-    //     backgroundColor: Colors.blueGrey,
-    //   );
-    //}
-    else {
-      appBarInfo = AppBar(
-        title: Text("${businessInfo!['Business Name']}"),
-        backgroundColor: Colors.blueGrey,
-      );
-    }
     Map<String, dynamic> ratingMap =
         businessInfo!['Ratings'] as Map<String, dynamic>;
     final auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
-    if (this._rating == 0) {
+    int count = 0;
+    if (_rating == 0) {
       if (ratingMap.containsKey("$uid")) {
-        this._rating = ratingMap["$uid"]!;
+        _rating = ratingMap["$uid"]!;
       }
-      int count = 0;
       ratingMap.forEach(((key, value) {
         avgRating = avgRating + value;
         count++;
@@ -118,6 +91,51 @@ class _BusinessInfoState extends State<BusinessInfo> {
       } else {
         avgRating = avgRating / count;
       }
+    }
+    AppBar appBarInfo;
+    if (businessInfo?["Verified"] == true) {
+      appBarInfo = AppBar(
+        title: Row(children: <Widget>[
+          Text("${businessInfo!['Business Name']}"),
+          const Icon(Icons.check_circle_outline),
+          RatingBarIndicator(
+            rating: avgRating,
+            itemBuilder: (context, index) => const Icon(
+              Icons.star,
+              color: Colors.amber,
+            ),
+            itemCount: 5,
+            itemSize: 20.0,
+            direction: Axis.horizontal,
+          ),
+          Text(
+            "$count reviews",
+            style: const TextStyle(fontSize: 10),
+          )
+        ]),
+        backgroundColor: Colors.blueGrey,
+      );
+    } else {
+      appBarInfo = AppBar(
+        title: Row(children: <Widget>[
+          Text("${businessInfo!['Business Name']}"),
+          RatingBarIndicator(
+            rating: avgRating,
+            itemBuilder: (context, index) => const Icon(
+              Icons.star,
+              color: Colors.amber,
+            ),
+            itemCount: 5,
+            itemSize: 20.0,
+            direction: Axis.horizontal,
+          ),
+          Text(
+            "$count reviews",
+            style: const TextStyle(fontSize: 10),
+          )
+        ]),
+        backgroundColor: Colors.blueGrey,
+      );
     }
     return Scaffold(
       backgroundColor: Colors.white24,
@@ -144,130 +162,187 @@ class _BusinessInfoState extends State<BusinessInfo> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 2, 2),
+                padding: const EdgeInsets.fromLTRB(10, 10, 2, 2),
                 child: Text("Logo: ${businessInfo!['Logo']}",
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
             const Divider(
               height: 20,
-              thickness: 3,
+              thickness: 1,
               indent: 0,
               endIndent: 0,
               color: Colors.black,
             ),
             Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Category: ${businessInfo!['Category']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 3,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Phone Number: ${businessInfo!['Phone Number']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 3,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Hours: ${businessInfo!['Hours']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 3,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Address: ${businessInfo!['Street Name']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 3,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Zipcode: ${businessInfo!['Zipcode']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 3,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
                 child: Text("Details: ${businessInfo!['Business Details']}",
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
             const Divider(
               height: 20,
-              thickness: 3,
+              thickness: 1,
               indent: 0,
               endIndent: 0,
               color: Colors.black,
             ),
             Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
+                child: Text("Category: ${businessInfo!['Category']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            const Divider(
+              height: 20,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black,
+            ),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
+                child: Text("Phone Number: ${businessInfo!['Phone Number']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            const Divider(
+              height: 20,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black,
+            ),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
+                child: Text("Hours: ${businessInfo!['Hours']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            const Divider(
+              height: 20,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black,
+            ),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
+                child: Text("Address: ${businessInfo!['Street Name']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            const Divider(
+              height: 20,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black,
+            ),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
+                child: Text("Zipcode: ${businessInfo!['Zipcode']}",
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
+            const Divider(
+              height: 20,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+              color: Colors.black,
+            ),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
                 child: Text("Website: ${businessInfo!['Website']}",
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
             const Divider(
               height: 20,
-              thickness: 3,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 2, 2),
-                child: Text("Rating: $avgRating/5",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 3,
+              thickness: 1,
               indent: 0,
               endIndent: 0,
               color: Colors.black,
             ),
             const Padding(
                 padding: EdgeInsets.fromLTRB(10, 0, 2, 2),
-                child: Text("See something off?",
+                child: Text("Been Here?",
                     textAlign: TextAlign.left,
                     style: TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0), fontSize: 15))),
             TextButton(
               //creates a button that goes to the next filter page
+              child: Container(
+                color: Colors.blueGrey,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                child: const Text(
+                  "Review",
+                  style: TextStyle(color: Colors.white, fontSize: 15.0),
+                ),
+              ),
+              onPressed: () => showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                    title: const Text('Review this Business'),
+                    actions: <Widget>[
+                      RatingBar(
+                        initialRating: _rating,
+                        minRating: 1,
+                        maxRating: 5,
+                        allowHalfRating: true,
+                        onRatingUpdate: (_rating) => setState(() {
+                          this._rating = _rating;
+                        }),
+                        ratingWidget: RatingWidget(
+                          full: const Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          half: const Icon(
+                            Icons.star_half,
+                            color: Colors.amber,
+                          ),
+                          empty: const Icon(
+                            Icons.star,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          CollectionReference busRef = FirebaseFirestore
+                              .instance
+                              .collection('Businesses');
+                          final auth = FirebaseAuth.instance;
+                          final User? user = auth.currentUser;
+                          final uid = user?.uid;
+                          busRef
+                              .doc(business)
+                              .update({"Ratings.$uid": _rating});
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Submit'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Cancel'),
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(color: Colors.redAccent),
+                        ),
+                      ),
+                    ],
+                    actionsAlignment: MainAxisAlignment.end),
+              ),
+            ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(10, 10, 2, 2),
+                child: Text("See something off?",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 12))),
+            TextButton(
               child: Container(
                 color: Colors.red,
                 padding:
@@ -326,69 +401,13 @@ class _BusinessInfoState extends State<BusinessInfo> {
                     ),
                     TextButton(
                       onPressed: () => Navigator.pop(context, 'Cancel'),
-                      child: const Text('Cancel'),
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(color: Colors.redAccent),
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ),
-            ElevatedButton(
-              //creates a button that goes to the next filter page
-              child: Container(
-                child: const Text(
-                  "Review",
-                  style: TextStyle(color: Colors.white, fontSize: 10.0),
-                ),
-              ),
-              onPressed: () => showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                    title: const Text('Review this Business'),
-                    actions: <Widget>[
-                      RatingBar(
-                        initialRating: _rating,
-                        minRating: 1,
-                        maxRating: 5,
-                        allowHalfRating: true,
-                        onRatingUpdate: (_rating) => setState(() {
-                          this._rating = _rating;
-                        }),
-                        ratingWidget: RatingWidget(
-                          full: Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                          half: Icon(
-                            Icons.star_half,
-                            color: Colors.amber,
-                          ),
-                          empty: Icon(
-                            Icons.star,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () async {
-                          CollectionReference busRef = FirebaseFirestore
-                              .instance
-                              .collection('Businesses');
-                          final auth = FirebaseAuth.instance;
-                          final User? user = auth.currentUser;
-                          final uid = user?.uid;
-                          busRef
-                              .doc(business)
-                              .update({"Ratings.$uid": _rating});
-                          Navigator.pop(context);
-                        },
-                        child: const Text('Submit'),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'Cancel'),
-                        child: const Text('Cancel'),
-                      ),
-                    ],
-                    actionsAlignment: MainAxisAlignment.end),
               ),
             ),
           ],
@@ -397,7 +416,10 @@ class _BusinessInfoState extends State<BusinessInfo> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.logout_outlined),
+            icon: Icon(
+              Icons.logout_outlined,
+              color: Colors.redAccent,
+            ),
             label: 'Logout',
           ),
           BottomNavigationBarItem(
@@ -415,7 +437,7 @@ class _BusinessInfoState extends State<BusinessInfo> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         showUnselectedLabels: true,
-        unselectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
       ),
     );
   }

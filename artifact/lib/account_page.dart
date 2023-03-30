@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../../login.dart';
-import 'package:firebase_core/firebase_core.dart';
 import '../../../business_search.dart';
 
 class AccountPage extends StatefulWidget {
@@ -18,7 +17,7 @@ class _AccountPageState extends State<AccountPage> {
   int? _age;
   bool? _isLGBTQ = false;
   final uid = FirebaseAuth.instance.currentUser?.uid;
-  Map<String, Object>? previousInfo = Map<String, Object>();
+  Map<String, Object>? previousInfo = <String, Object>{};
   bool firstUpdate = false;
 
   @override
@@ -30,18 +29,23 @@ class _AccountPageState extends State<AccountPage> {
           initializeInfo();
           return Scaffold(
             appBar: AppBar(
-              title: Text('Account Page'),
+              title: const Text('Account Information'),
               backgroundColor: Colors.blueGrey,
             ),
             body: Form(
               key: _formKey,
               child: SingleChildScrollView(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
+                      child: Text(
+                          'To edit, type, use the dropdowns, or click the checkbox.'),
+                    ),
                     TextFormField(
-                      decoration: InputDecoration(labelText: 'Name'),
+                      decoration: const InputDecoration(labelText: 'Name'),
                       initialValue: _name,
                       validator: (input) =>
                           input == null ? 'Invalid Name' : null,
@@ -50,8 +54,9 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                     TextFormField(
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'Enter your age',
+                        labelText: 'Age',
                       ),
                       initialValue: "$_age",
                       validator: (value) {
@@ -69,12 +74,12 @@ class _AccountPageState extends State<AccountPage> {
                       },
                     ),
                     DropdownButtonFormField(
-                      decoration: InputDecoration(labelText: 'Gender'),
+                      decoration: const InputDecoration(labelText: 'Gender'),
                       value: _gender,
                       items: ['Woman', 'Man', 'Non-binary', 'Other']
                           .map((gender) => DropdownMenuItem(
-                                child: Text(gender),
                                 value: gender,
+                                child: Text(gender),
                               ))
                           .toList(),
                       validator: (input) =>
@@ -83,7 +88,7 @@ class _AccountPageState extends State<AccountPage> {
                       onSaved: (input) => _gender = input!,
                     ),
                     DropdownButtonFormField(
-                      decoration: InputDecoration(labelText: 'Ethnicity'),
+                      decoration: const InputDecoration(labelText: 'Ethnicity'),
                       value: _ethnicity,
                       items: [
                         'White',
@@ -97,8 +102,8 @@ class _AccountPageState extends State<AccountPage> {
                         'Other'
                       ]
                           .map((ethnicity) => DropdownMenuItem(
-                                child: Text(ethnicity),
                                 value: ethnicity,
+                                child: Text(ethnicity),
                               ))
                           .toList(),
                       validator: (input) =>
@@ -108,7 +113,7 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                     CheckboxListTile(
                       //small issue here. clicking reloads the page, which with initializeInfo() means it cannot be changed. but without it always defaults to false
-                      title: Text("LGBTQ+?"),
+                      title: const Text("LGBTQ+?"),
                       value: _isLGBTQ,
                       onChanged: (newValue) {
                         setState(() {
@@ -118,27 +123,6 @@ class _AccountPageState extends State<AccountPage> {
                       controlAffinity: ListTileControlAffinity
                           .leading, //  <-- leading Checkbox
                     ),
-                    // MaterialButton(
-                    //   onPressed: () {
-                    //     Map<String, Object>? testData = Map<String, Object>();
-                    //     testData.addAll({
-                    //       "Name": _name!,
-                    //       "Age": _age!,
-                    //       "Gender": _gender!,
-                    //       "LQBTQ+": _isLGBTQ!,
-                    //       "Race": _ethnicity!
-                    //     });
-                    //     CollectionReference usersRef =
-                    //         FirebaseFirestore.instance.collection('Accounts');
-                    //     usersRef.doc(uid).update(testData);
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(builder: (context) => HomeScreen()),
-                    //     );
-                    //     //_submit uncomment when submit implemented
-                    //   },
-                    //   child: Text('Save'),
-                    // ),
                     TextButton(
                       //creates a button that contains a name of a business in it
                       child: Container(
@@ -151,7 +135,7 @@ class _AccountPageState extends State<AccountPage> {
                         ),
                       ),
                       onPressed: () {
-                        Map<String, Object>? testData = Map<String, Object>();
+                        Map<String, Object>? testData = <String, Object>{};
                         testData.addAll({
                           "Name": _name!,
                           "Age": _age!,
@@ -164,22 +148,12 @@ class _AccountPageState extends State<AccountPage> {
                         usersRef.doc(uid).update(testData);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => const HomeScreen()),
                         );
                         //_submit uncomment when submit implemented
                       },
                     ),
-                    // MaterialButton(
-                    //   onPressed: () {
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //           builder: (context) => BusinessRegistrationPage()),
-                    //     );
-                    //     //_submit uncomment when submit implemented
-                    //   },
-                    //   child: Text('Add a Business'),
-                    // ),
                     const Padding(
                       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                     ),
@@ -210,7 +184,10 @@ class _AccountPageState extends State<AccountPage> {
             bottomNavigationBar: BottomNavigationBar(
               items: const <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.logout_outlined),
+                  icon: Icon(
+                    Icons.logout_outlined,
+                    color: Colors.redAccent,
+                  ),
                   label: 'Logout',
                 ),
                 BottomNavigationBarItem(
@@ -228,7 +205,7 @@ class _AccountPageState extends State<AccountPage> {
               currentIndex: _selectedIndex,
               onTap: _onItemTapped,
               showUnselectedLabels: true,
-              unselectedItemColor: Colors.black,
+              unselectedItemColor: Colors.grey,
             ),
           );
         } else {
@@ -257,7 +234,7 @@ class _AccountPageState extends State<AccountPage> {
     } else if (index == 1) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => HomeScreen(),
+          builder: (context) => const HomeScreen(),
         ),
       );
     } else if (index == 3) {
@@ -285,7 +262,7 @@ class _AccountPageState extends State<AccountPage> {
 
   Future<QuerySnapshot> getInformation(uid) async {
     //gets information of the user (by name) and puts into a hashmap
-    var retVal = Map<String, Object>(); //temp hashmap for collection
+    var retVal = <String, Object>{}; //temp hashmap for collection
 
     // gets a document from the collection if it exists and retrieves its info
     CollectionReference businesses =
@@ -298,7 +275,7 @@ class _AccountPageState extends State<AccountPage> {
             documentSnapshot.data() as Map<String, dynamic>?;
         documentFields?.forEach((key, value) {
           //collects the data from a hashmap and moves to temp hashmap (inefficient, make better later)
-          retVal.addAll({"$key": documentFields["$key"]});
+          retVal.addAll({key: documentFields[key]});
         });
       }
     });

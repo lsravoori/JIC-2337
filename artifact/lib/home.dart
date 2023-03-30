@@ -39,7 +39,7 @@ class _HomeScreen extends State<HomeScreen> {
     "30309",
     "30318",
     "30339",
-    "30332",
+    //"30332",
     "30080",
     "30363",
     "30313",
@@ -77,7 +77,7 @@ class _HomeScreen extends State<HomeScreen> {
     });
     for (int i = 0; i < zips.length; i++) {
       checked.add(false);
-      if (i <= zips.length / 2) {
+      if (i < zips.length / 2) {
         list.add(SizedBox(
             width: 150,
             child: CheckboxListTile(
@@ -109,28 +109,6 @@ class _HomeScreen extends State<HomeScreen> {
                 })));
       }
     }
-    //the button below is used to navigate to the next page
-    list.add(SizedBox(
-        width: 150,
-        child: TextButton(
-            //creates a button that goes to the next filter page
-            child: Container(
-              color: Colors.blueGrey,
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-              child: const Text(
-                "Next",
-                style: TextStyle(color: Colors.white, fontSize: 15.0),
-              ),
-            ),
-            onPressed: () {
-              //button moves to the category filter page
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        CategoryScreen(receivedMap: returnMap)),
-              );
-            })));
   }
 
   Map<String, int> defaultMap =
@@ -184,25 +162,55 @@ class _HomeScreen extends State<HomeScreen> {
         automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
-          //this allows us to scroll
-          child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: list),
-          Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: list2),
-        ],
-      )),
+        //this allows us to scroll
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: list),
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: list2),
+              ],
+            ),
+            SizedBox(
+                child: TextButton(
+                    //creates a button that goes to the next filter page
+                    child: Container(
+                      color: Colors.blueGrey,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 10),
+                      child: const Text(
+                        "Next: Select Business Type",
+                        style: TextStyle(color: Colors.white, fontSize: 15.0),
+                      ),
+                    ),
+                    onPressed: () {
+                      //button moves to the category filter page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                CategoryScreen(receivedMap: returnMap)),
+                      );
+                    })),
+            const Padding(padding: EdgeInsets.all(20)),
+          ],
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        //this is the setup for the bottom navigation bar
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.logout_outlined),
+            icon: Icon(
+              Icons.logout_outlined,
+              color: Colors.redAccent,
+            ),
             label: 'Logout',
           ),
           BottomNavigationBarItem(
@@ -220,7 +228,7 @@ class _HomeScreen extends State<HomeScreen> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         showUnselectedLabels: true,
-        unselectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
       ),
     );
   }

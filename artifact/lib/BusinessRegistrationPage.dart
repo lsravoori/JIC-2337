@@ -2,10 +2,6 @@ import 'package:artifact/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import '../../../login.dart';
-import 'package:firebase_core/firebase_core.dart';
-import '../../../business_search.dart';
 
 class BusinessRegistrationPage extends StatefulWidget {
   const BusinessRegistrationPage({Key? key}) : super(key: key);
@@ -36,7 +32,7 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Business Registration'),
+        title: const Text('Business Registration'),
         backgroundColor: Colors.blueGrey,
       ),
       body: SingleChildScrollView(
@@ -44,46 +40,68 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
         child: Column(
           //crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            const Padding(
+              padding: EdgeInsets.all(5),
+              child: Text('Please input all information to add your business.'),
+            ),
             TextFormField(
-                decoration: InputDecoration(labelText: 'Business Name'),
+                decoration: const InputDecoration(labelText: 'Business Name'),
                 onChanged: (input) => setState(() => _businessName = input!)),
             TextFormField(
-                decoration: InputDecoration(labelText: 'Street Address'),
+                decoration: const InputDecoration(labelText: 'Street Address'),
                 onChanged: (input) => setState(() => _streetAddress = input!)),
             TextFormField(
-                decoration: InputDecoration(labelText: 'State'),
+                decoration: const InputDecoration(labelText: 'State'),
                 onChanged: (input) => setState(() => _state = input!)),
+            DropdownButtonFormField(
+              decoration:
+                  const InputDecoration(labelText: 'Category of Business'),
+              value: _category,
+              items: [
+                "Women",
+                "Non-Binary",
+                "LGBT+",
+                "Black",
+                "Hispanic",
+                "Asian",
+                "Pacific Islander",
+                "Native American",
+                "Middle Eastern"
+              ]
+                  .map((category) => DropdownMenuItem(
+                        value: category,
+                        child: Text(category),
+                      ))
+                  .toList(),
+              onChanged: (input) => setState(() => _category = input!),
+              onSaved: (input) => _category = input!,
+            ),
             TextFormField(
-                decoration: InputDecoration(labelText: 'Category'),
-                onChanged: (input) => _category = input!),
-            TextFormField(
-                decoration: InputDecoration(labelText: 'Zipcode'),
+                decoration: const InputDecoration(labelText: 'Zipcode'),
                 onChanged: (value) => _zipcode = int.parse(value!)),
             TextFormField(
-                decoration: InputDecoration(labelText: 'Hours'),
+                decoration: const InputDecoration(labelText: 'Hours'),
                 onChanged: (input) => setState(() => _hours = input!)),
             TextFormField(
-                decoration: InputDecoration(labelText: 'Description'),
+                decoration: const InputDecoration(labelText: 'Description'),
                 onChanged: (input) => setState(() => _description = input!)),
             TextFormField(
-                decoration: InputDecoration(labelText: 'Owner\'s Name'),
+                decoration: const InputDecoration(labelText: 'Owner\'s Name'),
                 onChanged: (input) => setState(() => _ownerName = input!)),
             DropdownButtonFormField(
-              decoration: InputDecoration(labelText: 'Owner\'s Gender'),
+              decoration: const InputDecoration(labelText: 'Owner\'s Gender'),
               value: _gender,
               items: ['Woman', 'Man', 'Non-binary', 'Other']
                   .map((gender) => DropdownMenuItem(
-                        child: Text(gender),
                         value: gender,
+                        child: Text(gender),
                       ))
                   .toList(),
-              //validator: (input) =>
-              //input == null ? 'Please select a gender' : null,
               onChanged: (input) => setState(() => _gender = input!),
               onSaved: (input) => _gender = input!,
             ),
             DropdownButtonFormField(
-              decoration: InputDecoration(labelText: 'Ethnicity'),
+              decoration: const InputDecoration(labelText: 'Ethnicity'),
               value: _ethnicity,
               items: [
                 'White',
@@ -95,8 +113,8 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
                 'Other'
               ]
                   .map((ethnicity) => DropdownMenuItem(
-                        child: Text(ethnicity),
                         value: ethnicity,
+                        child: Text(ethnicity),
                       ))
                   .toList(),
               //validator: (input) =>
@@ -105,22 +123,22 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
               onSaved: (input) => _ethnicity = input!,
             ),
             TextFormField(
-                decoration: InputDecoration(labelText: 'Phone Number'),
+                decoration: const InputDecoration(labelText: 'Phone Number'),
                 onChanged: (input) => setState(() => _phoneNumber = input!)),
             TextFormField(
-                decoration: InputDecoration(labelText: 'Website'),
+                decoration: const InputDecoration(labelText: 'Website'),
                 onChanged: (input) => setState(() => _website = input!)),
             TextFormField(
-                decoration: InputDecoration(labelText: 'Logo'),
+                decoration: const InputDecoration(labelText: 'Logo'),
                 onChanged: (input) => setState(() => _logo = input!)),
             CheckboxListTile(
-              title: Text("LGBTQ+ owned?"),
+              title: const Text("LGBTQ+ owned?"),
               value: _isLGBTQ,
               onChanged: (value) => setState(() => _isLGBTQ = value!),
               controlAffinity:
                   ListTileControlAffinity.leading, //  <-- leading Checkbox
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               child: Container(
                 color: Colors.blueGrey,
@@ -132,13 +150,14 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
                 ),
               ),
               onPressed: () {
-                // TODO: Save the user input to a database or file
+                // Todo: Save the user input to a database or file
                 showDialog(
                   context: context,
                   builder: (context) {
                     return AlertDialog(
-                      title: Text('Registration Successful'),
-                      content: Text('Thank you for registering your business.'),
+                      title: const Text('Registration Successful'),
+                      content: const Text(
+                          'Thank you for registering your business.'),
                       actions: <Widget>[
                         TextButton(
                           child: Container(
