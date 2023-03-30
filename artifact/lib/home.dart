@@ -187,7 +187,7 @@ class _HomeScreen extends State<HomeScreen> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 10),
                       child: const Text(
-                        "Next",
+                        "Next: Select Business Type",
                         style: TextStyle(color: Colors.white, fontSize: 15.0),
                       ),
                     ),
@@ -199,7 +199,8 @@ class _HomeScreen extends State<HomeScreen> {
                             builder: (context) =>
                                 CategoryScreen(receivedMap: returnMap)),
                       );
-                    }))
+                    })),
+            const Padding(padding: EdgeInsets.all(20)),
           ],
         ),
       ),

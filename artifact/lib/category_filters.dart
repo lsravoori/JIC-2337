@@ -49,7 +49,7 @@ class _CategoryScreen extends State<CategoryScreen> {
       checked.add(false);
       if (i < 3) {
         list.add(SizedBox(
-            width: 150,
+            width: 200,
             child: CheckboxListTile(
                 value: checked[i],
                 checkColor: Colors.white,
@@ -64,7 +64,7 @@ class _CategoryScreen extends State<CategoryScreen> {
                 })));
       } else {
         list2.add(SizedBox(
-            width: 150,
+            width: 200,
             child: CheckboxListTile(
                 value: checked[i],
                 checkColor: Colors.white,
@@ -79,33 +79,6 @@ class _CategoryScreen extends State<CategoryScreen> {
                 })));
       }
     }
-    //the button below navigates to the business search page
-    list2.add(SizedBox(
-        width: 150,
-        child: TextButton(
-            //creates a button that contains a name of a business in it
-            child: Container(
-              color: Colors.blueGrey,
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-              child: const Text(
-                "Submit",
-                style: TextStyle(color: Colors.white, fontSize: 15.0),
-              ),
-            ),
-            onPressed: () {
-              if (widget.receivedMap.isEmpty) {
-                widget.receivedMap["empty"] = 2;
-              }
-              //button moves to the business_info page that displays all the details (that code is in business_info.dart)
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => FirstRoute(
-                          title: 'IDK',
-                          receivedMap: widget.receivedMap,
-                        )),
-              );
-            })));
   }
 
   Map<String, int> defaultMap = {}; //used if viewing all (from nav. bar)
@@ -159,17 +132,48 @@ class _CategoryScreen extends State<CategoryScreen> {
       ),
       body: SingleChildScrollView(
           //allows scrolling
-          child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          child: Column(
         children: [
-          Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: list2),
-          Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: list),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: list2),
+              Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: list),
+            ],
+          ),
+          SizedBox(
+              child: TextButton(
+                  //creates a button that contains a name of a business in it
+                  child: Container(
+                    color: Colors.blueGrey,
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    child: const Text(
+                      "Submit FIlters",
+                      style: TextStyle(color: Colors.white, fontSize: 15.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    if (widget.receivedMap.isEmpty) {
+                      widget.receivedMap["empty"] = 2;
+                    }
+                    //button moves to the business_info page that displays all the details (that code is in business_info.dart)
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FirstRoute(
+                                title: 'IDK',
+                                receivedMap: widget.receivedMap,
+                              )),
+                    );
+                  })),
+          const Padding(padding: EdgeInsets.all(20)),
         ],
       )),
       bottomNavigationBar: BottomNavigationBar(
