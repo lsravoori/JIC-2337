@@ -42,7 +42,7 @@ class _AdminScreen extends State<AdminScreen> {
             defaultMap.containsKey(doc["Zipcode"].toString())) {
           //filters based on incoming map
           i++;
-          String name = i.toString() + ". ";
+          String name = "";
           //doc["Business Name"]; //logic for numbering business
           Container businessContainer;
           String hours = "Hours: " + doc["Hours"];
@@ -67,10 +67,9 @@ class _AdminScreen extends State<AdminScreen> {
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                     child: Text(
                       doc["Business Name"],
-                      style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 25.0,
-                          decoration: TextDecoration.underline),
+                      style:
+                          const TextStyle(color: Colors.black, fontSize: 25.0),
+                      //decoration: TextDecoration.underline),
                     ),
                   ),
                   const Icon(Icons.check_circle_outline)
@@ -108,9 +107,8 @@ class _AdminScreen extends State<AdminScreen> {
                         child: Text(
                           doc["Business Name"],
                           style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 25.0,
-                              decoration: TextDecoration.underline),
+                              color: Colors.black, fontSize: 25.0),
+                          //decoration: TextDecoration.underline),
                         )),
                   ],
                 ),

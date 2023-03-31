@@ -52,7 +52,7 @@ class _AdminBusiness extends State<AdminBusiness> {
         if (doc["Flag Count"] > 0) {
           //filters based on if there is a flag on a specific business
           i++;
-          String name = i.toString() + ". ";
+          String name = "";
           //doc["Business Name"]; //logic for numbering business
           Container businessContainer;
           String hours = "Hours: " + doc["Hours"];
@@ -77,10 +77,9 @@ class _AdminBusiness extends State<AdminBusiness> {
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                     child: Text(
                       doc["Business Name"],
-                      style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 25.0,
-                          decoration: TextDecoration.underline),
+                      style:
+                          const TextStyle(color: Colors.black, fontSize: 25.0),
+                      //decoration: TextDecoration.underline),
                     ),
                   ),
                   const Icon(Icons.check_circle_outline)
@@ -118,9 +117,8 @@ class _AdminBusiness extends State<AdminBusiness> {
                         child: Text(
                           doc["Business Name"],
                           style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 25.0,
-                              decoration: TextDecoration.underline),
+                              color: Colors.black, fontSize: 25.0),
+                          //decoration: TextDecoration.underline),
                         )),
                   ],
                 ),
