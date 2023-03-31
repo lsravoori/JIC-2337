@@ -327,7 +327,22 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
                       'Are you sure you want to clear the flags for this business?'),
                   actions: <Widget>[
                     TextButton(
-                      onPressed: () => Navigator.pop(context, 'Clear'),
+                      onPressed: () async {
+                        CollectionReference busRef =
+                        FirebaseFirestore.instance.collection('Businesses');
+                        busRef
+                            .doc(business)
+                            .update({"Flag Count": 0});
+                        busRef.doc(business).update({
+                          "Flag Reasons.Inaccurate": 0
+                        });
+                        busRef.doc(business).update({
+                          "Flag Reasons.Inappropriate": 0
+                        });
+                        busRef.doc(business).update(
+                            {"Flag Reasons.Other": 0});
+                        Navigator.pop(context);
+                      },
                       child: const Text('Clear'),
                     ),
                     TextButton(
