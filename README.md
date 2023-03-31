@@ -12,6 +12,31 @@ considered as the code base continues to grow.
 
 # Release Notes
 
+## v0.4.0
+### Features
+-Added admin accounts using isAdmin booleans
+
+-Admins are able to navigate through businesses to see reports through their own homepage
+
+-Update admins' abilities to remove, edit, and clear false flags for businesses (deleted businesses will be stored in the database)
+
+-Users can view and edit their business information in their account page in realtime
+
+-Overhauled user interface for a sleek, clean design
+
+### Bug Fixes
+
+-Fixed problem with infinitely pulling previous data from the database not allowing user changes nor admin changes to businesses
+
+-Fixed incorrect field spelling in account creation in which caused crashes
+
+### Known Issues
+
+-On the firebase hosted website, if you login and refresh the page it brings you to a Google profile page and not let you navigate to the actual homepage
+
+-Need to reuse code more to allow easier understanding for future groups
+
+
 ## v0.3.0
 ### Features
 -Flagging button to report businesses that misrepresent themselves
