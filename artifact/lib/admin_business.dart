@@ -217,7 +217,7 @@ class _AdminBusiness extends State<AdminBusiness> {
           builder: (context) => LoginScreen(),
         ),
       );
-    } else if (index == 2) {
+    } else if (index == 1) {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => const AdminScreen(),
