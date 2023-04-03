@@ -329,18 +329,15 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
                     TextButton(
                       onPressed: () async {
                         CollectionReference busRef =
-                        FirebaseFirestore.instance.collection('Businesses');
+                            FirebaseFirestore.instance.collection('Businesses');
+                        busRef.doc(business).update({"Flag Count": 0});
                         busRef
                             .doc(business)
-                            .update({"Flag Count": 0});
-                        busRef.doc(business).update({
-                          "Flag Reasons.Inaccurate": 0
-                        });
-                        busRef.doc(business).update({
-                          "Flag Reasons.Inappropriate": 0
-                        });
-                        busRef.doc(business).update(
-                            {"Flag Reasons.Other": 0});
+                            .update({"Flag Reasons.Inaccurate": 0});
+                        busRef
+                            .doc(business)
+                            .update({"Flag Reasons.Inappropriate": 0});
+                        busRef.doc(business).update({"Flag Reasons.Other": 0});
                         Navigator.pop(context);
                       },
                       child: const Text('Clear'),
@@ -375,7 +372,7 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
             label: 'All',
           ),
         ],
-        selectedItemColor: Colors.blueGrey,
+        selectedItemColor: Colors.black,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         showUnselectedLabels: true,

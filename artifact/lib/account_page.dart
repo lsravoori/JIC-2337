@@ -70,7 +70,7 @@ class _AccountPageState extends State<AccountPage> {
                           label: 'Search All',
                         ),
                       ],
-                      selectedItemColor: Colors.blueGrey,
+                      selectedItemColor: Colors.black,
                       currentIndex: _selectedIndex,
                       onTap: _onItemTapped,
                       showUnselectedLabels: true,
@@ -136,8 +136,12 @@ class _AccountPageState extends State<AccountPage> {
 
   Future<QuerySnapshot> buildScaffold() async {
     list = <Widget>[
+      const Padding(
+        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+        child: Text('To edit, text or use fields.'),
+      ),
       TextFormField(
-        decoration: InputDecoration(labelText: 'Name'),
+        decoration: const InputDecoration(labelText: 'Name'),
         initialValue: _name,
         validator: (input) => input == null ? 'Invalid Name' : null,
         onChanged: (input) => setState(() => _name = input!),
@@ -145,7 +149,7 @@ class _AccountPageState extends State<AccountPage> {
       ),
       TextFormField(
         keyboardType: TextInputType.number,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           hintText: 'Enter your age',
         ),
         initialValue: "$_age",
@@ -164,12 +168,12 @@ class _AccountPageState extends State<AccountPage> {
         },
       ),
       DropdownButtonFormField(
-        decoration: InputDecoration(labelText: 'Gender'),
+        decoration: const InputDecoration(labelText: 'Gender'),
         value: _gender,
         items: ['Woman', 'Man', 'Non-binary', 'Other']
             .map((gender) => DropdownMenuItem(
-                  child: Text(gender),
                   value: gender,
+                  child: Text(gender),
                 ))
             .toList(),
         validator: (input) => input == null ? 'Please select a gender' : null,
@@ -177,7 +181,7 @@ class _AccountPageState extends State<AccountPage> {
         onSaved: (input) => _gender = input!,
       ),
       DropdownButtonFormField(
-        decoration: InputDecoration(labelText: 'Ethnicity'),
+        decoration: const InputDecoration(labelText: 'Ethnicity'),
         value: _ethnicity,
         items: [
           'White',
@@ -191,8 +195,8 @@ class _AccountPageState extends State<AccountPage> {
           'Other'
         ]
             .map((ethnicity) => DropdownMenuItem(
-                  child: Text(ethnicity),
                   value: ethnicity,
+                  child: Text(ethnicity),
                 ))
             .toList(),
         validator: (input) =>
@@ -202,7 +206,7 @@ class _AccountPageState extends State<AccountPage> {
       ),
       CheckboxListTile(
         //small issue here. clicking reloads the page, which with initializeInfo() means it cannot be changed. but without it always defaults to false
-        title: Text("LGBTQ+?"),
+        title: const Text("LGBTQ+?"),
         value: _isLGBTQ,
         onChanged: (newValue) {
           setState(() {
@@ -212,27 +216,6 @@ class _AccountPageState extends State<AccountPage> {
         controlAffinity:
             ListTileControlAffinity.leading, //  <-- leading Checkbox
       ),
-      // MaterialButton(
-      //   onPressed: () {
-      //     Map<String, Object>? testData = Map<String, Object>();
-      //     testData.addAll({
-      //       "Name": _name!,
-      //       "Age": _age!,
-      //       "Gender": _gender!,
-      //       "LQBTQ+": _isLGBTQ!,
-      //       "Race": _ethnicity!
-      //     });
-      //     CollectionReference usersRef =
-      //         FirebaseFirestore.instance.collection('Accounts');
-      //     usersRef.doc(uid).update(testData);
-      //     Navigator.push(
-      //       context,
-      //       MaterialPageRoute(builder: (context) => HomeScreen()),
-      //     );
-      //     //_submit uncomment when submit implemented
-      //   },
-      //   child: Text('Save'),
-      // ),
       TextButton(
         //creates a button that contains a name of a business in it
         child: Container(
@@ -262,23 +245,18 @@ class _AccountPageState extends State<AccountPage> {
           //_submit uncomment when submit implemented
         },
       ),
-      // MaterialButton(
-      //   onPressed: () {
-      //     Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //           builder: (context) => BusinessRegistrationPage()),
-      //     );
-      //     //_submit uncomment when submit implemented
-      //   },
-      //   child: Text('Add a Business'),
-      // ),
       const Padding(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
       )
     ];
     CollectionReference businesses =
         FirebaseFirestore.instance.collection('Businesses');
+    if (currBusIDs!.isNotEmpty) {
+      list.add(const Padding(
+        padding: EdgeInsets.fromLTRB(5, 10, 0, 0),
+        child: Text("User's Businesses, click to edit or view:"),
+      ));
+    }
     for (int i = 0; i < currBusIDs!.length; i++) {
       Container businessContainer;
       await businesses
@@ -298,7 +276,7 @@ class _AccountPageState extends State<AccountPage> {
                       child: Text(
                         documentSnapshot.get("Business Name"),
                         style: const TextStyle(
-                            color: Colors.black, fontSize: 25.0),
+                            color: Colors.black, fontSize: 18.0),
                       )),
                   const Icon(Icons.check_circle_outline)
                 ]),
@@ -316,7 +294,7 @@ class _AccountPageState extends State<AccountPage> {
                         child: Text(
                           documentSnapshot.get("Business Name"),
                           style: const TextStyle(
-                              color: Colors.black, fontSize: 25.0),
+                              color: Colors.black, fontSize: 18.0),
                         )),
                   ],
                 ),
@@ -362,7 +340,8 @@ class _AccountPageState extends State<AccountPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => BusinessRegistrationPage()),
+            MaterialPageRoute(
+                builder: (context) => const BusinessRegistrationPage()),
           );
         }));
     return await FirebaseFirestore.instance.collection('Businesses').get();

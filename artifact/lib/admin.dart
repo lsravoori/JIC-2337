@@ -220,7 +220,7 @@ class _AdminScreen extends State<AdminScreen> {
             label: 'All',
           ),
         ],
-        selectedItemColor: Colors.blueGrey,
+        selectedItemColor: Colors.black,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         showUnselectedLabels: true,

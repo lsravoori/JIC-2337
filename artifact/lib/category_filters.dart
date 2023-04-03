@@ -196,7 +196,7 @@ class _CategoryScreen extends State<CategoryScreen> {
             label: 'Search All',
           ),
         ],
-        selectedItemColor: Colors.blueGrey,
+        selectedItemColor: Colors.black,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         showUnselectedLabels: true,

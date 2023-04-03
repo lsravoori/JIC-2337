@@ -433,7 +433,7 @@ class _BusinessInfoState extends State<BusinessInfo> {
             label: 'Search All',
           ),
         ],
-        selectedItemColor: Colors.blueGrey,
+        selectedItemColor: Colors.black,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         showUnselectedLabels: true,
