@@ -51,7 +51,7 @@ class _UpdateBusinessState extends State<UpdateBusiness> {
           initializeInfo();
           return Scaffold(
             appBar: AppBar(
-              title: Text('Business Registration'),
+              title: Text('Update Business Information'),
               backgroundColor: Colors.blueGrey,
             ),
             body: SingleChildScrollView(
