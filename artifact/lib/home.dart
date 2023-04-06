@@ -4,6 +4,7 @@ import '../../../category_filters.dart';
 import '../../../business_search.dart';
 import '../../../account_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../../functions.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -118,119 +119,69 @@ class _HomeScreen extends State<HomeScreen> {
 
   int _selectedIndex = 1; //this is the page we are on
 
-  void _onItemTapped(int index) {
-    //this is the logic for the bottom navigation bar and which page to flip to
-    setState(() {
-      _selectedIndex = index;
-    });
-    if (index == 0) {
-      FirebaseAuth.instance.signOut();
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => LoginScreen(),
-        ),
-      );
-    } else if (index == 2) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => AccountPage(),
-        ),
-      );
-    } else if (index == 3) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => FirstRoute(
-            title: 'Search',
-            receivedMap: defaultMap,
-          ),
-        ),
-      );
-    }
-  }
-
   Scaffold makeFirstScaffold() {
     createCheckBox();
     //this creates the scaffold using the children list mentioned above (separate method to make build() smaller)
     return Scaffold(
-      backgroundColor: Colors.white24,
-      appBar: AppBar(
-        title: const Text(
-          'For The People: Possible ZipCodes',
-          style: TextStyle(color: Colors.white, fontSize: 20.0),
+        backgroundColor: Colors.white24,
+        appBar: AppBar(
+          title: const Text(
+            'For The People: Possible ZipCodes',
+            style: TextStyle(color: Colors.white, fontSize: 20.0),
+          ),
+          backgroundColor: Colors.blueGrey,
+          automaticallyImplyLeading: false,
         ),
-        backgroundColor: Colors.blueGrey,
-        automaticallyImplyLeading: false,
-      ),
-      body: SingleChildScrollView(
-        //this allows us to scroll
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: list),
-                Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: list2),
-              ],
-            ),
-            SizedBox(
-                child: TextButton(
-                    //creates a button that goes to the next filter page
-                    child: Container(
-                      color: Colors.blueGrey,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 10),
-                      child: const Text(
-                        "Next: Select Business Type",
-                        style: TextStyle(color: Colors.white, fontSize: 15.0),
+        body: SingleChildScrollView(
+          //this allows us to scroll
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: list),
+                  Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: list2),
+                ],
+              ),
+              SizedBox(
+                  child: TextButton(
+                      //creates a button that goes to the next filter page
+                      child: Container(
+                        color: Colors.blueGrey,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        child: const Text(
+                          "Next: Select Business Type",
+                          style: TextStyle(color: Colors.white, fontSize: 15.0),
+                        ),
                       ),
-                    ),
-                    onPressed: () {
-                      //button moves to the category filter page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                CategoryScreen(receivedMap: returnMap)),
-                      );
-                    })),
-            const Padding(padding: EdgeInsets.all(20)),
-          ],
+                      onPressed: () {
+                        //button moves to the category filter page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  CategoryScreen(receivedMap: returnMap)),
+                        );
+                      })),
+              const Padding(padding: EdgeInsets.all(20)),
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.logout_outlined,
-              color: Colors.redAccent,
-            ),
-            label: 'Logout',
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.filter_list), label: "Filters"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_rounded),
-            label: 'Account',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search All',
-          ),
-        ],
-        selectedItemColor: Colors.black,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        showUnselectedLabels: true,
-        unselectedItemColor: Colors.grey,
-      ),
-    );
+        bottomNavigationBar: Functions.makeNavBar(_selectedIndex, (int index) {
+          //logic for nav bar
+          setState(() {
+            _selectedIndex = index;
+          });
+          Functions.onTap(index, context);
+        }));
   }
 
   @override
