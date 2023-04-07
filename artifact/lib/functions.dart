@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../login.dart';
 import '../../../home.dart';
 import '../../../business_search.dart';
@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class Functions {
   static Color getColor(String category) {
-    Color cardColor = Color.fromARGB(255, 240, 240, 240);
+    Color cardColor = const Color.fromARGB(255, 240, 240, 240);
 
     switch (category) {
       case "Women":
@@ -75,6 +75,7 @@ class Functions {
             style: const TextStyle(color: Colors.black, fontSize: 25.0),
           )),
       Container(
+        alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
         child: Text(bName,
             style: const TextStyle(
@@ -89,9 +90,13 @@ class Functions {
     }
     businessContainer = Container(
         child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Row(children: list),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: list,
+        ),
         Padding(
             padding: const EdgeInsets.fromLTRB(15, 0, 2, 2),
             child: Text(
@@ -99,6 +104,8 @@ class Functions {
               style: const TextStyle(color: Colors.white),
             )),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
                 padding: const EdgeInsets.fromLTRB(15, 2, 0, 2),
@@ -109,6 +116,8 @@ class Functions {
           ],
         ),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
                 padding: const EdgeInsets.fromLTRB(15, 2, 0, 2),
@@ -119,6 +128,8 @@ class Functions {
           ],
         ),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
                 padding: const EdgeInsets.fromLTRB(15, 2, 0, 2),
@@ -146,7 +157,7 @@ class Functions {
     } else if (index == 1) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => HomeScreen(),
+          builder: (context) => const HomeScreen(),
         ),
       );
     } else if (index == 2) {
@@ -194,6 +205,90 @@ class Functions {
       onTap: _onItemTapped,
       showUnselectedLabels: true,
       unselectedItemColor: Colors.grey,
+    );
+  }
+
+  static AppBar businessAppBar(double _rating, Map<String, dynamic> ratingMap,
+      String uid, double avgRating, Map<String, Object>? businessInfo) {
+    int count = 0;
+    if (_rating == 0) {
+      if (ratingMap.containsKey(uid)) {
+        _rating = ratingMap[uid]!;
+      }
+      ratingMap.forEach(((key, value) {
+        avgRating = avgRating + value;
+        count++;
+      }));
+      if (count == 0) {
+        avgRating = 0;
+      } else {
+        avgRating = avgRating / count;
+      }
+    }
+    AppBar appBarInfo;
+    if (businessInfo?["Verified"] == true) {
+      appBarInfo = AppBar(
+        title: Row(children: <Widget>[
+          Text("${businessInfo!['Business Name']}"),
+          const Icon(Icons.check_circle_outline),
+          RatingBarIndicator(
+            rating: avgRating,
+            itemBuilder: (context, index) => const Icon(
+              Icons.star,
+              color: Colors.amber,
+            ),
+            itemCount: 5,
+            itemSize: 20.0,
+            direction: Axis.horizontal,
+          ),
+          Text(
+            "$count reviews",
+            style: const TextStyle(fontSize: 10),
+          )
+        ]),
+        backgroundColor: Functions.getColor("${businessInfo!['Category']}"),
+      );
+    } else {
+      appBarInfo = AppBar(
+        title: Row(children: <Widget>[
+          Text("${businessInfo!['Business Name']}"),
+          RatingBarIndicator(
+            rating: avgRating,
+            itemBuilder: (context, index) => const Icon(
+              Icons.star,
+              color: Colors.amber,
+            ),
+            itemCount: 5,
+            itemSize: 20.0,
+            direction: Axis.horizontal,
+          ),
+          Text(
+            "$count reviews",
+            style: const TextStyle(fontSize: 10),
+          )
+        ]),
+        backgroundColor: Functions.getColor("${businessInfo!['Category']}"),
+      );
+    }
+    return appBarInfo;
+  }
+
+  static Widget displayInfo(String text) {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(10, 10, 2, 2),
+        child: Text(text,
+            textAlign: TextAlign.left,
+            style: const TextStyle(
+                color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)));
+  }
+
+  static Widget divider() {
+    return const Divider(
+      height: 20,
+      thickness: 1,
+      indent: 0,
+      endIndent: 0,
+      color: Colors.black,
     );
   }
 }

@@ -2,10 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import '../../../login.dart';
-import '../../../business_search.dart';
-import '../../../home.dart';
-import '../../../account_page.dart';
 import '../../../functions.dart';
 
 class BusinessInfo extends StatefulWidget {
@@ -78,194 +74,33 @@ class _BusinessInfoState extends State<BusinessInfo> {
     final auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
-    int count = 0;
-    if (_rating == 0) {
-      if (ratingMap.containsKey("$uid")) {
-        _rating = ratingMap["$uid"]!;
-      }
-      ratingMap.forEach(((key, value) {
-        avgRating = avgRating + value;
-        count++;
-      }));
-      if (count == 0) {
-        avgRating = 0;
-      } else {
-        avgRating = avgRating / count;
-      }
-    }
-    AppBar appBarInfo;
-    if (businessInfo?["Verified"] == true) {
-      appBarInfo = AppBar(
-        title: Row(children: <Widget>[
-          Text("${businessInfo!['Business Name']}"),
-          const Icon(Icons.check_circle_outline),
-          RatingBarIndicator(
-            rating: avgRating,
-            itemBuilder: (context, index) => const Icon(
-              Icons.star,
-              color: Colors.amber,
-            ),
-            itemCount: 5,
-            itemSize: 20.0,
-            direction: Axis.horizontal,
-          ),
-          Text(
-            "$count reviews",
-            style: const TextStyle(fontSize: 10),
-          )
-        ]),
-        backgroundColor: Functions.getColor("${businessInfo!['Category']}"),
-      );
-    } else {
-      appBarInfo = AppBar(
-        title: Row(children: <Widget>[
-          Text("${businessInfo!['Business Name']}"),
-          RatingBarIndicator(
-            rating: avgRating,
-            itemBuilder: (context, index) => const Icon(
-              Icons.star,
-              color: Colors.amber,
-            ),
-            itemCount: 5,
-            itemSize: 20.0,
-            direction: Axis.horizontal,
-          ),
-          Text(
-            "$count reviews",
-            style: const TextStyle(fontSize: 10),
-          )
-        ]),
-        backgroundColor: Functions.getColor("${businessInfo!['Category']}"),
-      );
-    }
     return Scaffold(
         backgroundColor: Colors.white24,
-        appBar: appBarInfo,
+        appBar: Functions.businessAppBar(
+            _rating, ratingMap, "$uid", avgRating, businessInfo),
         body: SingleChildScrollView(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
           child: Column(
-            // Column is also a layout widget. It takes a list of children and
-            // arranges them vertically. By default, it sizes itself to fit its
-            // children horizontally, and tries to be as tall as its parent.
-            //
-            // Invoke "debug painting" (press "p" in the console, choose the
-            // "Toggle Debug Paint" action from the Flutter Inspector in Android
-            // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-            // to see the wireframe for each widget.
-            //
-            // Column has various properties to control how it sizes itself and
-            // how it positions its children. Here we use mainAxisAlignment to
-            // center the children vertically; the main axis here is the vertical
-            // axis because Columns are vertical (the cross axis would be
-            // horizontal).
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 2, 2),
-                  child: Text("Logo: ${businessInfo!['Logo']}",
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-              const Divider(
-                height: 20,
-                thickness: 1,
-                indent: 0,
-                endIndent: 0,
-                color: Colors.black,
-              ),
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
-                  child: Text("Details: ${businessInfo!['Business Details']}",
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-              const Divider(
-                height: 20,
-                thickness: 1,
-                indent: 0,
-                endIndent: 0,
-                color: Colors.black,
-              ),
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
-                  child: Text("Category: ${businessInfo!['Category']}",
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-              const Divider(
-                height: 20,
-                thickness: 1,
-                indent: 0,
-                endIndent: 0,
-                color: Colors.black,
-              ),
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
-                  child: Text("Phone Number: ${businessInfo!['Phone Number']}",
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-              const Divider(
-                height: 20,
-                thickness: 1,
-                indent: 0,
-                endIndent: 0,
-                color: Colors.black,
-              ),
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
-                  child: Text("Hours: ${businessInfo!['Hours']}",
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-              const Divider(
-                height: 20,
-                thickness: 1,
-                indent: 0,
-                endIndent: 0,
-                color: Colors.black,
-              ),
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
-                  child: Text("Address: ${businessInfo!['Street Name']}",
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-              const Divider(
-                height: 20,
-                thickness: 1,
-                indent: 0,
-                endIndent: 0,
-                color: Colors.black,
-              ),
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
-                  child: Text("Zipcode: ${businessInfo!['Zipcode']}",
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-              const Divider(
-                height: 20,
-                thickness: 1,
-                indent: 0,
-                endIndent: 0,
-                color: Colors.black,
-              ),
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
-                  child: Text("Website: ${businessInfo!['Website']}",
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-              const Divider(
-                height: 20,
-                thickness: 1,
-                indent: 0,
-                endIndent: 0,
-                color: Colors.black,
-              ),
+              Functions.displayInfo("Logo: ${businessInfo!['Logo']}"),
+              Functions.divider(),
+              Functions.displayInfo(
+                  "Details: ${businessInfo!['Business Details']}"),
+              Functions.divider(),
+              Functions.displayInfo("Category: ${businessInfo!['Category']}"),
+              Functions.divider(),
+              Functions.displayInfo(
+                  "Phone Number: ${businessInfo!['Phone Number']}"),
+              Functions.divider(),
+              Functions.displayInfo("Hours: ${businessInfo!['Hours']}"),
+              Functions.divider(),
+              Functions.displayInfo("Address: ${businessInfo!['Street Name']}"),
+              Functions.divider(),
+              Functions.displayInfo("Zipcode: ${businessInfo!['Zipcode']}"),
+              Functions.divider(),
+              Functions.displayInfo("Website: ${businessInfo!['Website']}"),
+              Functions.divider(),
               const Padding(
                   padding: EdgeInsets.fromLTRB(10, 0, 2, 2),
                   child: Text("Been Here?",
