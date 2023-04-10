@@ -1,4 +1,5 @@
 import 'package:artifact/admin_business_info.dart';
+import 'package:artifact/admin_deleted_businesses.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -9,6 +10,7 @@ import '../../../admin.dart';
 import '../../../business_search.dart';
 import '../../../business_info.dart';
 import '../../../account_page.dart';
+import '../../../admin_deleted_businesses.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Functions {
@@ -117,6 +119,10 @@ class Functions {
           cardColor = Colors.orange;
         }
         break;
+      default:
+        {
+          cardColor = Colors.black;
+        }
     }
     return cardColor;
   }
@@ -259,6 +265,12 @@ class Functions {
           builder: (context) => const AdminScreen(),
         ),
       );
+    } else if (index == 3) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const AdminDeletedScreen(),
+        ),
+      );
     }
   }
 
@@ -312,6 +324,7 @@ class Functions {
           icon: Icon(Icons.search),
           label: 'All',
         ),
+        BottomNavigationBarItem(icon: Icon(Icons.delete), label: 'Deleted')
       ],
       selectedItemColor: Colors.black,
       currentIndex: _selectedIndex,
@@ -403,5 +416,173 @@ class Functions {
       endIndent: 0,
       color: Colors.black,
     );
+  }
+
+  static Widget adminInfoButtons(BuildContext context, String business,
+      Map<String, Object>? businessInfo, bool deleted) {
+    if (!deleted) {
+      return TextButton(
+        child: Container(
+          color: Colors.red,
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+          child: const Text(
+            "Remove Business",
+            style: TextStyle(color: Colors.white, fontSize: 10.0),
+          ),
+        ),
+        onPressed: () => showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('Are you sure you want to remove this business?'),
+            content: const Text('This can be undone in deleted page.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context, 'Remove');
+                  deleteBusiness(business, businessInfo);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const AdminScreen(),
+                    ),
+                  );
+                },
+                child: const Text('REMOVE'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: const Text('Cancel'),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return TextButton(
+        child: Container(
+          color: Colors.red,
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+          child: const Text(
+            "Add Business",
+            style: TextStyle(color: Colors.white, fontSize: 10.0),
+          ),
+        ),
+        onPressed: () => showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('Are you sure you want to re-add this business?'),
+            content: const Text('This cannot be undone.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context, 'Remove');
+                },
+                child: const Text('ADD'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: const Text('Cancel'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+  }
+
+  static Widget adminRemoveFlags(BuildContext context, String business,
+      Map<String, Object>? businessInfo, bool deleted) {
+    if (!deleted) {
+      return TextButton(
+        child: Container(
+            color: Colors.lightGreenAccent,
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+            child: const Text(
+              "Clear Flags",
+              style: TextStyle(fontSize: 10.0),
+            )),
+        onPressed: () => showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text(
+                'Are you sure you want to clear the flags for this business?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () async {
+                  CollectionReference busRef =
+                      FirebaseFirestore.instance.collection('Businesses');
+                  busRef.doc(business).update({"Flag Count": 0});
+                  busRef.doc(business).update({"Flag Reasons.Inaccurate": 0});
+                  busRef
+                      .doc(business)
+                      .update({"Flag Reasons.Inappropriate": 0});
+                  busRef.doc(business).update({"Flag Reasons.Other": 0});
+                  Navigator.pop(context);
+                },
+                child: const Text('Clear'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: const Text('Cancel'),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return const Padding(padding: EdgeInsets.all(2));
+    }
+  }
+
+  static void deleteBusiness(
+      String business, Map<String, Object>? businessInfo) {
+    CollectionReference businesses =
+        FirebaseFirestore.instance.collection('Businesses');
+    CollectionReference delBusinesses =
+        FirebaseFirestore.instance.collection('DeletedBusinesses');
+    CollectionReference users =
+        FirebaseFirestore.instance.collection('Accounts');
+    businesses.doc(business).get().then((DocumentSnapshot documentSnapshot) {
+      //creates a snapshot for the business by name
+      if (documentSnapshot.exists) {
+        //checks if the business with the given name exists
+        Map<String, dynamic>? documentFields =
+            documentSnapshot.data() as Map<String, dynamic>?;
+        if (documentFields != null) {
+          //Find out the userID below and remove businessID from their list of businesses.
+          if (documentFields.keys.toList().contains("UserID")) {
+            String userID = documentFields["UserID"];
+            users.doc(userID).get().then((DocumentSnapshot userSnapshot) {
+              if (userSnapshot.exists) {
+                Map<String, dynamic>? userFields =
+                    userSnapshot.data() as Map<String, dynamic>?;
+                if (userFields != null) {
+                  if (userFields.keys.toList().contains("BusinessIDs")) {
+                    List businessIDS = userFields["BusinessIDs"];
+                    businessIDS.remove(documentSnapshot.id);
+                    FirebaseFirestore.instance
+                        .collection('Accounts')
+                        .doc(userID)
+                        .update({'BusinessIDs': businessIDS});
+                  }
+                }
+              }
+            });
+          }
+          //Copy business document from the 'Businesses' collection to the 'DeletedBusinesses' collection
+          delBusinesses
+              .doc(business)
+              .get()
+              .then((DocumentSnapshot delDocSnapshot) {
+            FirebaseFirestore.instance
+                .collection('DeletedBusinesses')
+                .doc(documentSnapshot.id)
+                .set(documentFields);
+          });
+        }
+        businesses.doc(business).delete();
+      }
+    });
   }
 }
