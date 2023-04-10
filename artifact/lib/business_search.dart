@@ -1,11 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../../../login.dart';
 import '../../../home.dart';
-import '../../../business_info.dart';
-import '../../../account_page.dart';
 import '../../../functions.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class FirstRoute extends StatefulWidget {
   const FirstRoute({super.key, required this.title, required this.receivedMap});
@@ -60,32 +56,7 @@ class _FirstRoute extends State<FirstRoute> {
           //filters based on incoming map
           i++;
 
-          list.add(
-            Card(
-              elevation: 10,
-              color: Functions.getColor(doc["Category"]),
-              child: InkWell(
-                  splashColor: Colors.blue.withAlpha(30),
-                  onTap: () {
-                    //button moves to the business_info page that displays all the details (that code is in business_info.dart)
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BusinessInfo(
-                                title: doc.id,
-                                number: _selectedIndex,
-                              )),
-                    );
-                  },
-                  child: Functions.getBusinessContainer(
-                      doc["Business Name"],
-                      doc["Business Details"],
-                      doc["Hours"],
-                      doc["Phone Number"],
-                      doc["Website"],
-                      doc["Verified"])),
-            ),
-          );
+          list.add(Functions.getCard(_selectedIndex, context, doc));
           list.add(const Padding(
             padding: EdgeInsets.fromLTRB(5, 2, 2, 5),
           ));
@@ -118,7 +89,7 @@ class _FirstRoute extends State<FirstRoute> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomeScreen(),
+                  builder: (context) => const HomeScreen(),
                 ));
           }));
     }

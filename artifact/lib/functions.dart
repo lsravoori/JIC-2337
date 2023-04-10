@@ -1,12 +1,73 @@
+import 'package:artifact/admin_business_info.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../login.dart';
 import '../../../home.dart';
+import '../../../admin_business.dart';
+import '../../../admin.dart';
 import '../../../business_search.dart';
+import '../../../business_info.dart';
 import '../../../account_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Functions {
+  static Card getCard(
+      int _selectedIndex, BuildContext context, QueryDocumentSnapshot doc) {
+    return Card(
+      elevation: 10,
+      color: Functions.getColor(doc["Category"]),
+      child: InkWell(
+          splashColor: Colors.blue.withAlpha(30),
+          onTap: () {
+            //button moves to the business_info page that displays all the details (that code is in business_info.dart)
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => BusinessInfo(
+                        title: doc.id,
+                        number: _selectedIndex,
+                      )),
+            );
+          },
+          child: getBusinessContainer(
+              doc["Business Name"],
+              doc["Business Details"],
+              doc["Hours"],
+              doc["Phone Number"],
+              doc["Website"],
+              doc["Verified"])),
+    );
+  }
+
+  static Card getAdminCard(
+      int _selectedIndex, BuildContext context, QueryDocumentSnapshot doc) {
+    return Card(
+      elevation: 10,
+      color: Functions.getColor(doc["Category"]),
+      child: InkWell(
+          splashColor: Colors.blue.withAlpha(30),
+          onTap: () {
+            //button moves to the business_info page that displays all the details (that code is in business_info.dart)
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AdminBusinessInfo(
+                        title: doc.id,
+                        number: _selectedIndex,
+                      )),
+            );
+          },
+          child: getBusinessContainer(
+              doc["Business Name"],
+              doc["Business Details"],
+              doc["Hours"],
+              doc["Phone Number"],
+              doc["Website"],
+              doc["Verified"])),
+    );
+  }
+
   static Color getColor(String category) {
     Color cardColor = const Color.fromARGB(255, 240, 240, 240);
 
@@ -178,6 +239,29 @@ class Functions {
     }
   }
 
+  static void onTapAdmin(int index, BuildContext context) {
+    if (index == 0) {
+      FirebaseAuth.instance.signOut();
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => LoginScreen(),
+        ),
+      );
+    } else if (index == 1) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const AdminBusiness(title: 'admin'),
+        ),
+      );
+    } else if (index == 2) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const AdminScreen(),
+        ),
+      );
+    }
+  }
+
   static BottomNavigationBar makeNavBar(
       int index, void Function(int) _onItemTapped) {
     return BottomNavigationBar(
@@ -202,6 +286,35 @@ class Functions {
       ],
       selectedItemColor: Colors.black,
       currentIndex: index,
+      onTap: _onItemTapped,
+      showUnselectedLabels: true,
+      unselectedItemColor: Colors.grey,
+    );
+  }
+
+  static BottomNavigationBar adminNavBar(
+      int _selectedIndex, void Function(int) _onItemTapped) {
+    return BottomNavigationBar(
+      //this is the setup for the bottom navigation bar
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.logout_outlined,
+            color: Colors.redAccent,
+          ),
+          label: 'Logout',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.flag),
+          label: 'Flagged',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          label: 'All',
+        ),
+      ],
+      selectedItemColor: Colors.black,
+      currentIndex: _selectedIndex,
       onTap: _onItemTapped,
       showUnselectedLabels: true,
       unselectedItemColor: Colors.grey,
