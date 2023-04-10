@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../../admin.dart';
 import '../../../functions.dart';
 
 class AdminBusinessInfo extends StatefulWidget {
@@ -39,22 +38,43 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
     var retVal = <String, Object>{}; //temp hashmap for collection
 
     // gets a document from the collection if it exists and retrieves its info
-    CollectionReference businesses =
-        FirebaseFirestore.instance.collection('Businesses');
-    businesses.doc(business).get().then((DocumentSnapshot documentSnapshot) {
-      //creates a snapshot for the business by name
-      if (documentSnapshot.exists) {
-        //checks if the business with the given name exists
-        Map<String, dynamic>? documentFields =
-            documentSnapshot.data() as Map<String, dynamic>?;
-        documentFields?.forEach((key, value) {
-          //collects the from a hashmap and moves to temp hashmap (inefficient, make better later)
-          retVal.addAll({key: documentFields[key]});
-        });
-      }
-    });
-    businessInfo = retVal; //sets businessInfo equal to temp hashmap
-    return await FirebaseFirestore.instance.collection('Businesses').get();
+    if (_selectedIndex == 3) {
+      CollectionReference businesses =
+          FirebaseFirestore.instance.collection('DeletedBusinesses');
+      businesses.doc(business).get().then((DocumentSnapshot documentSnapshot) {
+        //creates a snapshot for the business by name
+        if (documentSnapshot.exists) {
+          //checks if the business with the given name exists
+          Map<String, dynamic>? documentFields =
+              documentSnapshot.data() as Map<String, dynamic>?;
+          documentFields?.forEach((key, value) {
+            //collects the from a hashmap and moves to temp hashmap (inefficient, make better later)
+            retVal.addAll({key: documentFields[key]});
+          });
+        }
+      });
+      businessInfo = retVal; //sets businessInfo equal to temp hashmap
+      return await FirebaseFirestore.instance
+          .collection('DeletedBusinesses')
+          .get();
+    } else {
+      CollectionReference businesses =
+          FirebaseFirestore.instance.collection('Businesses');
+      businesses.doc(business).get().then((DocumentSnapshot documentSnapshot) {
+        //creates a snapshot for the business by name
+        if (documentSnapshot.exists) {
+          //checks if the business with the given name exists
+          Map<String, dynamic>? documentFields =
+              documentSnapshot.data() as Map<String, dynamic>?;
+          documentFields?.forEach((key, value) {
+            //collects the from a hashmap and moves to temp hashmap (inefficient, make better later)
+            retVal.addAll({key: documentFields[key]});
+          });
+        }
+      });
+      businessInfo = retVal; //sets businessInfo equal to temp hashmap
+      return await FirebaseFirestore.instance.collection('Businesses').get();
+    }
   }
 
   List<Widget> createInfoWidgets(businessInfo) {
@@ -107,87 +127,10 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           color: Color.fromARGB(255, 0, 0, 0), fontSize: 15))),
-              TextButton(
-                child: Container(
-                  color: Colors.red,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                  child: const Text(
-                    "Remove Business",
-                    style: TextStyle(color: Colors.white, fontSize: 10.0),
-                  ),
-                ),
-                onPressed: () => showDialog<String>(
-                  context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                    title: const Text(
-                        'Are you sure you want to remove this business?'),
-                    content: const Text('This cannot be undone.'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context, 'Remove');
-                          deleteBusiness(business, businessInfo);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const AdminScreen(),
-                            ),
-                          );
-                        },
-                        child: const Text('REMOVE'),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'Cancel'),
-                        child: const Text('Cancel'),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              TextButton(
-                child: Container(
-                    color: Colors.lightGreenAccent,
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                    child: const Text(
-                      "Clear Flags",
-                      style: TextStyle(fontSize: 10.0),
-                    )),
-                onPressed: () => showDialog<String>(
-                  context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                    title: const Text(
-                        'Are you sure you want to clear the flags for this business?'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () async {
-                          CollectionReference busRef = FirebaseFirestore
-                              .instance
-                              .collection('Businesses');
-                          busRef.doc(business).update({"Flag Count": 0});
-                          busRef
-                              .doc(business)
-                              .update({"Flag Reasons.Inaccurate": 0});
-                          busRef
-                              .doc(business)
-                              .update({"Flag Reasons.Inappropriate": 0});
-                          busRef
-                              .doc(business)
-                              .update({"Flag Reasons.Other": 0});
-                          Navigator.pop(context);
-                        },
-                        child: const Text('Clear'),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'Cancel'),
-                        child: const Text('Cancel'),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              Functions.adminInfoButtons(
+                  context, business, businessInfo, _selectedIndex == 3),
+              Functions.adminRemoveFlags(
+                  context, business, businessInfo, _selectedIndex == 3),
             ],
           ),
         ),
@@ -198,56 +141,6 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
           });
           Functions.onTapAdmin(index, context);
         }));
-  }
-
-  void deleteBusiness(String business, Map<String, Object>? businessInfo) {
-    CollectionReference businesses =
-        FirebaseFirestore.instance.collection('Businesses');
-    CollectionReference delBusinesses =
-        FirebaseFirestore.instance.collection('DeletedBusinesses');
-    CollectionReference users =
-        FirebaseFirestore.instance.collection('Accounts');
-    businesses.doc(business).get().then((DocumentSnapshot documentSnapshot) {
-      //creates a snapshot for the business by name
-      if (documentSnapshot.exists) {
-        //checks if the business with the given name exists
-        Map<String, dynamic>? documentFields =
-            documentSnapshot.data() as Map<String, dynamic>?;
-        if (documentFields != null) {
-          //Find out the userID below and remove businessID from their list of businesses.
-          if (documentFields.keys.toList().contains("UserID")) {
-            String userID = documentFields["UserID"];
-            users.doc(userID).get().then((DocumentSnapshot userSnapshot) {
-              if (userSnapshot.exists) {
-                Map<String, dynamic>? userFields =
-                    userSnapshot.data() as Map<String, dynamic>?;
-                if (userFields != null) {
-                  if (userFields.keys.toList().contains("BusinessIDs")) {
-                    List businessIDS = userFields["BusinessIDs"];
-                    businessIDS.remove(documentSnapshot.id);
-                    FirebaseFirestore.instance
-                        .collection('Accounts')
-                        .doc(userID)
-                        .update({'BusinessIDs': businessIDS});
-                  }
-                }
-              }
-            });
-          }
-          //Copy business document from the 'Businesses' collection to the 'DeletedBusinesses' collection
-          delBusinesses
-              .doc(business)
-              .get()
-              .then((DocumentSnapshot delDocSnapshot) {
-            FirebaseFirestore.instance
-                .collection('DeletedBusinesses')
-                .doc(documentSnapshot.id)
-                .set(documentFields);
-          });
-        }
-        businesses.doc(business).delete();
-      }
-    });
   }
 
   int _selectedIndex = 2;
