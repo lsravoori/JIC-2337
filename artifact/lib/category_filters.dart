@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../login.dart';
 import '../../../business_search.dart';
 import '../../../account_page.dart';
+import '../../../functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class CategoryScreen extends StatefulWidget {
@@ -86,123 +87,71 @@ class _CategoryScreen extends State<CategoryScreen> {
 
   int _selectedIndex = 1; //current page we are on
 
-  void _onItemTapped(int index) {
-    //navigation bar logic and which page to go to
-    setState(() {
-      _selectedIndex = index;
-    });
-    if (index == 0) {
-      // The line below usually is preceded with the keyword 'await' but this
-      // threw errors due to the method not being an async method.
-      FirebaseAuth.instance.signOut();
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => LoginScreen(),
-        ),
-      );
-    } else if (index == 2) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => AccountPage(),
-        ),
-      );
-    } else if (index == 3) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => FirstRoute(
-            title: 'Search',
-            receivedMap: defaultMap,
-          ),
-        ),
-      );
-    }
-  }
-
   Scaffold makeFirstScaffold() {
     createCheckBox();
     //this creates the scaffold using the children list mentioned above (separate method to make build() smaller)
     return Scaffold(
-      backgroundColor: Colors.white24,
-      appBar: AppBar(
-        title: const Text(
-          'For The People: Types of Businesses',
-          style: TextStyle(color: Colors.white, fontSize: 20.0),
+        backgroundColor: Colors.white24,
+        appBar: AppBar(
+          title: const Text(
+            'For The People: Types of Businesses',
+            style: TextStyle(color: Colors.white, fontSize: 20.0),
+          ),
+          backgroundColor: Colors.blueGrey,
         ),
-        backgroundColor: Colors.blueGrey,
-      ),
-      body: SingleChildScrollView(
-          //allows scrolling
-          child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: list2),
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: list),
-            ],
-          ),
-          SizedBox(
-              child: TextButton(
-                  //creates a button that contains a name of a business in it
-                  child: Container(
-                    color: Colors.blueGrey,
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    child: const Text(
-                      "Submit FIlters",
-                      style: TextStyle(color: Colors.white, fontSize: 15.0),
-                    ),
-                  ),
-                  onPressed: () {
-                    if (widget.receivedMap.isEmpty) {
-                      widget.receivedMap["empty"] = 2;
-                    }
-                    //button moves to the business_info page that displays all the details (that code is in business_info.dart)
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => FirstRoute(
-                                title: 'IDK',
-                                receivedMap: widget.receivedMap,
-                              )),
-                    );
-                  })),
-          const Padding(padding: EdgeInsets.all(20)),
-        ],
-      )),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.logout_outlined,
-              color: Colors.redAccent,
+        body: SingleChildScrollView(
+            //allows scrolling
+            child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: list2),
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: list),
+              ],
             ),
-            label: 'Logout',
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.filter_list), label: "Filters"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_rounded),
-            label: 'Account',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search All',
-          ),
-        ],
-        selectedItemColor: Colors.black,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        showUnselectedLabels: true,
-        unselectedItemColor: Colors.grey,
-      ),
-    );
+            SizedBox(
+                child: TextButton(
+                    //creates a button that contains a name of a business in it
+                    child: Container(
+                      color: Colors.blueGrey,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 10),
+                      child: const Text(
+                        "Submit FIlters",
+                        style: TextStyle(color: Colors.white, fontSize: 15.0),
+                      ),
+                    ),
+                    onPressed: () {
+                      if (widget.receivedMap.isEmpty) {
+                        widget.receivedMap["empty"] = 2;
+                      }
+                      //button moves to the business_info page that displays all the details (that code is in business_info.dart)
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FirstRoute(
+                                  title: 'IDK',
+                                  receivedMap: widget.receivedMap,
+                                )),
+                      );
+                    })),
+            const Padding(padding: EdgeInsets.all(20)),
+          ],
+        )),
+        bottomNavigationBar: Functions.makeNavBar(_selectedIndex, (int index) {
+          //logic for nav bar
+          setState(() {
+            _selectedIndex = index;
+          });
+          Functions.onTap(index, context);
+        }));
   }
 
   @override

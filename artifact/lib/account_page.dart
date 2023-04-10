@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../../login.dart';
 import '../../../business_search.dart';
+import '../../../functions.dart';
 
 class AccountPage extends StatefulWidget {
   @override
@@ -36,47 +37,28 @@ class _AccountPageState extends State<AccountPage> {
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Scaffold(
-                    appBar: AppBar(
-                      title: const Text('Account Information'),
-                      backgroundColor: Colors.blueGrey,
-                    ),
-                    body: Form(
-                      key: _formKey,
-                      child: SingleChildScrollView(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: list,
+                      appBar: AppBar(
+                        title: const Text('Account Information'),
+                        backgroundColor: Colors.blueGrey,
+                      ),
+                      body: Form(
+                        key: _formKey,
+                        child: SingleChildScrollView(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: list,
+                          ),
                         ),
                       ),
-                    ),
-                    bottomNavigationBar: BottomNavigationBar(
-                      items: const <BottomNavigationBarItem>[
-                        BottomNavigationBarItem(
-                          icon: Icon(
-                            Icons.logout_outlined,
-                            color: Colors.redAccent,
-                          ),
-                          label: 'Logout',
-                        ),
-                        BottomNavigationBarItem(
-                            icon: Icon(Icons.filter_list), label: "Filters"),
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.person_rounded),
-                          label: 'Account',
-                        ),
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.search),
-                          label: 'Search All',
-                        ),
-                      ],
-                      selectedItemColor: Colors.black,
-                      currentIndex: _selectedIndex,
-                      onTap: _onItemTapped,
-                      showUnselectedLabels: true,
-                      unselectedItemColor: Colors.grey,
-                    ),
-                  );
+                      bottomNavigationBar:
+                          Functions.makeNavBar(_selectedIndex, (int index) {
+                        //logic for nav bar
+                        setState(() {
+                          _selectedIndex = index;
+                        });
+                        Functions.onTap(index, context);
+                      }));
                 } else {
                   return const Scaffold();
                 }
@@ -90,37 +72,6 @@ class _AccountPageState extends State<AccountPage> {
 
   int _selectedIndex = 2;
   Map<String, int> defaultMap = {};
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    if (index == 0) {
-      // The line below usually is preceded with the keyword 'await' but this
-      // threw errors due to the method not being an async method.
-      FirebaseAuth.instance.signOut();
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => LoginScreen(),
-        ),
-      );
-    } else if (index == 1) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ),
-      );
-    } else if (index == 3) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => FirstRoute(
-            title: 'Search',
-            receivedMap: defaultMap,
-          ),
-        ),
-      );
-    }
-  }
 
   void initializeInfo() {
     if (firstUpdate == false) {

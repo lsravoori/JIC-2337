@@ -2,10 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import '../../../login.dart';
-import '../../../business_search.dart';
-import '../../../home.dart';
-import '../../../account_page.dart';
+import '../../../functions.dart';
 
 class BusinessInfo extends StatefulWidget {
   const BusinessInfo({
@@ -77,253 +74,170 @@ class _BusinessInfoState extends State<BusinessInfo> {
     final auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
-    int count = 0;
-    if (_rating == 0) {
-      if (ratingMap.containsKey("$uid")) {
-        _rating = ratingMap["$uid"]!;
-      }
-      ratingMap.forEach(((key, value) {
-        avgRating = avgRating + value;
-        count++;
-      }));
-      if (count == 0) {
-        avgRating = 0;
-      } else {
-        avgRating = avgRating / count;
-      }
-    }
-    AppBar appBarInfo;
-    if (businessInfo?["Verified"] == true) {
-      appBarInfo = AppBar(
-        title: Row(children: <Widget>[
-          Text("${businessInfo!['Business Name']}"),
-          const Icon(Icons.check_circle_outline),
-          RatingBarIndicator(
-            rating: avgRating,
-            itemBuilder: (context, index) => const Icon(
-              Icons.star,
-              color: Colors.amber,
-            ),
-            itemCount: 5,
-            itemSize: 20.0,
-            direction: Axis.horizontal,
-          ),
-          Text(
-            "$count reviews",
-            style: const TextStyle(fontSize: 10),
-          )
-        ]),
-        backgroundColor: Colors.blueGrey,
-      );
-    } else {
-      appBarInfo = AppBar(
-        title: Row(children: <Widget>[
-          Text("${businessInfo!['Business Name']}"),
-          RatingBarIndicator(
-            rating: avgRating,
-            itemBuilder: (context, index) => const Icon(
-              Icons.star,
-              color: Colors.amber,
-            ),
-            itemCount: 5,
-            itemSize: 20.0,
-            direction: Axis.horizontal,
-          ),
-          Text(
-            "$count reviews",
-            style: const TextStyle(fontSize: 10),
-          )
-        ]),
-        backgroundColor: Colors.blueGrey,
-      );
-    }
     return Scaffold(
-      backgroundColor: Colors.white24,
-      appBar: appBarInfo,
-      body: SingleChildScrollView(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 2, 2),
-                child: Text("Logo: ${businessInfo!['Logo']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 1,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
-                child: Text("Details: ${businessInfo!['Business Details']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 1,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
-                child: Text("Category: ${businessInfo!['Category']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 1,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
-                child: Text("Phone Number: ${businessInfo!['Phone Number']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 1,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
-                child: Text("Hours: ${businessInfo!['Hours']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 1,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
-                child: Text("Address: ${businessInfo!['Street Name']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 1,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
-                child: Text("Zipcode: ${businessInfo!['Zipcode']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 1,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(10, 0, 2, 2),
-                child: Text("Website: ${businessInfo!['Website']}",
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 20))),
-            const Divider(
-              height: 20,
-              thickness: 1,
-              indent: 0,
-              endIndent: 0,
-              color: Colors.black,
-            ),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(10, 0, 2, 2),
-                child: Text("Been Here?",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 15))),
-            TextButton(
-              //creates a button that goes to the next filter page
-              child: Container(
-                color: Colors.blueGrey,
-                padding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                child: const Text(
-                  "Review",
-                  style: TextStyle(color: Colors.white, fontSize: 15.0),
+        backgroundColor: Colors.white24,
+        appBar: Functions.businessAppBar(
+            _rating, ratingMap, "$uid", avgRating, businessInfo),
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Functions.displayInfo("Logo: ${businessInfo!['Logo']}"),
+              Functions.divider(),
+              Functions.displayInfo(
+                  "Details: ${businessInfo!['Business Details']}"),
+              Functions.divider(),
+              Functions.displayInfo("Category: ${businessInfo!['Category']}"),
+              Functions.divider(),
+              Functions.displayInfo(
+                  "Phone Number: ${businessInfo!['Phone Number']}"),
+              Functions.divider(),
+              Functions.displayInfo("Hours: ${businessInfo!['Hours']}"),
+              Functions.divider(),
+              Functions.displayInfo("Address: ${businessInfo!['Street Name']}"),
+              Functions.divider(),
+              Functions.displayInfo("Zipcode: ${businessInfo!['Zipcode']}"),
+              Functions.divider(),
+              Functions.displayInfo("Website: ${businessInfo!['Website']}"),
+              Functions.divider(),
+              const Padding(
+                  padding: EdgeInsets.fromLTRB(10, 0, 2, 2),
+                  child: Text("Been Here?",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 0, 0, 0), fontSize: 15))),
+              TextButton(
+                //creates a button that goes to the next filter page
+                child: Container(
+                  color: Colors.blueGrey,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                  child: const Text(
+                    "Review",
+                    style: TextStyle(color: Colors.white, fontSize: 15.0),
+                  ),
                 ),
-              ),
-              onPressed: () => showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                    title: const Text('Review this Business'),
-                    actions: <Widget>[
-                      RatingBar(
-                        initialRating: _rating,
-                        minRating: 1,
-                        maxRating: 5,
-                        allowHalfRating: true,
-                        onRatingUpdate: (_rating) => setState(() {
-                          this._rating = _rating;
-                        }),
-                        ratingWidget: RatingWidget(
-                          full: const Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                          half: const Icon(
-                            Icons.star_half,
-                            color: Colors.amber,
-                          ),
-                          empty: const Icon(
-                            Icons.star,
-                            color: Colors.grey,
+                onPressed: () => showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                      title: const Text('Review this Business'),
+                      actions: <Widget>[
+                        RatingBar(
+                          initialRating: _rating,
+                          minRating: 1,
+                          maxRating: 5,
+                          allowHalfRating: true,
+                          onRatingUpdate: (_rating) => setState(() {
+                            this._rating = _rating;
+                          }),
+                          ratingWidget: RatingWidget(
+                            full: const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            half: const Icon(
+                              Icons.star_half,
+                              color: Colors.amber,
+                            ),
+                            empty: const Icon(
+                              Icons.star,
+                              color: Colors.grey,
+                            ),
                           ),
                         ),
+                        TextButton(
+                          onPressed: () async {
+                            CollectionReference busRef = FirebaseFirestore
+                                .instance
+                                .collection('Businesses');
+                            final auth = FirebaseAuth.instance;
+                            final User? user = auth.currentUser;
+                            final uid = user?.uid;
+                            busRef
+                                .doc(business)
+                                .update({"Ratings.$uid": _rating});
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Submit'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(color: Colors.redAccent),
+                          ),
+                        ),
+                      ],
+                      actionsAlignment: MainAxisAlignment.end),
+                ),
+              ),
+              const Padding(
+                  padding: EdgeInsets.fromLTRB(10, 10, 2, 2),
+                  child: Text("See something off?",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 0, 0, 0), fontSize: 12))),
+              TextButton(
+                child: Container(
+                  color: Colors.red,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                  child: const Text(
+                    "FLAG",
+                    style: TextStyle(color: Colors.white, fontSize: 10.0),
+                  ),
+                ),
+                onPressed: () => showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: const Text('Submit Flag for Business'),
+                    content: const Text('Why are you flagging this business?'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () async {
+                          CollectionReference busRef = FirebaseFirestore
+                              .instance
+                              .collection('Businesses');
+                          busRef
+                              .doc(business)
+                              .update({"Flag Count": FieldValue.increment(1)});
+                          busRef.doc(business).update({
+                            "Flag Reasons.Inaccurate": FieldValue.increment(1)
+                          });
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Information Inaccurate'),
                       ),
                       TextButton(
                         onPressed: () async {
                           CollectionReference busRef = FirebaseFirestore
                               .instance
                               .collection('Businesses');
-                          final auth = FirebaseAuth.instance;
-                          final User? user = auth.currentUser;
-                          final uid = user?.uid;
                           busRef
                               .doc(business)
-                              .update({"Ratings.$uid": _rating});
+                              .update({"Flag Count": FieldValue.increment(1)});
+                          busRef.doc(business).update({
+                            "Flag Reasons.Inappropriate":
+                                FieldValue.increment(1)
+                          });
                           Navigator.pop(context);
                         },
-                        child: const Text('Submit'),
+                        child: const Text('Information Inappropriate'),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          CollectionReference busRef = FirebaseFirestore
+                              .instance
+                              .collection('Businesses');
+                          busRef
+                              .doc(business)
+                              .update({"Flag Count": FieldValue.increment(1)});
+                          busRef.doc(business).update(
+                              {"Flag Reasons.Other": FieldValue.increment(1)});
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Other'),
                       ),
                       TextButton(
                         onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -333,154 +247,23 @@ class _BusinessInfoState extends State<BusinessInfo> {
                         ),
                       ),
                     ],
-                    actionsAlignment: MainAxisAlignment.end),
-              ),
-            ),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(10, 10, 2, 2),
-                child: Text("See something off?",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0), fontSize: 12))),
-            TextButton(
-              child: Container(
-                color: Colors.red,
-                padding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                child: const Text(
-                  "FLAG",
-                  style: TextStyle(color: Colors.white, fontSize: 10.0),
+                  ),
                 ),
               ),
-              onPressed: () => showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  title: const Text('Submit Flag for Business'),
-                  content: const Text('Why are you flagging this business?'),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () async {
-                        CollectionReference busRef =
-                            FirebaseFirestore.instance.collection('Businesses');
-                        busRef
-                            .doc(business)
-                            .update({"Flag Count": FieldValue.increment(1)});
-                        busRef.doc(business).update({
-                          "Flag Reasons.Inaccurate": FieldValue.increment(1)
-                        });
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Information Inaccurate'),
-                    ),
-                    TextButton(
-                      onPressed: () async {
-                        CollectionReference busRef =
-                            FirebaseFirestore.instance.collection('Businesses');
-                        busRef
-                            .doc(business)
-                            .update({"Flag Count": FieldValue.increment(1)});
-                        busRef.doc(business).update({
-                          "Flag Reasons.Inappropriate": FieldValue.increment(1)
-                        });
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Information Inappropriate'),
-                    ),
-                    TextButton(
-                      onPressed: () async {
-                        CollectionReference busRef =
-                            FirebaseFirestore.instance.collection('Businesses');
-                        busRef
-                            .doc(business)
-                            .update({"Flag Count": FieldValue.increment(1)});
-                        busRef.doc(business).update(
-                            {"Flag Reasons.Other": FieldValue.increment(1)});
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Other'),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, 'Cancel'),
-                      child: const Text(
-                        'Cancel',
-                        style: TextStyle(color: Colors.redAccent),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.logout_outlined,
-              color: Colors.redAccent,
-            ),
-            label: 'Logout',
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.filter_list), label: "Filters"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_rounded),
-            label: 'Account',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search All',
-          ),
-        ],
-        selectedItemColor: Colors.black,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        showUnselectedLabels: true,
-        unselectedItemColor: Colors.grey,
-      ),
-    );
+        bottomNavigationBar: Functions.makeNavBar(_selectedIndex, (int index) {
+          //logic for nav bar
+          setState(() {
+            _selectedIndex = index;
+          });
+          Functions.onTap(index, context);
+        }));
   }
 
   int _selectedIndex = 3;
   Map<String, int> random = {};
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    if (index == 0) {
-      // The line below usually is preceded with the keyword 'await' but this
-      // threw errors due to the method not being an async method.
-      FirebaseAuth.instance.signOut();
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => LoginScreen(),
-        ),
-      );
-    } else if (index == 1) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(),
-        ),
-      );
-    } else if (index == 2) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => AccountPage(),
-        ),
-      );
-    } else if (index == 3) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => FirstRoute(
-            title: 'Search',
-            receivedMap: random,
-          ),
-        ),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

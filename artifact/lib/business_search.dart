@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../../../login.dart';
 import '../../../home.dart';
-import '../../../business_info.dart';
-import '../../../account_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import '../../../functions.dart';
 
 class FirstRoute extends StatefulWidget {
   const FirstRoute({super.key, required this.title, required this.receivedMap});
@@ -58,112 +55,8 @@ class _FirstRoute extends State<FirstRoute> {
             widget.receivedMap.containsKey(doc["Zipcode"].toString())) {
           //filters based on incoming map
           i++;
-          String name = "";
-          //doc["Business Name"]; //logic for numbering business
-          Container businessContainer;
-          String hours = "Hours: " + doc["Hours"];
-          String phoneNumber = "Phone Number: " + doc["Phone Number"];
-          String webSite = "Website: " + doc["Website"];
 
-          if (doc["Verified"]) {
-            businessContainer = Container(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(children: <Widget>[
-                  Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 0, 0, 2),
-                      child: Text(
-                        name,
-                        style: const TextStyle(
-                            color: Colors.black, fontSize: 25.0),
-                      )),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                    child: Text(
-                      doc["Business Name"],
-                      style:
-                          const TextStyle(color: Colors.black, fontSize: 25.0),
-                      //decoration: TextDecoration.underline
-                    ),
-                  ),
-                  const Icon(Icons.check_circle_outline)
-                ]),
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 0, 2, 2),
-                    child: Text(doc["Business Details"])),
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 2, 2, 2),
-                    child: Text(hours)),
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 2, 2, 2),
-                    child: Text(phoneNumber)),
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 2, 2, 10),
-                    child: Text(webSite))
-              ],
-            ));
-          } else {
-            businessContainer = Container(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 0, 0, 2),
-                        child: Text(
-                          name,
-                          style: const TextStyle(
-                              color: Colors.black, fontSize: 25.0),
-                        )),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(5, 0, 2, 2),
-                        child: Text(
-                          doc["Business Name"],
-                          style: const TextStyle(
-                              color: Colors.black, fontSize: 25.0),
-                          //decoration: TextDecoration.underline),
-                        )),
-                  ],
-                ),
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 0, 2, 2),
-                    child: Text(doc["Business Details"])),
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 2, 2, 2),
-                    child: Text(hours)),
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 2, 2, 2),
-                    child: Text(phoneNumber)),
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 2, 2, 10),
-                    child: Text(webSite))
-              ],
-            ));
-          }
-
-          list.add(
-            Card(
-              elevation: 10,
-              color: const Color.fromARGB(255, 240, 240, 240),
-              child: InkWell(
-                  splashColor: Colors.blue.withAlpha(30),
-                  onTap: () {
-                    //button moves to the business_info page that displays all the details (that code is in business_info.dart)
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BusinessInfo(
-                                title: doc.id,
-                                number: _selectedIndex,
-                              )),
-                    );
-                  },
-                  child: businessContainer),
-            ),
-          );
+          list.add(Functions.getCard(_selectedIndex, context, doc));
           list.add(const Padding(
             padding: EdgeInsets.fromLTRB(5, 2, 2, 5),
           ));
@@ -196,7 +89,7 @@ class _FirstRoute extends State<FirstRoute> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomeScreen(),
+                  builder: (context) => const HomeScreen(),
                 ));
           }));
     }
@@ -208,90 +101,33 @@ class _FirstRoute extends State<FirstRoute> {
 
   //This is a hash map that will store all of the categories that are found in the businesses (maybe hardcode for future)
   Map<String, String> category = {};
-  Map<String, int> defaultMap = {}; //used if viewing all (from nav. bar)
   int _selectedIndex = 3;
-
-  void _onItemTapped(int index) {
-    //logic for nav bar
-    setState(() {
-      _selectedIndex = index;
-    });
-    if (index == 0) {
-      FirebaseAuth.instance.signOut();
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => LoginScreen(),
-        ),
-      );
-    } else if (index == 1) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(),
-        ),
-      );
-    } else if (index == 2) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => AccountPage(),
-        ),
-      );
-    } else if (index == 3) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => FirstRoute(
-            title: 'Search',
-            receivedMap: defaultMap,
-          ),
-        ),
-      );
-    }
-  }
 
   Scaffold makeFirstScaffold() {
     //this creates the scaffold using the children list mentioned above (separate method to make build() smaller)
     return Scaffold(
-      backgroundColor: Colors.white24,
-      appBar: AppBar(
-        title: const Text(
-          'For The People: Businesses',
-          style: TextStyle(color: Colors.white, fontSize: 20.0),
+        backgroundColor: Colors.white24,
+        appBar: AppBar(
+          title: const Text(
+            'For The People: Businesses',
+            style: TextStyle(color: Colors.white, fontSize: 20.0),
+          ),
+          backgroundColor: Colors.blueGrey,
+          automaticallyImplyLeading: false,
         ),
-        backgroundColor: Colors.blueGrey,
-        automaticallyImplyLeading: false,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: list),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.logout_outlined,
-              color: Colors.redAccent,
-            ),
-            label: 'Logout',
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.filter_list), label: "Filters"),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_rounded),
-            label: 'Account',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search All',
-          ),
-        ],
-        selectedItemColor: Colors.black,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        showUnselectedLabels: true,
-        unselectedItemColor: Colors.grey,
-      ),
-    );
+        body: SingleChildScrollView(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: list),
+        ),
+        bottomNavigationBar: Functions.makeNavBar(_selectedIndex, (int index) {
+          //logic for nav bar
+          setState(() {
+            _selectedIndex = index;
+          });
+          Functions.onTap(index, context);
+        }));
   }
 
   @override
