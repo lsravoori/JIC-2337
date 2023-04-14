@@ -1,7 +1,11 @@
 import 'package:artifact/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:io';
 
 class BusinessRegistrationPage extends StatefulWidget {
   const BusinessRegistrationPage({Key? key}) : super(key: key);
@@ -23,10 +27,13 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
       _ethnicity,
       _gender,
       _phoneNumber,
-      _website,
-      _logo;
+      _website;
+  String _logo = "";
   int? _zipcode;
   bool? _isLGBTQ = false;
+  Uint8List? logo;
+  String? logoName;
+  UploadTask? uploadTask;
 
   @override
   Widget build(BuildContext context) {
@@ -128,9 +135,17 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
             TextFormField(
                 decoration: const InputDecoration(labelText: 'Website'),
                 onChanged: (input) => setState(() => _website = input!)),
-            TextFormField(
-                decoration: const InputDecoration(labelText: 'Logo'),
-                onChanged: (input) => setState(() => _logo = input!)),
+            TextButton(
+              onPressed: selectFile,
+              child: Container(
+                color: Colors.grey,
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                child: const Text(
+                  "Add Logo",
+                  style: TextStyle(color: Colors.white, fontSize: 10.0),
+                ),
+              ),
+            ),
             CheckboxListTile(
               title: const Text("LGBTQ+ owned?"),
               value: _isLGBTQ,
@@ -208,7 +223,9 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
                             final User? user = auth.currentUser;
                             final uid = user?.uid;
                             testData.addAll({"UserID": uid!});
-                            busRef.add(testData);
+                            DocumentReference docRef = await busRef.add(testData);
+                            String docID = docRef.id;
+
                             var doc_id = [];
                             await FirebaseFirestore.instance
                                 .collection('Businesses')
@@ -224,6 +241,15 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
                                 .collection('Accounts');
                             userRef.doc(uid).update(
                                 {"BusinessIDs": FieldValue.arrayUnion(doc_id)});
+
+                            // UPLOADING LOGO HERE
+                            if (logo != null) {
+                              uploadFile(uid, docID);
+                            }
+                            busRef.doc(docID).update(
+                                {"Logo": 'logos/' + docID + '/' + logoName!});
+                            //
+
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -242,5 +268,27 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
         ),
       ),
     );
+  }
+
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles(type: FileType.custom,
+      allowedExtensions: ['jpg', 'png', 'bmp', 'gif'],
+      );
+    if (result == null) {
+      return;
+    }
+    setState(() {
+      logo = result.files.single.bytes;
+      logoName = result.files.single.name;
+    });
+  }
+
+  Future uploadFile(String uid, String docID) async {
+    final path = 'logos/' + docID + '/' + logoName!;
+
+    final ref = FirebaseStorage.instance.ref().child(path);
+    uploadTask = ref.putData(logo!);
+
+    final snapshot = await uploadTask!.whenComplete(() {});
   }
 }
