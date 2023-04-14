@@ -2,6 +2,7 @@ import 'package:artifact/admin_business_info.dart';
 import 'package:artifact/admin_deleted_businesses.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../login.dart';
 import '../../../home.dart';
@@ -12,6 +13,7 @@ import '../../../business_info.dart';
 import '../../../account_page.dart';
 import '../../../admin_deleted_businesses.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class Functions {
   static Card getCard(
@@ -406,6 +408,21 @@ class Functions {
             textAlign: TextAlign.left,
             style: const TextStyle(
                 color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)));
+  }
+
+  static Future displayImage(String filePath) async {
+    if (filePath != "") {
+      Uint8List? imageBytes = await FirebaseStorage.instance.ref().child(filePath).getData(10000000);
+      if (imageBytes != null) {
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(10, 10, 2, 2),
+          child: Image.memory(
+            imageBytes,
+            fit: BoxFit.cover,
+        ));
+      }
+    }
+    return;
   }
 
   static Widget divider() {
