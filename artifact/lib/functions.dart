@@ -477,6 +477,14 @@ class Functions {
               TextButton(
                 onPressed: () {
                   Navigator.pop(context, 'Remove');
+                  readdBusiness(business, businessInfo);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const AdminScreen(),
+                    ),
+                  );
                 },
                 child: const Text('ADD'),
               ),
@@ -582,6 +590,57 @@ class Functions {
           });
         }
         businesses.doc(business).delete();
+      }
+    });
+  }
+
+  static void readdBusiness(
+      String business, Map<String, Object>? businessInfo) {
+    CollectionReference businesses =
+        FirebaseFirestore.instance.collection('Businesses');
+    CollectionReference delBusinesses =
+        FirebaseFirestore.instance.collection('DeletedBusinesses');
+    CollectionReference users =
+        FirebaseFirestore.instance.collection('Accounts');
+    delBusinesses.doc(business).get().then((DocumentSnapshot documentSnapshot) {
+      //creates a snapshot for the business by name
+      if (documentSnapshot.exists) {
+        //checks if the business with the given name exists
+        Map<String, dynamic>? documentFields =
+            documentSnapshot.data() as Map<String, dynamic>?;
+        if (documentFields != null) {
+          //Find out the userID below and remove businessID from their list of businesses.
+          if (documentFields.keys.toList().contains("UserID")) {
+            String userID = documentFields["UserID"];
+            users.doc(userID).get().then((DocumentSnapshot userSnapshot) {
+              if (userSnapshot.exists) {
+                Map<String, dynamic>? userFields =
+                    userSnapshot.data() as Map<String, dynamic>?;
+                if (userFields != null) {
+                  if (userFields.keys.toList().contains("BusinessIDs")) {
+                    List businessIDS = userFields["BusinessIDs"];
+                    businessIDS.add(documentSnapshot.id);
+                    FirebaseFirestore.instance
+                        .collection('Accounts')
+                        .doc(userID)
+                        .update({'BusinessIDs': businessIDS});
+                  }
+                }
+              }
+            });
+          }
+          //Copy business document from the 'Businesses' collection to the 'DeletedBusinesses' collection
+          businesses
+              .doc(business)
+              .get()
+              .then((DocumentSnapshot delDocSnapshot) {
+            FirebaseFirestore.instance
+                .collection('Businesses')
+                .doc(documentSnapshot.id)
+                .set(documentFields);
+          });
+        }
+        delBusinesses.doc(business).delete();
       }
     });
   }
