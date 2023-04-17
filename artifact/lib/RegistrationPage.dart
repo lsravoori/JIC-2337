@@ -18,7 +18,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('User Registration Page'),
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: const Color(0xFFD67867),
       ),
       body: Form(
         key: _formKey,
@@ -130,7 +130,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   //_submit uncomment when submit implemented
                 },
                 child: Container(
-                  color: Colors.blueGrey,
+                  color: const Color(0xFFD67867),
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                   child: const Text(

@@ -11,7 +11,6 @@ import '../../../admin.dart';
 import '../../../business_search.dart';
 import '../../../business_info.dart';
 import '../../../account_page.dart';
-import '../../../admin_deleted_businesses.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -78,37 +77,37 @@ class Functions {
     switch (category) {
       case "Women":
         {
-          cardColor = Colors.pinkAccent;
+          cardColor = const Color.fromARGB(255, 225, 119, 155);
         }
         break;
       case "Non-Binary":
         {
-          cardColor = Colors.purple;
+          cardColor = const Color.fromARGB(255, 189, 67, 211);
         }
         break;
       case "LGBT+":
         {
-          cardColor = Colors.purple;
+          cardColor = const Color.fromARGB(255, 189, 67, 211);
         }
         break;
       case "Black":
         {
-          cardColor = Colors.redAccent;
+          cardColor = const Color.fromARGB(255, 248, 23, 7);
         }
         break;
       case "Hispanic":
         {
-          cardColor = Colors.yellow;
+          cardColor = const Color.fromARGB(255, 181, 165, 14);
         }
         break;
       case "Asian":
         {
-          cardColor = Colors.blue;
+          cardColor = const Color.fromARGB(255, 82, 145, 196);
         }
         break;
       case "Pacific Islander":
         {
-          cardColor = Colors.blue;
+          cardColor = const Color.fromARGB(255, 82, 145, 196);
         }
         break;
       case "Native American":
@@ -412,14 +411,17 @@ class Functions {
 
   static Future displayImage(String filePath) async {
     if (filePath != "") {
-      Uint8List? imageBytes = await FirebaseStorage.instance.ref().child(filePath).getData(10000000);
+      Uint8List? imageBytes = await FirebaseStorage.instance
+          .ref()
+          .child(filePath)
+          .getData(10000000);
       if (imageBytes != null) {
         return Padding(
-          padding: const EdgeInsets.fromLTRB(10, 10, 2, 2),
-          child: Image.memory(
-            imageBytes,
-            fit: BoxFit.cover,
-        ));
+            padding: const EdgeInsets.fromLTRB(10, 10, 2, 2),
+            child: Image.memory(
+              imageBytes,
+              fit: BoxFit.cover,
+            ));
       }
     }
     return;

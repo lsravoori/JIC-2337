@@ -57,7 +57,7 @@ class _UpdateBusinessState extends State<UpdateBusiness> {
           return Scaffold(
             appBar: AppBar(
               title: Text('Update Business Information'),
-              backgroundColor: Colors.blueGrey,
+              backgroundColor: const Color(0xFFD67867),
             ),
             body: SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
@@ -149,7 +149,8 @@ class _UpdateBusinessState extends State<UpdateBusiness> {
                     onPressed: selectFile,
                     child: Container(
                       color: Colors.grey,
-                      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 15),
                       child: const Text(
                         "Add Logo",
                         style: TextStyle(color: Colors.white, fontSize: 10.0),
@@ -166,7 +167,7 @@ class _UpdateBusinessState extends State<UpdateBusiness> {
                   SizedBox(height: 16.0),
                   TextButton(
                     child: Container(
-                      color: Colors.blueGrey,
+                      color: const Color(0xFFD67867),
                       padding: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 15),
                       child: const Text(
@@ -204,9 +205,9 @@ class _UpdateBusinessState extends State<UpdateBusiness> {
                       if (logo != null) {
                         uploadFile(uid, busID);
                       }
-                      busRef.doc(busID).update(
-                        {"Logo": 'logos/' + busID + '/' + _logo!}
-                      );
+                      busRef
+                          .doc(busID)
+                          .update({"Logo": 'logos/' + busID + '/' + _logo!});
 
                       Navigator.push(
                           context,
@@ -271,9 +272,10 @@ class _UpdateBusinessState extends State<UpdateBusiness> {
   }
 
   Future selectFile() async {
-    final result = await FilePicker.platform.pickFiles(type: FileType.custom,
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
       allowedExtensions: ['jpg', 'png', 'bmp', 'gif'],
-      );
+    );
     if (result == null) {
       return;
     }

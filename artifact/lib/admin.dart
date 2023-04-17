@@ -55,7 +55,7 @@ class _AdminScreen extends State<AdminScreen> {
             'Administrator View',
             style: TextStyle(color: Colors.white, fontSize: 20.0),
           ),
-          backgroundColor: Colors.blueGrey,
+          backgroundColor: const Color(0xFFD67867),
           automaticallyImplyLeading: false,
         ),
         body: SingleChildScrollView(

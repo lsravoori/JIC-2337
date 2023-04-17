@@ -72,7 +72,7 @@ class _AdminBusiness extends State<AdminBusiness> {
             'For The People: Flagged Businesses',
             style: TextStyle(color: Colors.white, fontSize: 20.0),
           ),
-          backgroundColor: Colors.blueGrey,
+          backgroundColor: const Color(0xFFD67867),
           automaticallyImplyLeading: false,
         ),
         body: SingleChildScrollView(

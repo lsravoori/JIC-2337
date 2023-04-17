@@ -40,7 +40,7 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Business Registration'),
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: const Color(0xFFD67867),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -139,7 +139,8 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
               onPressed: selectFile,
               child: Container(
                 color: Colors.grey,
-                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 child: const Text(
                   "Add Logo",
                   style: TextStyle(color: Colors.white, fontSize: 10.0),
@@ -156,7 +157,7 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
             const SizedBox(height: 16.0),
             ElevatedButton(
               child: Container(
-                color: Colors.blueGrey,
+                color: Colors.blue,
                 padding:
                     const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 child: const Text(
@@ -176,9 +177,9 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
                       actions: <Widget>[
                         TextButton(
                           child: Container(
-                            color: Colors.blueGrey,
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 10),
+                            color: const Color(0xFFD67867),
+                            //padding: const EdgeInsets.symmetric(
+                            //  vertical: 5, horizontal: 10),
                             child: const Text(
                               "OK",
                               style: TextStyle(
@@ -223,7 +224,8 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
                             final User? user = auth.currentUser;
                             final uid = user?.uid;
                             testData.addAll({"UserID": uid!});
-                            DocumentReference docRef = await busRef.add(testData);
+                            DocumentReference docRef =
+                                await busRef.add(testData);
                             String docID = docRef.id;
 
                             var doc_id = [];
@@ -271,9 +273,10 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
   }
 
   Future selectFile() async {
-    final result = await FilePicker.platform.pickFiles(type: FileType.custom,
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
       allowedExtensions: ['jpg', 'png', 'bmp', 'gif'],
-      );
+    );
     if (result == null) {
       return;
     }
