@@ -107,7 +107,7 @@ class _BusinessInfoState extends State<BusinessInfo> {
     widgets.add(TextButton(
                 //creates a button that goes to the next filter page
                 child: Container(
-                  color: Colors.blueGrey,
+                  color: const Color(0xFFD67867),
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                   child: const Text(

@@ -74,7 +74,7 @@ class _FirstRoute extends State<FirstRoute> {
       list.add(const Padding(padding: EdgeInsets.fromLTRB(20, 10, 20, 20)));
       list.add(TextButton(
           child: Container(
-            color: Colors.blueGrey,
+            color: const Color(0xFFD67867),
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             child: const Text(
               "Back to Filters",
@@ -112,7 +112,7 @@ class _FirstRoute extends State<FirstRoute> {
             'For The People: Businesses',
             style: TextStyle(color: Colors.white, fontSize: 20.0),
           ),
-          backgroundColor: Colors.blueGrey,
+          backgroundColor: const Color(0xFFD67867),
           automaticallyImplyLeading: false,
         ),
         body: SingleChildScrollView(

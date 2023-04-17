@@ -4,8 +4,6 @@ import 'package:artifact/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../../login.dart';
-import '../../../business_search.dart';
 import '../../../functions.dart';
 
 class AccountPage extends StatefulWidget {
@@ -39,7 +37,7 @@ class _AccountPageState extends State<AccountPage> {
                   return Scaffold(
                       appBar: AppBar(
                         title: const Text('Account Information'),
-                        backgroundColor: Colors.blueGrey,
+                        backgroundColor: const Color(0xFFD67867),
                       ),
                       body: Form(
                         key: _formKey,
@@ -170,7 +168,7 @@ class _AccountPageState extends State<AccountPage> {
       TextButton(
         //creates a button that contains a name of a business in it
         child: Container(
-          color: Colors.blueGrey,
+          color: const Color(0xFFD67867),
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           child: const Text(
             "Save",
@@ -281,7 +279,7 @@ class _AccountPageState extends State<AccountPage> {
     list.add(TextButton(
         //creates a button that contains a name of a business in it
         child: Container(
-          color: Colors.blueGrey,
+          color: const Color(0xFFD67867),
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           child: const Text(
             "Add a Business",

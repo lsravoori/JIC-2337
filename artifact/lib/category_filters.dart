@@ -97,7 +97,7 @@ class _CategoryScreen extends State<CategoryScreen> {
             'For The People: Types of Businesses',
             style: TextStyle(color: Colors.white, fontSize: 20.0),
           ),
-          backgroundColor: Colors.blueGrey,
+          backgroundColor: const Color(0xFFD67867),
         ),
         body: SingleChildScrollView(
             //allows scrolling
@@ -120,7 +120,7 @@ class _CategoryScreen extends State<CategoryScreen> {
                 child: TextButton(
                     //creates a button that contains a name of a business in it
                     child: Container(
-                      color: Colors.blueGrey,
+                      color: const Color(0xFFD67867),
                       padding: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 10),
                       child: const Text(
