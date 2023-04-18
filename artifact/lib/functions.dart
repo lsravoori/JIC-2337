@@ -6,15 +6,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../login.dart';
 import '../../../home.dart';
-import '../../../admin_business.dart';
+import '../../../admin_flagged.dart';
 import '../../../admin.dart';
 import '../../../business_search.dart';
 import '../../../business_info.dart';
 import '../../../account_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import '../../../admin_search.dart';
 
 class Functions {
+  //This function creates the cards on "Search All"
   static Card getCard(
       int _selectedIndex, BuildContext context, QueryDocumentSnapshot doc) {
     return Card(
@@ -43,6 +45,7 @@ class Functions {
     );
   }
 
+  //This function creates the cards on "Search All" for admin Acccounts
   static Card getAdminCard(
       int _selectedIndex, BuildContext context, QueryDocumentSnapshot doc) {
     return Card(
@@ -55,7 +58,7 @@ class Functions {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => AdminBusinessInfo(
+                  builder: (context) => AdminFlaggedInfo(
                         title: doc.id,
                         number: _selectedIndex,
                       )),
@@ -257,19 +260,13 @@ class Functions {
     } else if (index == 1) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => const AdminBusiness(title: 'admin'),
+          builder: (context) => const AdminScreen(),
         ),
       );
     } else if (index == 2) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => const AdminScreen(),
-        ),
-      );
-    } else if (index == 3) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const AdminDeletedScreen(),
+          builder: (context) => const AdminSearchScreen(),
         ),
       );
     }
@@ -318,14 +315,13 @@ class Functions {
           label: 'Logout',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.flag),
-          label: 'Flagged',
+          icon: Icon(Icons.home),
+          label: 'Home',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.search),
           label: 'All',
-        ),
-        BottomNavigationBarItem(icon: Icon(Icons.delete), label: 'Deleted')
+        )
       ],
       selectedItemColor: Colors.black,
       currentIndex: _selectedIndex,
@@ -373,7 +369,7 @@ class Functions {
             style: const TextStyle(fontSize: 10),
           )
         ]),
-        backgroundColor: Functions.getColor("${businessInfo!['Category']}"),
+        backgroundColor: Functions.getColor("${businessInfo['Category']}"),
       );
     } else {
       appBarInfo = AppBar(
@@ -394,7 +390,7 @@ class Functions {
             style: const TextStyle(fontSize: 10),
           )
         ]),
-        backgroundColor: Functions.getColor("${businessInfo!['Category']}"),
+        backgroundColor: Functions.getColor("${businessInfo['Category']}"),
       );
     }
     return appBarInfo;

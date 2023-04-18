@@ -2,19 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../../functions.dart';
 
-class AdminBusiness extends StatefulWidget {
-  const AdminBusiness({super.key, required this.title});
+class AdminFlagged extends StatefulWidget {
+  const AdminFlagged({super.key, required this.title});
   final String title;
 
   @override
-  State<AdminBusiness> createState() => _AdminBusiness();
+  State<AdminFlagged> createState() => _AdminFlagged();
 }
 
-class _AdminBusiness extends State<AdminBusiness> {
+class _AdminFlagged extends State<AdminFlagged> {
   List<Widget> list =
       []; //this is a list of children for the scaffold that shows up on screen
 
-  _AdminBusiness(); //makes instance of the map
+  _AdminFlagged(); //makes instance of the map
 
   Future<QuerySnapshot> getData() async {
     //getData brings in all of the business from the database based on filters

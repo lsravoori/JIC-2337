@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../../functions.dart';
 
-class AdminBusinessInfo extends StatefulWidget {
-  const AdminBusinessInfo({
+class AdminFlaggedInfo extends StatefulWidget {
+  const AdminFlaggedInfo({
     super.key,
     required this.title,
     required this.number,
@@ -14,20 +14,20 @@ class AdminBusinessInfo extends StatefulWidget {
   final int number; //number is used for selected index logic for nav bar
   // Below, _BusinessInfoState passes in the string "title" which is the business id
   @override
-  State<AdminBusinessInfo> createState() => _AdminBusinessInfo(title, number);
+  State<AdminFlaggedInfo> createState() => _AdminFlaggedInfo(title, number);
 }
 
-class _AdminBusinessInfo extends State<AdminBusinessInfo> {
+class _AdminFlaggedInfo extends State<AdminFlaggedInfo> {
   var business = ""; //name of the business
   Map<String, Object>? businessInfo =
       <String, Object>{}; //hashmap of the business details
   List<Widget> infoList =
       []; //unused for now, but will be used for creation of the scaffold
-  int number = 3;
+  int number = 1;
   double _rating = 0;
   double avgRating = 0;
 
-  _AdminBusinessInfo(this.business, this.number) {
+  _AdminFlaggedInfo(this.business, this.number) {
     getInformation(business);
     //this.infoList = createInfoWidgets(businessInfo); //unused for now, will probably delete/repurpose
   }
@@ -38,7 +38,7 @@ class _AdminBusinessInfo extends State<AdminBusinessInfo> {
     var retVal = <String, Object>{}; //temp hashmap for collection
 
     // gets a document from the collection if it exists and retrieves its info
-    if (_selectedIndex == 3) {
+    if (_selectedIndex == 1) {
       CollectionReference businesses =
           FirebaseFirestore.instance.collection('DeletedBusinesses');
       businesses.doc(business).get().then((DocumentSnapshot documentSnapshot) {
