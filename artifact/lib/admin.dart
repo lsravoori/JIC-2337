@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../../admin_search.dart';
+import '../../../admin_flagged.dart';
+import '../../../admin_deleted_businesses.dart';
+
 
 class AdminScreen extends StatefulWidget {
   const AdminScreen({super.key});
@@ -9,43 +13,7 @@ class AdminScreen extends StatefulWidget {
 }
 
 class _AdminScreen extends State<AdminScreen> {
-  Map<String, int> defaultMap = {};
-  List<Widget> list =
-      []; //this is a list of children for the scaffold that shows up on screen
-
-  Future<QuerySnapshot> getData() async {
-    list.clear(); //start blank slate
-    list.add(const Padding(
-      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-    ));
-    int i = 0;
-    await FirebaseFirestore
-        .instance //this whole section pulls business names in with a for each loop
-        .collection('Businesses')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        if (defaultMap.isEmpty ||
-            defaultMap.containsKey(doc["Category"]) ||
-            defaultMap.containsKey(doc["Zipcode"].toString())) {
-          //filters based on incoming map
-          i++;
-
-          list.add(Functions.getAdminCard(_selectedIndex, context, doc));
-          list.add(const Padding(
-            padding: EdgeInsets.fromLTRB(5, 2, 2, 5),
-          )); //Divider
-        }
-      });
-    });
-
-    list.add(const Padding(
-      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-    ));
-    return await FirebaseFirestore.instance.collection('Businesses').get();
-  }
-
-  int _selectedIndex = 2; //this is the page we are on
+  int _selectedIndex = 1;
 
   Scaffold makeScaffold() {
     return Scaffold(
@@ -62,7 +30,72 @@ class _AdminScreen extends State<AdminScreen> {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: list),
+              children: <Widget>[
+                TextButton(
+                  child: Container(
+                  color: Colors.blueGrey,
+                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  child: const Text(
+                    "App Statistics",
+                    style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15.0,
+                    ),
+                  ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AdminSearchScreen(),
+                      )
+                    );
+                  }
+                ),
+                TextButton(
+                  child: Container(
+                  color: Colors.blueGrey,
+                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  child: const Text(
+                    "Flagged Businesses",
+                    style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15.0,
+                    ),
+                  ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AdminFlagged(title: 'admin'),
+                      )
+                    );
+                  }
+                ), 
+                TextButton(
+                  child: Container(
+                  color: Colors.blueGrey,
+                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  child: const Text(
+                    "Deleted Businesses",
+                    style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15.0,
+                    ),
+                  ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AdminDeletedScreen(),
+                      )
+                    );
+                  }
+                )
+              ],
+          ),
         ),
         bottomNavigationBar: Functions.adminNavBar(_selectedIndex, (int index) {
           //logic for nav bar
@@ -76,15 +109,6 @@ class _AdminScreen extends State<AdminScreen> {
   @override
   Widget build(BuildContext context) {
     //builds the UI screen
-    return FutureBuilder(
-      future: getData(),
-      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return makeScaffold();
-        } else {
-          return const Scaffold();
-        }
-      },
-    );
+    return makeScaffold();
   }
 }

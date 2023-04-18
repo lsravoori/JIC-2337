@@ -14,6 +14,7 @@ import '../../../business_search.dart';
 import '../../../login.dart';
 import '../../../home.dart';
 import '../../../admin.dart';
+import '../../../admin_search.dart';
 
 void main() async {
   //main file that simply starts the application on the login screen
@@ -86,9 +87,9 @@ class MyApp extends StatelessWidget {
                 if (exists) {
                   bool isAdmin = previousInfo!['isAdmin'] as bool;
                   if (isAdmin) {
-                    return AdminScreen();
+                    return const AdminScreen();
                   } else {
-                    return HomeScreen();
+                    return const HomeScreen();
                   }
                 } else {
                   return RegistrationPage();

@@ -2,57 +2,61 @@ import 'package:flutter/material.dart';
 import '../../../functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AdminDeletedScreen extends StatefulWidget {
-  const AdminDeletedScreen({super.key});
+//Generates "Search All" page for Admins
+class AdminSearchScreen extends StatefulWidget {
+  const AdminSearchScreen({super.key});
   @override
-  State<AdminDeletedScreen> createState() => _AdminDeletedScreen();
+  State<AdminSearchScreen> createState() => _AdminSearchScreen();
 }
 
-class _AdminDeletedScreen extends State<AdminDeletedScreen> {
-  Map<String, int> defaultMap = {};
+class _AdminSearchScreen extends State<AdminSearchScreen> {
   List<Widget> list =
       []; //this is a list of children for the scaffold that shows up on screen
 
+  _AdminSearchScreen(); //makes instance of the map
+
   Future<QuerySnapshot> getData() async {
-    list.clear(); //start blank slate
+    //getData brings in all of the business from the database based on filters
+    int i = 0;
+    //used to number the amount of entries
+    int j = 0;
+    //used to check if empty page
+    list.clear();
+    //start blank slate
     list.add(const Padding(
       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
     ));
-    int i = 0;
     await FirebaseFirestore
         .instance //this whole section pulls business names in with a for each loop
-        .collection('DeletedBusinesses')
+        .collection('Businesses')
         .get()
         .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        if (defaultMap.isEmpty ||
-            defaultMap.containsKey(doc["Category"]) ||
-            defaultMap.containsKey(doc["Zipcode"].toString())) {
-          //filters based on incoming map
+      for (var doc in querySnapshot.docs) {
           i++;
-
           list.add(Functions.getAdminCard(_selectedIndex, context, doc));
           list.add(const Padding(
             padding: EdgeInsets.fromLTRB(5, 2, 2, 5),
           )); //Divider
-        }
-      });
+      }
     });
-
     list.add(const Padding(
       padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
     ));
     return await FirebaseFirestore.instance.collection('Businesses').get();
   }
 
-  int _selectedIndex = 1; //this is the page we are on
+  //This is a hash map that will store all of the categories that are found in the businesses (maybe hardcode for future)
+  Map<String, String> category = {};
+  Map<String, int> defaultMap = {}; //used if viewing all (from nav. bar)
+  int _selectedIndex = 2;
 
   Scaffold makeScaffold() {
+    //this creates the scaffold using the children list mentioned above (separate method to make build() smaller)
     return Scaffold(
         backgroundColor: Colors.white24,
         appBar: AppBar(
           title: const Text(
-            'Deleted Businesses',
+            'All Businesses',
             style: TextStyle(color: Colors.white, fontSize: 20.0),
           ),
           backgroundColor: Colors.blueGrey,
