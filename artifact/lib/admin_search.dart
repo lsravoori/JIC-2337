@@ -59,7 +59,7 @@ class _AdminSearchScreen extends State<AdminSearchScreen> {
             'All Businesses',
             style: TextStyle(color: Colors.white, fontSize: 20.0),
           ),
-          backgroundColor: Colors.blueGrey,
+          backgroundColor: const Color(0xFFD67867),
           automaticallyImplyLeading: false,
         ),
         body: SingleChildScrollView(
