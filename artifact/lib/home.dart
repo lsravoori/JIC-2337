@@ -129,7 +129,7 @@ class _HomeScreen extends State<HomeScreen> {
             'For The People: Possible ZipCodes',
             style: TextStyle(color: Colors.white, fontSize: 20.0),
           ),
-          backgroundColor: Colors.blueGrey,
+          backgroundColor: const Color(0xFFD67867),
           automaticallyImplyLeading: false,
         ),
         body: SingleChildScrollView(
@@ -154,7 +154,7 @@ class _HomeScreen extends State<HomeScreen> {
                   child: TextButton(
                       //creates a button that goes to the next filter page
                       child: Container(
-                        color: Colors.blueGrey,
+                        color: const Color(0xFFD67867),
                         padding: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 10),
                         child: const Text(

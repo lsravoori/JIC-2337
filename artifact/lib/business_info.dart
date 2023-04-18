@@ -74,43 +74,40 @@ class _BusinessInfoState extends State<BusinessInfo> {
     final auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final uid = user?.uid;
-    return Scaffold(
-        backgroundColor: Colors.white24,
-        appBar: Functions.businessAppBar(
-            _rating, ratingMap, "$uid", avgRating, businessInfo),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Functions.displayInfo("Logo: ${businessInfo!['Logo']}"),
-              Functions.divider(),
-              Functions.displayInfo(
-                  "Details: ${businessInfo!['Business Details']}"),
-              Functions.divider(),
-              Functions.displayInfo("Category: ${businessInfo!['Category']}"),
-              Functions.divider(),
-              Functions.displayInfo(
-                  "Phone Number: ${businessInfo!['Phone Number']}"),
-              Functions.divider(),
-              Functions.displayInfo("Hours: ${businessInfo!['Hours']}"),
-              Functions.divider(),
-              Functions.displayInfo("Address: ${businessInfo!['Street Name']}"),
-              Functions.divider(),
-              Functions.displayInfo("Zipcode: ${businessInfo!['Zipcode']}"),
-              Functions.divider(),
-              Functions.displayInfo("Website: ${businessInfo!['Website']}"),
-              Functions.divider(),
-              const Padding(
+    List<Widget> widgets = [];
+    String logo = "${businessInfo!['Logo']}";
+    if (logo != "") {
+      Functions.displayImage(logo).then((img) {
+        widgets.add(img);
+      });  
+    }
+    widgets.add(Functions.divider());
+    widgets.add(Functions.displayInfo(
+                "Details: ${businessInfo!['Business Details']}"));
+    widgets.add(Functions.divider());
+    widgets.add(Functions.displayInfo("Category: ${businessInfo!['Category']}"));
+    widgets.add(Functions.divider());
+    widgets.add(Functions.displayInfo(
+                "Phone Number: ${businessInfo!['Phone Number']}"));
+    widgets.add(Functions.divider());
+    widgets.add(Functions.displayInfo("Hours: ${businessInfo!['Hours']}"));
+    widgets.add(Functions.divider());
+    widgets.add(Functions.displayInfo("Address: ${businessInfo!['Street Name']}"));
+    widgets.add(Functions.divider());
+    widgets.add(Functions.displayInfo("Zipcode: ${businessInfo!['Zipcode']}"));
+    widgets.add(Functions.divider());
+    widgets.add(Functions.displayInfo("Website: ${businessInfo!['Website']}"));
+    widgets.add(Functions.divider());
+    widgets.add(const Padding(
                   padding: EdgeInsets.fromLTRB(10, 0, 2, 2),
                   child: Text("Been Here?",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0), fontSize: 15))),
-              TextButton(
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                          color: Color.fromARGB(255, 0, 0, 0), fontSize: 15))));
+    widgets.add(TextButton(
                 //creates a button that goes to the next filter page
                 child: Container(
-                  color: Colors.blueGrey,
+                  color: const Color(0xFFD67867),
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                   child: const Text(
@@ -171,14 +168,14 @@ class _BusinessInfoState extends State<BusinessInfo> {
                       ],
                       actionsAlignment: MainAxisAlignment.end),
                 ),
-              ),
-              const Padding(
+              ));
+    widgets.add(const Padding(
                   padding: EdgeInsets.fromLTRB(10, 10, 2, 2),
                   child: Text("See something off?",
                       textAlign: TextAlign.left,
                       style: TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0), fontSize: 12))),
-              TextButton(
+                          color: Color.fromARGB(255, 0, 0, 0), fontSize: 12))));
+    widgets.add(TextButton(
                 child: Container(
                   color: Colors.red,
                   padding:
@@ -249,8 +246,16 @@ class _BusinessInfoState extends State<BusinessInfo> {
                     ],
                   ),
                 ),
-              ),
-            ],
+              ));
+    return Scaffold(
+        backgroundColor: Colors.white24,
+        appBar: Functions.businessAppBar(
+            _rating, ratingMap, "$uid", avgRating, businessInfo),
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: widgets,
           ),
         ),
         bottomNavigationBar: Functions.makeNavBar(_selectedIndex, (int index) {

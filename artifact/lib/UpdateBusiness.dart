@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import '../../../login.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import '../../../business_search.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 
 class UpdateBusiness extends StatefulWidget {
   const UpdateBusiness({
@@ -37,6 +40,8 @@ class _UpdateBusinessState extends State<UpdateBusiness> {
   bool? _isLGBTQ = false;
   bool firstUpdate = false;
   Map<String, Object>? previousInfo = Map<String, Object>();
+  Uint8List? logo;
+  UploadTask? uploadTask;
 
   _UpdateBusinessState(String businessID) {
     this.busID = businessID;
@@ -52,7 +57,7 @@ class _UpdateBusinessState extends State<UpdateBusiness> {
           return Scaffold(
             appBar: AppBar(
               title: Text('Update Business Information'),
-              backgroundColor: Colors.blueGrey,
+              backgroundColor: const Color(0xFFD67867),
             ),
             body: SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
@@ -140,10 +145,18 @@ class _UpdateBusinessState extends State<UpdateBusiness> {
                       decoration: InputDecoration(labelText: 'Website'),
                       initialValue: _website,
                       onChanged: (input) => setState(() => _website = input!)),
-                  TextFormField(
-                      decoration: InputDecoration(labelText: 'Logo'),
-                      initialValue: _logo,
-                      onChanged: (input) => setState(() => _logo = input!)),
+                  TextButton(
+                    onPressed: selectFile,
+                    child: Container(
+                      color: Colors.grey,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 15),
+                      child: const Text(
+                        "Add Logo",
+                        style: TextStyle(color: Colors.white, fontSize: 10.0),
+                      ),
+                    ),
+                  ),
                   CheckboxListTile(
                     title: Text("LGBTQ+ owned?"),
                     value: _isLGBTQ,
@@ -154,7 +167,7 @@ class _UpdateBusinessState extends State<UpdateBusiness> {
                   SizedBox(height: 16.0),
                   TextButton(
                     child: Container(
-                      color: Colors.blueGrey,
+                      color: const Color(0xFFD67867),
                       padding: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 15),
                       child: const Text(
@@ -188,6 +201,14 @@ class _UpdateBusinessState extends State<UpdateBusiness> {
                       final uid = user?.uid;
                       testData.addAll({"UserID": uid!});
                       busRef.doc(busID).update(testData);
+
+                      if (logo != null) {
+                        uploadFile(uid, busID);
+                      }
+                      busRef
+                          .doc(busID)
+                          .update({"Logo": 'logos/' + busID + '/' + _logo!});
+
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -248,5 +269,28 @@ class _UpdateBusinessState extends State<UpdateBusiness> {
     });
     previousInfo = retVal; //sets previousInfo equal to temp hashmap
     return await FirebaseFirestore.instance.collection('Accounts').get();
+  }
+
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'png', 'bmp', 'gif'],
+    );
+    if (result == null) {
+      return;
+    }
+    setState(() {
+      logo = result.files.single.bytes;
+      _logo = result.files.single.name;
+    });
+  }
+
+  Future uploadFile(String uid, String docID) async {
+    final path = 'logos/' + docID + '/' + _logo!;
+
+    final ref = FirebaseStorage.instance.ref().child(path);
+    uploadTask = ref.putData(logo!);
+
+    final snapshot = await uploadTask!.whenComplete(() {});
   }
 }

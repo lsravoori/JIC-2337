@@ -2,6 +2,7 @@ import 'package:artifact/admin_business_info.dart';
 import 'package:artifact/admin_deleted_businesses.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../login.dart';
 import '../../../home.dart';
@@ -10,8 +11,8 @@ import '../../../admin.dart';
 import '../../../business_search.dart';
 import '../../../business_info.dart';
 import '../../../account_page.dart';
-import '../../../admin_deleted_businesses.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import '../../../admin_search.dart';
 
 class Functions {
@@ -79,37 +80,37 @@ class Functions {
     switch (category) {
       case "Women":
         {
-          cardColor = Colors.pinkAccent;
+          cardColor = const Color.fromARGB(255, 225, 119, 155);
         }
         break;
       case "Non-Binary":
         {
-          cardColor = Colors.purple;
+          cardColor = const Color.fromARGB(255, 189, 67, 211);
         }
         break;
       case "LGBT+":
         {
-          cardColor = Colors.purple;
+          cardColor = const Color.fromARGB(255, 189, 67, 211);
         }
         break;
       case "Black":
         {
-          cardColor = Colors.redAccent;
+          cardColor = const Color.fromARGB(255, 248, 23, 7);
         }
         break;
       case "Hispanic":
         {
-          cardColor = Colors.yellow;
+          cardColor = const Color.fromARGB(255, 181, 165, 14);
         }
         break;
       case "Asian":
         {
-          cardColor = Colors.blue;
+          cardColor = const Color.fromARGB(255, 82, 145, 196);
         }
         break;
       case "Pacific Islander":
         {
-          cardColor = Colors.blue;
+          cardColor = const Color.fromARGB(255, 82, 145, 196);
         }
         break;
       case "Native American":
@@ -404,6 +405,24 @@ class Functions {
                 color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)));
   }
 
+  static Future displayImage(String filePath) async {
+    if (filePath != "") {
+      Uint8List? imageBytes = await FirebaseStorage.instance
+          .ref()
+          .child(filePath)
+          .getData(10000000);
+      if (imageBytes != null) {
+        return Padding(
+            padding: const EdgeInsets.fromLTRB(10, 10, 2, 2),
+            child: Image.memory(
+              imageBytes,
+              fit: BoxFit.cover,
+            ));
+      }
+    }
+    return;
+  }
+
   static Widget divider() {
     return const Divider(
       height: 20,
@@ -473,6 +492,14 @@ class Functions {
               TextButton(
                 onPressed: () {
                   Navigator.pop(context, 'Remove');
+                  readdBusiness(business, businessInfo);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const AdminScreen(),
+                    ),
+                  );
                 },
                 child: const Text('ADD'),
               ),
@@ -578,6 +605,57 @@ class Functions {
           });
         }
         businesses.doc(business).delete();
+      }
+    });
+  }
+
+  static void readdBusiness(
+      String business, Map<String, Object>? businessInfo) {
+    CollectionReference businesses =
+        FirebaseFirestore.instance.collection('Businesses');
+    CollectionReference delBusinesses =
+        FirebaseFirestore.instance.collection('DeletedBusinesses');
+    CollectionReference users =
+        FirebaseFirestore.instance.collection('Accounts');
+    delBusinesses.doc(business).get().then((DocumentSnapshot documentSnapshot) {
+      //creates a snapshot for the business by name
+      if (documentSnapshot.exists) {
+        //checks if the business with the given name exists
+        Map<String, dynamic>? documentFields =
+            documentSnapshot.data() as Map<String, dynamic>?;
+        if (documentFields != null) {
+          //Find out the userID below and remove businessID from their list of businesses.
+          if (documentFields.keys.toList().contains("UserID")) {
+            String userID = documentFields["UserID"];
+            users.doc(userID).get().then((DocumentSnapshot userSnapshot) {
+              if (userSnapshot.exists) {
+                Map<String, dynamic>? userFields =
+                    userSnapshot.data() as Map<String, dynamic>?;
+                if (userFields != null) {
+                  if (userFields.keys.toList().contains("BusinessIDs")) {
+                    List businessIDS = userFields["BusinessIDs"];
+                    businessIDS.add(documentSnapshot.id);
+                    FirebaseFirestore.instance
+                        .collection('Accounts')
+                        .doc(userID)
+                        .update({'BusinessIDs': businessIDS});
+                  }
+                }
+              }
+            });
+          }
+          //Copy business document from the 'Businesses' collection to the 'DeletedBusinesses' collection
+          businesses
+              .doc(business)
+              .get()
+              .then((DocumentSnapshot delDocSnapshot) {
+            FirebaseFirestore.instance
+                .collection('Businesses')
+                .doc(documentSnapshot.id)
+                .set(documentFields);
+          });
+        }
+        delBusinesses.doc(business).delete();
       }
     });
   }
