@@ -57,9 +57,21 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
             TextFormField(
                 decoration: const InputDecoration(labelText: 'Street Address'),
                 onChanged: (input) => setState(() => _streetAddress = input!)),
-            TextFormField(
-                decoration: const InputDecoration(labelText: 'State'),
-                onChanged: (input) => setState(() => _state = input!)),
+             DropdownButtonFormField(
+              decoration:
+                  const InputDecoration(labelText: 'Select State'),
+              value: _state,
+              items: [
+                "GA"
+              ]
+                  .map((state) => DropdownMenuItem(
+                        value: state,
+                        child: Text(state),
+                      ))
+                  .toList(),
+              onChanged: (input) => setState(() => _state = input!),
+              onSaved: (input) => _state = input!,
+            ),
             DropdownButtonFormField(
               decoration:
                   const InputDecoration(labelText: 'Category of Business'),
@@ -83,9 +95,58 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
               onChanged: (input) => setState(() => _category = input!),
               onSaved: (input) => _category = input!,
             ),
-            TextFormField(
-                decoration: const InputDecoration(labelText: 'Zipcode'),
-                onChanged: (value) => _zipcode = int.parse(value!)),
+            DropdownButtonFormField(
+              decoration:
+                  const InputDecoration(labelText: 'Select Zipcode (Atlanta Area)'),
+              value: _zipcode,
+              items: [
+                30341,
+                30340,
+                30345,
+                30319,
+                30329,
+                30342,
+                30326,
+                30324,
+                30327,
+                30305,
+                30309,
+                30318,
+                30339,
+                30080,
+                30363,
+                30313,
+                30314,
+                30310,
+                30303,
+                30308,
+                30311,
+                30310,
+                30312,
+                30334,
+                30315,
+                30337,
+                30354,
+                30315,
+                30316,
+                30306,
+                30307,
+                30317,
+                30032,
+                30030,
+                30002,
+                30079,
+                30033,
+                30084
+              ]
+                  .map((zipcode) => DropdownMenuItem(
+                        value: zipcode,
+                        child: Text(zipcode.toString()),
+                      ))
+                  .toList(),
+              onChanged: (input) => setState(() => _zipcode = input!),
+              onSaved: (input) => _zipcode = input!,
+            ),
             TextFormField(
                 decoration: const InputDecoration(labelText: 'Hours'),
                 onChanged: (input) => setState(() => _hours = input!)),
