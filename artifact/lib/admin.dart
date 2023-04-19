@@ -1,10 +1,10 @@
+import '../../../admin_stats.dart';
 import 'package:flutter/material.dart';
 import '../../../functions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../admin_search.dart';
 import '../../../admin_flagged.dart';
 import '../../../admin_deleted_businesses.dart';
-
 
 class AdminScreen extends StatefulWidget {
   const AdminScreen({super.key});
@@ -28,73 +28,71 @@ class _AdminScreen extends State<AdminScreen> {
         ),
         body: SingleChildScrollView(
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                TextButton(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TextButton(
                   child: Container(
-                  color: Colors.blueGrey,
-                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  child: const Text(
-                    "App Statistics",
-                    style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15.0,
+                    color: Colors.blueGrey,
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    child: const Text(
+                      "App Statistics",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15.0,
+                      ),
                     ),
-                  ),
                   ),
                   onPressed: () {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AdminSearchScreen(),
-                      )
-                    );
-                  }
-                ),
-                TextButton(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AdminStats(),
+                        ));
+                  }),
+              TextButton(
                   child: Container(
-                  color: Colors.blueGrey,
-                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  child: const Text(
-                    "Flagged Businesses",
-                    style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15.0,
+                    color: Colors.blueGrey,
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    child: const Text(
+                      "Flagged Businesses",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15.0,
+                      ),
                     ),
-                  ),
                   ),
                   onPressed: () {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AdminFlagged(title: 'admin'),
-                      )
-                    );
-                  }
-                ), 
-                TextButton(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const AdminFlagged(title: 'admin'),
+                        ));
+                  }),
+              TextButton(
                   child: Container(
-                  color: Colors.blueGrey,
-                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  child: const Text(
-                    "Deleted Businesses",
-                    style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15.0,
+                    color: Colors.blueGrey,
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    child: const Text(
+                      "Deleted Businesses",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15.0,
+                      ),
                     ),
-                  ),
                   ),
                   onPressed: () {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AdminDeletedScreen(),
-                      )
-                    );
-                  }
-                )
-              ],
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AdminDeletedScreen(),
+                        ));
+                  })
+            ],
           ),
         ),
         bottomNavigationBar: Functions.adminNavBar(_selectedIndex, (int index) {
