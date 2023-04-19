@@ -125,7 +125,7 @@ class _CategoryScreen extends State<CategoryScreen> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 10),
                       child: const Text(
-                        "Submit Filters",
+                        "Next: Select Business Verification",
                         style: TextStyle(color: Colors.white, fontSize: 15.0),
                       ),
                     ),
@@ -138,7 +138,6 @@ class _CategoryScreen extends State<CategoryScreen> {
                         VerificationScreen(receivedMap: returnMap)),
                           );
                       }
-                      //button moves to the business_info page that displays all the details (that code is in business_info.dart)
                     )),
             const Padding(padding: EdgeInsets.all(20)),
           ],

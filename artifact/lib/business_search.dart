@@ -52,8 +52,9 @@ class _FirstRoute extends State<FirstRoute> {
       querySnapshot.docs.forEach((doc) {
         if (widget.receivedMap.isEmpty ||
             widget.receivedMap.containsKey(doc["Category"]) ||
-            widget.receivedMap.containsKey(doc["Zipcode"].toString()) ||
-            widget.receivedMap.containsKey(doc["Verified"].toString())) {
+            widget.receivedMap.containsKey(doc["Zipcode"].toString())
+        //|| widget.receivedMap.containsKey(doc["Verified"].toString())
+        ) {
           //filters based on incoming map
           i++;
 

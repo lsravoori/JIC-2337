@@ -126,7 +126,7 @@ class _HomeScreen extends State<HomeScreen> {
         backgroundColor: Colors.white24,
         appBar: AppBar(
           title: const Text(
-            'For The People: Possible ZipCodes',
+            'For The People: Possible Zip Codes',
             style: TextStyle(color: Colors.white, fontSize: 20.0),
           ),
           backgroundColor: const Color(0xFFD67867),
