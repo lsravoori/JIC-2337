@@ -30,9 +30,9 @@ class _VerificationScreen extends State<VerificationScreen> {
       []; //this is a list of children for the scaffold that shows up on screen (right column)
   List<Widget> list2 = []; //list of children (left column)
   List<bool> checked = <bool>[]; //used for checkbox logic
-  List<bool> verif = [
-    false,
-    true
+  List<String> verif = [
+    "Unverified Businesses",
+    "Verified Businesses"
   ]; //list to check if the target is true or false
 
   createCheckBox() {
