@@ -25,7 +25,7 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreen extends State<CategoryScreen> {
-  _CategoryScreen(Map<String, int> recievedMap);
+  _CategoryScreen(Map<String, int> receivedMap);
 
   List<Widget> list =
       []; //this is a list of children for the scaffold that shows up on screen (right column)
@@ -135,7 +135,7 @@ class _CategoryScreen extends State<CategoryScreen> {
                         context,
                         MaterialPageRoute(
                         builder: (context) =>
-                        VerificationScreen(receivedMap: returnMap)),
+                        VerificationScreen(receivedMap: widget.receivedMap)),
                           );
                       }
                     )),

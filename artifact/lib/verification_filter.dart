@@ -24,7 +24,7 @@ class VerificationScreen extends StatefulWidget {
 }
 
 class _VerificationScreen extends State<VerificationScreen> {
-  _VerificationScreen(Map<String, int> recievedMap);
+  _VerificationScreen(Map<String, int> receivedMap);
 
   List<Widget> list =
       []; //this is a list of children for the scaffold that shows up on screen (right column)
