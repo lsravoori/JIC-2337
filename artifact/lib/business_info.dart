@@ -27,14 +27,27 @@ class _BusinessInfoState extends State<BusinessInfo> {
   int number = 3;
   double _rating = 0;
   double avgRating = 0;
+  Widget? logo;
+  bool firstUpdate = true;
 
   _BusinessInfoState(this.business, this.number) {
     getInformation(business);
+    /*
+    if (businessInfo != null) {
+      Object? logoPath2 = businessInfo!["Logo"];
+      if (logoPath2 != null) {
+        print("Logo Path #2: " + logoPath2.toString());
+      } else {
+        print("Logo Path #2 is null");
+      }
+      */
+    }
+    
     //this.infoList = createInfoWidgets(businessInfo); //unused for now, will probably delete/repurpose
-  }
 
   Future<QuerySnapshot> getInformation(business) async {
-    _selectedIndex = number;
+    if (firstUpdate == true) {
+      _selectedIndex = number;
     //gets information of the businesses (by name) and puts into a hashmap
     var retVal = <String, Object>{}; //temp hashmap for collection
 
@@ -47,13 +60,28 @@ class _BusinessInfoState extends State<BusinessInfo> {
         //checks if the business with the given name exists
         Map<String, dynamic>? documentFields =
             documentSnapshot.data() as Map<String, dynamic>?;
-        documentFields?.forEach((key, value) {
+        documentFields?.forEach((key, value) async {
           //collects the from a hashmap and moves to temp hashmap (inefficient, make better later)
           retVal.addAll({"$key": documentFields["$key"]});
+          
+          if (key == "Logo") {
+            String logoPath = documentFields["$key"].toString();
+            if (logoPath != "" || logoPath != null) {
+              print("Logo Path FINAL TESTING: " + logoPath);
+              await Functions.displayImage(logoPath).then((img) {
+              setState(() { logo = img; });
+              });  
+            }
+          }
+          
         });
       }
     });
     businessInfo = retVal; //sets businessInfo equal to temp hashmap
+    //print("KEYS: " + businessInfo.keys);
+    firstUpdate = false;
+    }
+    
     return await FirebaseFirestore.instance.collection('Businesses').get();
   }
 
@@ -75,11 +103,9 @@ class _BusinessInfoState extends State<BusinessInfo> {
     final User? user = auth.currentUser;
     final uid = user?.uid;
     List<Widget> widgets = [];
-    String logo = "${businessInfo!['Logo']}";
-    if (logo != "") {
-      Functions.displayImage(logo).then((img) {
-        widgets.add(img);
-      });  
+    //String logo = "${businessInfo!['Logo']}";
+    if (logo != null) {
+      widgets.add(logo!);
     }
     widgets.add(Functions.divider());
     widgets.add(Functions.displayInfo(
