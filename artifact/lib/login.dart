@@ -17,7 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Image.asset('assets/images/logodone.jpg'),
+              Image.asset('assets/images/logodone.JPG'),
               TextButton(
                   //creates a button that contains a name of a business in it
                   child: Container(
