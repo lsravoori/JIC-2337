@@ -4,6 +4,7 @@ import '../../../business_search.dart';
 import '../../../account_page.dart';
 import '../../../functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../../verification_filter.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key, required this.receivedMap});
@@ -138,8 +139,7 @@ class _CategoryScreen extends State<CategoryScreen> {
                           );
                       }
                       //button moves to the business_info page that displays all the details (that code is in business_info.dart)
-
-                    })),
+                    )),
             const Padding(padding: EdgeInsets.all(20)),
           ],
         )),
