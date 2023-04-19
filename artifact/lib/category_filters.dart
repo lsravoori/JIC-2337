@@ -25,7 +25,7 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreen extends State<CategoryScreen> {
-  _CategoryScreen(Map<String, int> recievedMap);
+  _CategoryScreen(Map<String, int> receivedMap);
 
   List<Widget> list =
       []; //this is a list of children for the scaffold that shows up on screen (right column)
@@ -125,7 +125,7 @@ class _CategoryScreen extends State<CategoryScreen> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 10),
                       child: const Text(
-                        "Submit Filters",
+                        "Next: Select Business Verification",
                         style: TextStyle(color: Colors.white, fontSize: 15.0),
                       ),
                     ),
@@ -135,10 +135,9 @@ class _CategoryScreen extends State<CategoryScreen> {
                         context,
                         MaterialPageRoute(
                         builder: (context) =>
-                        VerificationScreen(receivedMap: returnMap)),
+                        VerificationScreen(receivedMap: widget.receivedMap)),
                           );
                       }
-                      //button moves to the business_info page that displays all the details (that code is in business_info.dart)
                     )),
             const Padding(padding: EdgeInsets.all(20)),
           ],
