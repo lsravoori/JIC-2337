@@ -31,9 +31,9 @@ class _VerificationScreen extends State<VerificationScreen> {
   List<Widget> list2 = []; //list of children (left column)
   List<bool> checked = <bool>[]; //used for checkbox logic
   List<String> verif = [
-    "Unverified Businesses",
-    "Verified Businesses"
-  ]; //list to check if the target is true or false
+    "false",
+    "true"
+  ]; //list to check if the target is verified or not
 
   createCheckBox() {
     //creates checkboxes with two seperate columns
@@ -47,7 +47,7 @@ class _VerificationScreen extends State<VerificationScreen> {
             child: CheckboxListTile(
                 value: checked[i],
                 checkColor: Colors.white,
-                title: Text(verif[i]),
+                title: Text("Unverified Businesses"),
                 onChanged: (bool? values) {
                   setState(() {
                     checked[i] = values!;
@@ -62,7 +62,7 @@ class _VerificationScreen extends State<VerificationScreen> {
             child: CheckboxListTile(
                 value: checked[i],
                 checkColor: Colors.white,
-                title: Text(verif[i]),
+                title: Text("Verified Businesses"),
                 onChanged: (bool? values) {
                   setState(() {
                     checked[i] = values!;
@@ -96,6 +96,13 @@ class _VerificationScreen extends State<VerificationScreen> {
             //allows scrolling
             child: Column(
           children: [
+            Text(
+              'Would you like to search for Unverified Businesses, Verified Businesses, or Both?\n',
+              style: TextStyle(
+                fontSize: 24.0,
+                color: Colors.black,
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
