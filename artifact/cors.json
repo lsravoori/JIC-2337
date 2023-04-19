@@ -1,6 +1,6 @@
 [
 {
-"origin": ["https://for-the-people-6d3bc.web.app/"],
+"origin": ["https://for-the-people-6d3bc.web.app/", "https://for-the-people-6d3bc.web.app/#search"],
 "responseHeader": ["Content-Type"],
 "method": ["GET", "HEAD", "DELETE"],
 "maxAgeSeconds": 3600
