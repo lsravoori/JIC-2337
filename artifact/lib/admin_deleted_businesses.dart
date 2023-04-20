@@ -56,7 +56,7 @@ class _AdminDeletedScreen extends State<AdminDeletedScreen> {
             style: TextStyle(color: Colors.white, fontSize: 20.0),
           ),
           backgroundColor: const Color(0xFFD67867),
-          automaticallyImplyLeading: false,
+          automaticallyImplyLeading: true,
         ),
         body: SingleChildScrollView(
           child: Column(
