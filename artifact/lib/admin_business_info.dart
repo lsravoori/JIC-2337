@@ -38,43 +38,35 @@ class _AdminFlaggedInfo extends State<AdminFlaggedInfo> {
     var retVal = <String, Object>{}; //temp hashmap for collection
 
     // gets a document from the collection if it exists and retrieves its info
-    if (_selectedIndex == 1) {
-      CollectionReference businesses =
-          FirebaseFirestore.instance.collection('DeletedBusinesses');
-      businesses.doc(business).get().then((DocumentSnapshot documentSnapshot) {
-        //creates a snapshot for the business by name
-        if (documentSnapshot.exists) {
-          //checks if the business with the given name exists
-          Map<String, dynamic>? documentFields =
-              documentSnapshot.data() as Map<String, dynamic>?;
-          documentFields?.forEach((key, value) {
-            //collects the from a hashmap and moves to temp hashmap (inefficient, make better later)
-            retVal.addAll({key: documentFields[key]});
-          });
-        }
-      });
-      businessInfo = retVal; //sets businessInfo equal to temp hashmap
-      return await FirebaseFirestore.instance
-          .collection('DeletedBusinesses')
-          .get();
-    } else {
-      CollectionReference businesses =
-          FirebaseFirestore.instance.collection('Businesses');
-      businesses.doc(business).get().then((DocumentSnapshot documentSnapshot) {
-        //creates a snapshot for the business by name
-        if (documentSnapshot.exists) {
-          //checks if the business with the given name exists
-          Map<String, dynamic>? documentFields =
-              documentSnapshot.data() as Map<String, dynamic>?;
-          documentFields?.forEach((key, value) {
-            //collects the from a hashmap and moves to temp hashmap (inefficient, make better later)
-            retVal.addAll({key: documentFields[key]});
-          });
-        }
-      });
-      businessInfo = retVal; //sets businessInfo equal to temp hashmap
-      return await FirebaseFirestore.instance.collection('Businesses').get();
-    }
+    CollectionReference businesses =
+        FirebaseFirestore.instance.collection('DeletedBusinesses');
+    businesses.doc(business).get().then((DocumentSnapshot documentSnapshot) {
+      //creates a snapshot for the business by name
+      if (documentSnapshot.exists) {
+        //checks if the business with the given name exists
+        Map<String, dynamic>? documentFields =
+            documentSnapshot.data() as Map<String, dynamic>?;
+        documentFields?.forEach((key, value) {
+          //collects the from a hashmap and moves to temp hashmap (inefficient, make better later)
+          retVal.addAll({key: documentFields[key]});
+        });
+      }
+    }); //sets businessInfo equal to temp hashmap
+    businesses = FirebaseFirestore.instance.collection('Businesses');
+    businesses.doc(business).get().then((DocumentSnapshot documentSnapshot) {
+      //creates a snapshot for the business by name
+      if (documentSnapshot.exists) {
+        //checks if the business with the given name exists
+        Map<String, dynamic>? documentFields =
+            documentSnapshot.data() as Map<String, dynamic>?;
+        documentFields?.forEach((key, value) {
+          //collects the from a hashmap and moves to temp hashmap (inefficient, make better later)
+          retVal.addAll({key: documentFields[key]});
+        });
+      }
+    });
+    businessInfo = retVal; //sets businessInfo equal to temp hashmap
+    return await FirebaseFirestore.instance.collection('Businesses').get();
   }
 
   List<Widget> createInfoWidgets(businessInfo) {
