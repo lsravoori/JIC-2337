@@ -27,72 +27,98 @@ class _AdminScreen extends State<AdminScreen> {
           automaticallyImplyLeading: false,
         ),
         body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              TextButton(
-                  child: Container(
-                    color: Colors.blueGrey,
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    child: const Text(
-                      "App Statistics",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15.0,
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AdminStats(),
-                        ));
-                  }),
-              TextButton(
-                  child: Container(
-                    color: Colors.blueGrey,
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    child: const Text(
-                      "Flagged Businesses",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15.0,
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              const AdminFlagged(title: 'admin'),
-                        ));
-                  }),
-              TextButton(
-                  child: Container(
-                    color: Colors.blueGrey,
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    child: const Text(
-                      "Deleted Businesses",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15.0,
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AdminDeletedScreen(),
-                        ));
-                  })
-            ],
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(5, 2, 2, 5),
+                ),
+                Card(
+                  elevation: 10,
+                  color: const Color(0xFF0D2329),
+                  child: InkWell(
+                      splashColor: Colors.blue.withAlpha(30),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AdminStats(),
+                            ));
+                      },
+                      child: Container(
+                        color: const Color(0xFF0D2329),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        child: const Text(
+                          "App Statistics",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25.0,
+                          ),
+                        ),
+                      )),
+                ),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(5, 2, 2, 5),
+                ),
+                Card(
+                  elevation: 10,
+                  color: const Color(0xFF0D2329),
+                  child: InkWell(
+                      splashColor: Colors.blue.withAlpha(30),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const AdminFlagged(title: 'admin'),
+                            ));
+                      },
+                      child: Container(
+                        color: const Color(0xFF0D2329),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        child: const Text(
+                          "Flagged Businesses",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25.0,
+                          ),
+                        ),
+                      )),
+                ),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(5, 2, 2, 5),
+                ),
+                Card(
+                  elevation: 10,
+                  color: const Color(0xFF0D2329),
+                  child: InkWell(
+                      splashColor: Colors.blue.withAlpha(30),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AdminDeletedScreen(),
+                            ));
+                      },
+                      child: Container(
+                        color: const Color(0xFF0D2329),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        child: const Text(
+                          "Deleted Businesses",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25.0,
+                          ),
+                        ),
+                      )),
+                ),
+              ],
+            ),
           ),
         ),
         bottomNavigationBar: Functions.adminNavBar(_selectedIndex, (int index) {
