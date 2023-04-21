@@ -12,6 +12,28 @@ considered as the code base continues to grow.
 
 # Release Notes
 
+## v0.5.0
+###Features
+-Admin statistics are now available
+
+-UI is updated and cleaner with color coding according to the category of business
+
+-Admin home page is created in order to allow for easier navigation
+
+-Logos have been added to user pages and the main page
+
+-Deletd businesses can now be readded
+
+### Bug Fixes
+
+-Fix with displaying flagged businesses throwing null error
+
+-Recieved map typo in displaying business info fixed (as well as other typos)
+
+### Known Issues
+
+-Adding a business currently adds multiple businesses
+
 ## v0.4.0
 ### Features
 -Added admin accounts using isAdmin booleans
