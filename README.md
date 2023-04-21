@@ -10,6 +10,12 @@ feature that we are looking to implement. Admin features such as reviewing busin
 The code consists mainly of Flutter for Android/IOS as the front end. And firebase for the database and cloud utilization. Expansion into using Java Spring Boot is 
 considered as the code base continues to grow.
 
+# Documentation Notes
+Documentation is found in the GitHub
+###Launch Information
+Use “flutter build web --web-renderer html --release” then use “firebase deploy” to upload to web app
+
+
 # Release Notes
 
 ## v0.5.0
