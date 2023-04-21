@@ -405,6 +405,7 @@ class Functions {
                 color: Color.fromARGB(255, 0, 0, 0), fontSize: 20)));
   }
 
+  
   static Future displayImage(String filePath) async {
     if (filePath != "") {
       Uint8List? imageBytes = await FirebaseStorage.instance
@@ -422,6 +423,7 @@ class Functions {
     }
     return;
   }
+
 
   static Widget divider() {
     return const Divider(

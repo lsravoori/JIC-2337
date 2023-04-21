@@ -228,6 +228,8 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
               ),
               onPressed: () {
                 // Todo: Save the user input to a database or file
+                //checkData();
+                addData();
                 showDialog(
                   context: context,
                   builder: (context) {
@@ -247,72 +249,7 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
                                   color: Colors.white, fontSize: 15.0),
                             ),
                           ),
-                          onPressed: () async {
-                            Map<String, Object>? testData =
-                                Map<String, Object>();
-                            Map<String, int>? reasonsMap = Map<String, int>();
-                            reasonsMap.addAll({
-                              "Inaccurate": 0,
-                              "Inappropriate": 0,
-                              "Other": 0
-                            });
-                            Map<String, int>? _rating = Map<String, int>();
-                            testData.addAll({
-                              "Business Name": _businessName!,
-                              "Street Name": _streetAddress!,
-                              "State": _state!,
-                              "Hours": _hours!,
-                              "Category": _category!,
-                              "Business Details":
-                                  _description!, //had to change attribute from Description to Details so show all screen didnt break
-                              "Owner's Name": _ownerName!,
-                              "Owner's Race": _ethnicity!,
-                              "Owner's Gender": _gender!,
-                              "Phone Number": _phoneNumber!,
-                              "Website": _website!,
-                              "Logo": _logo!,
-                              "Owner's LGBTQ+": _isLGBTQ!,
-                              "Zipcode": _zipcode!,
-                              "Ratings": _rating,
-                              "Verified": false,
-                              "Flag Count": 0,
-                              "Flag Reasons": reasonsMap
-                            });
-                            CollectionReference busRef = FirebaseFirestore
-                                .instance
-                                .collection('Businesses');
-                            final auth = FirebaseAuth.instance;
-                            final User? user = auth.currentUser;
-                            final uid = user?.uid;
-                            testData.addAll({"UserID": uid!});
-                            DocumentReference docRef =
-                                await busRef.add(testData);
-                            String docID = docRef.id;
-
-                            var doc_id = [];
-                            await FirebaseFirestore.instance
-                                .collection('Businesses')
-                                .where("UserID", isEqualTo: uid)
-                                .get()
-                                .then((QuerySnapshot querySnapshot) {
-                              querySnapshot.docs.forEach((doc) {
-                                doc_id.add(doc.id);
-                              });
-                            });
-                            CollectionReference userRef = FirebaseFirestore
-                                .instance
-                                .collection('Accounts');
-                            userRef.doc(uid).update(
-                                {"BusinessIDs": FieldValue.arrayUnion(doc_id)});
-
-                            // UPLOADING LOGO HERE
-                            if (logo != null) {
-                              uploadFile(uid, docID);
-                            }
-                            busRef.doc(docID).update(
-                                {"Logo": 'logos/' + docID + '/' + logoName!});
-                            //
-
+                          onPressed: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -355,4 +292,63 @@ class _BusinessRegistrationPageState extends State<BusinessRegistrationPage> {
 
     final snapshot = await uploadTask!.whenComplete(() {});
   }
+
+  void addData() async {
+    Map<String, Object>? testData = Map<String, Object>();
+    Map<String, int>? reasonsMap = Map<String, int>();
+    reasonsMap.addAll({
+      "Inaccurate": 0,
+      "Inappropriate": 0,
+      "Other": 0
+      });
+    Map<String, int>? _rating = Map<String, int>();
+    testData.addAll({
+      "Business Name": _businessName!,
+      "Street Name": _streetAddress!,
+      "State": _state!,
+      "Hours": _hours!,
+      "Category": _category!,
+      "Business Details": _description!, 
+      "Owner's Name": _ownerName!,
+      "Owner's Race": _ethnicity!,
+      "Owner's Gender": _gender!,
+      "Phone Number": _phoneNumber!,
+      "Website": _website!,
+      "Logo": _logo!,
+      "Owner's LGBTQ+": _isLGBTQ!,
+      "Zipcode": _zipcode!,
+      "Ratings": _rating,
+      "Verified": false,
+      "Flag Count": 0,
+      "Flag Reasons": reasonsMap
+    });
+
+    CollectionReference busRef = FirebaseFirestore.instance.collection('Businesses');
+    final auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    final uid = user?.uid;
+    testData.addAll({"UserID": uid!});
+    DocumentReference docRef = await busRef.add(testData);
+    String docID = docRef.id;
+    var doc_id = [];
+    await FirebaseFirestore.instance
+      .collection('Businesses')
+      .where("UserID", isEqualTo: uid)
+      .get()
+      .then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs.forEach((doc) {doc_id.add(doc.id); 
+          });
+        });
+    CollectionReference userRef = FirebaseFirestore.instance.collection('Accounts');
+    userRef.doc(uid).update(
+      {"BusinessIDs": FieldValue.arrayUnion(doc_id)});
+      if (logo != null) {
+        uploadFile(uid, docID);
+      }
+      busRef.doc(docID).update({"Logo": 'logos/' + docID + '/' + logoName!});
+  }
+  
+ // bool void checkData() {
+
+ // }
 }
