@@ -12,7 +12,7 @@ considered as the code base continues to grow.
 
 # Documentation Notes
 Documentation is found in the GitHub
-###Launch Information
+## Launch Information:
 Use “flutter build web --web-renderer html --release” then use “firebase deploy” to upload to web app
 
 
