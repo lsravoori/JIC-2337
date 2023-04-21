@@ -11,7 +11,7 @@ The code consists mainly of Flutter for Android/IOS as the front end. And fireba
 considered as the code base continues to grow.
 
 # Documentation Notes
-Documentation is found in the GitHub
+Documentation is found in the GitHub as 'For the People Documentation for Future Groups.pdf'
 ## Launch Information:
 Use “flutter build web --web-renderer html --release” then use “firebase deploy” to upload to web app
 
