@@ -19,7 +19,7 @@ Use “flutter build web --web-renderer html --release” then use “firebase d
 # Release Notes
 
 ## v0.5.0
-###Features
+### Features
 -Admin statistics are now available
 
 -UI is updated and cleaner with color coding according to the category of business
